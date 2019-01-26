@@ -17,3 +17,20 @@ Ex.
 https://play.qobuz.com/album/hxyqb40xat3uc,
 https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
+# Misc Info
+Coded in Python. Tested on 3.6.7.
+Used libraries:
+- codecs
+- configparser
+- datetime
+- glob
+- hashlib
+- mutagen
+- os
+- pathlib
+- re
+- requests
+- shutil
+- sys
+- time
+- urllib.request
