@@ -20,7 +20,7 @@ The following need to be inputted into the config file:
 ## Optional ##
 - Comment tag 
 
-You can specify what you want to be put into the comment field in your FLACs. Special characters will be escaped.
+You can specify what you want to be put into the comment field in your tracks. Special characters will be escaped.
 
 # Usage
 It's simple; input Qobuz Player or Qobuz store URL. 
@@ -32,9 +32,9 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 # Update Log
 ## 26th Jan 19 - Release 1 ##
 ## 27th Jan 19 - Release 2 ##
-- Mp3 support
+- Mp3 support.
 - Max downloadable tracks per album 50 -> 100.
-- More efficient code for checking if file exists & deleting.
+- More efficient code for checking if files exists & deleting them if they do. 
 - Integrated Get UAT into main exe.
 - implemented invalid URL input handling.
 - Crash fixed when attempting to download albums with video goodies.
@@ -78,23 +78,18 @@ Misc:
 - Any specials characters that Windows doesn't support in filenames are replaced with "-" (except "<" & ">" for now).  
 - If an album folder needs to be made, but already exists, it and its contents will be deleted.  
 - If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).
-- If the following files exists in the current working dir, they'll be deleted: (1-100).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. 
+**- If the following files exists in the current working dir, they'll be deleted: (1-100).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes.** 
 
 If you need to get in touch: Sorrow#5631
 
 # To do
 - **Increase max tracks downloadable per album. It's currently 50.**
-- **MP3 support.**
 - Fix known issues.
 - More efficient way of increasing max tracks downloadable per album.
-- Invalid URL input handling.
 - Progress bar?
 - Download playlists.
-- Ability to choose which size album cover to fetch via config file.
-- Ability to choose from "01. " and "01 -" file naming schemes via config fie.
 - Implement Japanese translation.
 - General code clean up.
-- Integrate "Get UAT.exe" code into main exe.
 - Commandline options.
 - Download from list of urls.
 - "<" & ">" handling in file names.
