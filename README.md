@@ -1,5 +1,5 @@
 # Qobuz-DL
-Tool to download FLACs from Qobuz.
+Tool to download FLACs from Qobuz (even 24-bit!).
 
 # Setup
 The following need to be inputted into the config file (config.ini):
@@ -11,3 +11,7 @@ The following need to be inputted into the config file (config.ini):
 - User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
 
 
+# Usage
+The usage is simple; input Qobuz Player or Qobuz store URL.
+Ex.https://play.qobuz.com/album/hxyqb40xat3uc, https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
+	
