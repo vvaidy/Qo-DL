@@ -17,7 +17,7 @@ The following need to be inputted into the config file (config.ini):
 **Format id 5 (MP3 320) is currently unsupported as I haven't finished the tagging side for it yet.**
 - MD5 hashed password
 - User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
-## Optional ####
+## Optional ##
 - Comment tag 
 
 You can specify what you want to be put into the comment field in your FLACs. Special characters will be escaped.
@@ -31,7 +31,7 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
 # Misc Info
 Tested on Python v3.6.7.
-##Used libraries##
+## Used libraries: ##
 - codecs
 - configparser
 - datetime
