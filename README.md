@@ -10,6 +10,6 @@ The following need to be inputted into the config file (config.ini):
 - Email address
 - Format id
 - MD5 hashed password
-- User auth token
+- User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
 
-Run "Get UAT.exe" to get this. App id + secret is required.
+
