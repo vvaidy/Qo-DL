@@ -8,7 +8,7 @@ Tool written in Python to download FLACs from Qobuz for Windows.
 
 # Setup
 ## Mandatory ##
-The following need to be inputted into the config file (config.ini):
+The following need to be inputted into the config file:
 - App id
 - App secret - you can get your app id & app secret by contacting Qobuz (you can also use the ones already in the config file).
 - Email address
