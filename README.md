@@ -67,7 +67,8 @@ My Discord if you need to get in touch: Sorrow#5631
 - Invalid URL input handling.
 - Progress bar?
 - Download playlists.
-- Ability to choose which size album cover to fetch in config file.
+- Ability to choose which size album cover to fetch via config file.
+- Ability to choose from "01. " and "01 -" file naming schemes via config fie.
 - Implement Japanese translation.
 - General code clean up.
 - Integrate "Get UAT.exe" into main exe.
