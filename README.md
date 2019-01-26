@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download FLACs from Qobuz (even 24-bit!) for Windows.
-![](https://camo.githubusercontent.com/fb438f2225509299c89c40deb29f671206f56d25/68747470733a2f2f74686f61732e666572616c686f7374696e672e636f6d2f736f72726f772f516f62757a2d444c2f312e6a7067)
+![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/2.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/3.jpg)
 
