@@ -84,7 +84,6 @@ Misc:
 If you need to get in touch: Sorrow#5631
 
 # To do
-- **Increase max tracks downloadable per album. It's currently 50.**
 - Fix known issues.
 - More efficient way of increasing max tracks downloadable per album.
 - Progress bar?
