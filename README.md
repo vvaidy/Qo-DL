@@ -57,6 +57,7 @@ The following tag fields are wrote to:
 - tracktotal
 - year
 
+
 - The largest available size album covers are wrote (600x600).  
 - If a digital booklet is available, it will be downloaded and put in its respective album folder.  
 - Downloaded FLACs are put in the "Qobuz-DL Downloads" folder. Ex. <Qobuz-DL Dir>\\Qobuz-DL Downloads\\<albumartist - <albumtitle>\\<FLACs>  
