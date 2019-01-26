@@ -31,7 +31,7 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
 # Misc Info
 Tested on Python v3.6.7.
-##Used libraries:##
+##Used libraries##
 - codecs
 - configparser
 - datetime
