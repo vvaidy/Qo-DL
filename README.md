@@ -79,6 +79,7 @@ My Discord if you need to get in touch: Sorrow#5631
 - Commandline options.
 - Download from list of urls.
 - "<" & ">" handling in file names.
+- Reduce size of executables (exclude libs etc.). 
 
 # Known issues
 - Albums with more than one disks will be treated as single-disk albums.
