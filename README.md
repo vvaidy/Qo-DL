@@ -44,9 +44,11 @@ Used libraries:
 # To do
 - **Increase max tracks downloadable in an album. It is currently 50, and will crash if it goes over.**
 - More efficient way of increasing max tracks downloadable in an album.
-- Bad URL input handling
+- Bad URL input handling.
 - Progress bar?
-- Implement Japanese translation
+- Download playlists.
+- ability to choose which size album cover to fetch in config file.
+- Implement Japanese translation.
 
 
 # Known issues
