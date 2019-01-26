@@ -1,5 +1,5 @@
 # Qobuz-DL
-Tool to download FLACs from Qobuz (even 24-bit!).
+Tool written in Python to download FLACs from Qobuz (even 24-bit!) for Windows.
 
 # Setup
 The following need to be inputted into the config file (config.ini):
