@@ -42,7 +42,7 @@ Used libraries:
 
 
 # To do
-**- Increase max tracks downloadable in an album. It is currently 50, and will crash if it goes over.**
+- **Increase max tracks downloadable in an album. It is currently 50, and will crash if it goes over.**
 - Bad URL input handling
 - Progress bar?
 
