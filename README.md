@@ -46,6 +46,7 @@ Used libraries:
 - More efficient way of increasing max tracks downloadable in an album.
 - Bad URL input handling
 - Progress bar?
+- Implement Japanese translation
 
 
 # Known issues
