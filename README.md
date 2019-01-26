@@ -11,7 +11,7 @@ The following need to be inputted into the config file (config.ini):
 - User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
 
 # Usage
-The usage is simple; input Qobuz Player or Qobuz store URL. 
+It's simple; input Qobuz Player or Qobuz store URL. 
 Ex. 
 ```
 https://play.qobuz.com/album/hxyqb40xat3uc,
