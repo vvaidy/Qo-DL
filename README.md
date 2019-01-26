@@ -16,5 +16,6 @@ The usage is simple; input Qobuz Player or Qobuz store URL.
 
 Ex.
 https://play.qobuz.com/album/hxyqb40xat3uc,
+
 https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 	
