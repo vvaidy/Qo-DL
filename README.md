@@ -4,15 +4,13 @@ Tool written in Python to download FLACs from Qobuz (even 24-bit!) for Windows.
 # Setup
 The following need to be inputted into the config file (config.ini):
 - App id
-- App secret - you can get your App id & app secret by contacting Qobuz (you can also use the ones already in the config file).
+- App secret - you can get your app id & app secret by contacting Qobuz (you can also use the ones already in the config file).
 - Email address
 - Format id - download quality (6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, , 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC)
 
 **Format id 5 (MP3 320) is currently unsupported as I haven't finished the tagging side for it yet.**
 - MD5 hashed password
 - User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
-
-
 
 # Usage
 It's simple; input Qobuz Player or Qobuz store URL. 
@@ -39,8 +37,6 @@ Used libraries:
 - time
 - urllib.request
 
-
-
 # To do
 - **Increase max tracks downloadable in an album. It is currently 50, and will crash if it goes over.**
 - More efficient way of increasing max tracks downloadable in an album.
@@ -49,7 +45,7 @@ Used libraries:
 - Download playlists.
 - ability to choose which size album cover to fetch in config file.
 - Implement Japanese translation.
-
+- General code clean up.
 
 # Known issues
 - Albums with more than one disks will be treated as single-disk albums.
