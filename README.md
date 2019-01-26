@@ -21,7 +21,7 @@ You can specify what you want to be put into the comment field in your FLACs. Sp
 It's simple; input Qobuz Player or Qobuz store URL. 
 Ex. 
 ```
-https://play.qobuz.com/album/hxyqb40xat3uc,
+https://play.qobuz.com/album/hxyqb40xat3uc
 https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
 # Misc Info
