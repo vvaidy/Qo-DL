@@ -1,5 +1,8 @@
 # Qobuz-DL
 Tool written in Python to download FLACs from Qobuz (even 24-bit!) for Windows.
+![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
+![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/2.jpg)
+![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/3.jpg)
 
 # Setup
 ## Mandatory ##
@@ -26,7 +29,7 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
 # Misc Info
 Tested on Python v3.6.7.
-Used libraries:
+##Used libraries:##
 - codecs
 - configparser
 - datetime
@@ -42,18 +45,35 @@ Used libraries:
 - time
 - urllib.request
 
+The following tag fields are wrote to:
+- album
+- albumartist
+- artist
+- comment (depends on users' choice)
+- title
+- track
+- tracktotal
+- year
+
+The largest available size album covers are wrote (600x600).
+Downloaded FLACs are put in the "Qobuz-DL Downloads" folder. Ex. <Qobuz-DL Dir>\Qobuz-DL Downloads\<albumartist - <albumtitle>\<FLACs>
+Any specials characters that Windows doesn't support in filenames are replaced with "-" (except "<" & ">" for now).
+If an album folder needs to be made, but already exists, it and its contents will be deleted.
+My Discord if you need to get in touch: Sorrow#5631
+
 # To do
-- **Increase max tracks downloadable in an album. It is currently 50, and will crash if it goes over.**
-- More efficient way of increasing max tracks downloadable in an album.
-- Bad URL input handling.
+- **Increase max tracks downloadable per album. It's currently 50.**
+- More efficient way of increasing max tracks downloadable per album.
+- Invalid URL input handling.
 - Progress bar?
 - Download playlists.
-- ability to choose which size album cover to fetch in config file.
+- Ability to choose which size album cover to fetch in config file.
 - Implement Japanese translation.
 - General code clean up.
 - Integrate "Get UAT.exe" into main exe.
 - Commandline options.
 - Download from list of urls.
+- "<" & ">" handling in file names.
 
 # Known issues
 - Albums with more than one disks will be treated as single-disk albums.
