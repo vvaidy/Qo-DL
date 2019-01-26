@@ -76,7 +76,7 @@ If you need to get in touch: Sorrow#5631
 - Ability to choose from "01. " and "01 -" file naming schemes via config fie.
 - Implement Japanese translation.
 - General code clean up.
-- Integrate "Get UAT.exe" into main exe.
+- Integrate "Get UAT.exe" code into main exe.
 - Commandline options.
 - Download from list of urls.
 - "<" & ">" handling in file names.
