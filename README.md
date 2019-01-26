@@ -30,8 +30,8 @@ https://play.qobuz.com/album/hxyqb40xat3uc
 https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
 # Update Log
-## 26th Jan 19 - Release 1. ##
-## 27th Jan 19 - Release 2. ##
+## 26th Jan 19 - Release 1 ##
+## 27th Jan 19 - Release 2 ##
 - Mp3 support
 - Max downloadable tracks per album 50 -> 100.
 - More efficient code for checking if file exists & deleting.
