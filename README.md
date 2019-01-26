@@ -7,6 +7,7 @@ The following need to be inputted into the config file (config.ini):
 - App secret - You can get your App id + app secret by contacting Qobuz (you can also use the ones already in the config file).
 - Email address
 - Format id - download quality (6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, , 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC)
+
 Format id 5 (MP3 320) is unsupported as I haven't finished the tagging side for it yet.
 - MD5 hashed password
 - User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
