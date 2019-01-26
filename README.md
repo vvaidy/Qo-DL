@@ -42,3 +42,10 @@ Used libraries:
 
 
 # To do
+
+# Known issues
+Albums with more than one disks will be treated as single-disk albums.
+
+To make this clearer, track 1 of disk 2 wouldn't be tagged as track #1, but as the track after the last track of disk 1.
+
+- Printing languages like Chinese, Japanese & Korean to the console prints garbage instead. This doesn't affect anything else in the code.
