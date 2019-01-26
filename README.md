@@ -59,7 +59,7 @@ The following tag fields are wrote to:
 
 The largest available size album covers are wrote (600x600).  
 If a digital booklet is available, it will be downloaded and put in its respective album folder.  
-Downloaded FLACs are put in the "Qobuz-DL Downloads" folder. Ex. <Qobuz-DL Dir>\\Qobuz-DL Downloads\\<albumartist - <albumtitle>\<FLACs>  
+Downloaded FLACs are put in the "Qobuz-DL Downloads" folder. Ex. <Qobuz-DL Dir>\\Qobuz-DL Downloads\\<albumartist - <albumtitle>\\<FLACs>  
 Any specials characters that Windows doesn't support in filenames are replaced with "-" (except "<" & ">" for now).  
 If an album folder needs to be made, but already exists, it and its contents will be deleted.  
 
