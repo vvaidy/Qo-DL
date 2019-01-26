@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download FLACs from Qobuz for Windows.   
-26th Jan 19 - Release 1.
+Latest version: 26th Jan 19 - Release 2.
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/2.jpg)
@@ -12,11 +12,11 @@ The following need to be inputted into the config file:
 - App id
 - App secret - you can get your app id & app secret by contacting Qobuz (you can also use the ones already in the config file).
 - Email address
-- Format id - download quality (6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, , 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC)
-
-**Format id 5 (MP3 320) is currently unsupported as I haven't finished the tagging side for it yet.**
+- Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, , 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC)
 - MD5 hashed password
-- User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
+- User auth token - input "uat" into the console to get this. App id + app secret is required.
+- Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -")
+- Cover size - cover size to request from API (1 = 230x230, 2 = 600x600)
 ## Optional ##
 - Comment tag 
 
@@ -29,6 +29,18 @@ Ex.
 https://play.qobuz.com/album/hxyqb40xat3uc
 https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
+# Update Log
+## 26th Jan 19 - Release 1. ##
+## 27th Jan 19 - Release 2. ##
+- Mp3 support
+- Max downloadable tracks per album 50 -> 100.
+- More efficient code for checking if file exists & deleting.
+- Integrated Get UAT into main exe.
+- implemented invalid URL input handling.
+- Crash fixed when attempting to download albums with video goodies.
+- Ability to choose naming scheme via config file.
+- Ability to choose which size album cover to fetch.
+
 # Misc Info
 Tested on Python v3.6.7.  
 Used libraries:
@@ -57,13 +69,16 @@ The following tag fields are wrote to:
 - tracktotal
 - year
 
+The tracktotal field won't be written to mp3s, instead, the track total will be written to the track field. Ex: (current_track)/(total_tracks) 
+
 Misc:
-- The largest available size album covers are fetched (600x600).  
-- If a digital booklet is available, it will be downloaded and put in its respective album folder.  
-- Downloaded FLACs are put in the "Qobuz-DL Downloads" folder. Ex. (Qobuz-DL Dir)\\Qobuz-DL Downloads\\(albumartist) - (albumtitle)\\FLACs
+- If a digital booklet is available, it will be downloaded and put in its respective album folder.
+- Video goodies must be purchased. Qobuz-DL can't get them for you (API returns "None" when requesting).
+- Downloaded tracks are put in the "Qobuz-DL Downloads" folder. Ex. (Qobuz-DL Dir)\\Qobuz-DL Downloads\\(albumartist) - (albumtitle)\\(tracks)
 - Any specials characters that Windows doesn't support in filenames are replaced with "-" (except "<" & ">" for now).  
 - If an album folder needs to be made, but already exists, it and its contents will be deleted.  
-- If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).  
+- If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).
+- If the following files exists in the current working dir, they'll be deleted: (1-100).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. 
 
 If you need to get in touch: Sorrow#5631
 
