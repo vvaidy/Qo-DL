@@ -2,6 +2,7 @@
 Tool written in Python to download FLACs from Qobuz (even 24-bit!) for Windows.
 
 # Setup
+###### Mandatory ###### 
 The following need to be inputted into the config file (config.ini):
 - App id
 - App secret - you can get your app id & app secret by contacting Qobuz (you can also use the ones already in the config file).
@@ -11,6 +12,9 @@ The following need to be inputted into the config file (config.ini):
 **Format id 5 (MP3 320) is currently unsupported as I haven't finished the tagging side for it yet.**
 - MD5 hashed password
 - User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
+###### Optional ######
+- Comment tag
+You can specify what you want to be put into the comment field in your FLACs. Special characters will be escaped.
 
 # Usage
 It's simple; input Qobuz Player or Qobuz store URL. 
