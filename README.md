@@ -13,7 +13,7 @@ The following need to be inputted into the config file (config.ini):
 - MD5 hashed password
 - User auth token - Run "Get UAT.exe" to get this. App id + secret is required.
 ## Optional ####
-- Comment tag
+- Comment tag 
 
 You can specify what you want to be put into the comment field in your FLACs. Special characters will be escaped.
 
@@ -25,7 +25,7 @@ https://play.qobuz.com/album/hxyqb40xat3uc,
 https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
 # Misc Info
-Coded in Python. Tested on 3.6.7.
+Tested on Python v3.6.7.
 Used libraries:
 - codecs
 - configparser
@@ -51,6 +51,9 @@ Used libraries:
 - ability to choose which size album cover to fetch in config file.
 - Implement Japanese translation.
 - General code clean up.
+- Integrate "Get UAT.exe" into main exe.
+- Commandline options.
+- Download from list of urls.
 
 # Known issues
 - Albums with more than one disks will be treated as single-disk albums.
