@@ -63,7 +63,7 @@ Downloaded FLACs are put in the "Qobuz-DL Downloads" folder. Ex. <Qobuz-DL Dir>\
 Any specials characters that Windows doesn't support in filenames are replaced with "-" (except "<" & ">" for now).  
 If an album folder needs to be made, but already exists, it and its contents will be deleted.  
 
-My Discord if you need to get in touch: Sorrow#5631
+If you need to get in touch: Sorrow#5631
 
 # To do
 - **Increase max tracks downloadable per album. It's currently 50.**
