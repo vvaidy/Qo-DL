@@ -104,4 +104,4 @@ To make this clearer, track 1 of disk 2 wouldn't be tagged as track #1, but as t
 
 - Printing languages like Chinese, Japanese & Korean to the console prints garbage instead.
 
-This doesn't affect anything else in the code; FLACs containing any of the above languages will still download & tag correctly.
+This doesn't effect anything else in the code; FLACs containing any of the above languages will still download & tag correctly.
