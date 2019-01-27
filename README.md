@@ -39,7 +39,7 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 - implemented invalid URL input handling.
 - Crash fixed when attempting to download albums with video goodies.
 - Ability to choose naming scheme via config file.
-- Ability to choose which size album cover to fetch.
+- Ability to choose which size album cover to fetch via config file.
 
 # Misc Info
 Tested on Python v3.6.7.  
