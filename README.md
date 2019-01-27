@@ -78,7 +78,7 @@ Misc:
 - Any specials characters that Windows doesn't support in filenames are replaced with "-" (except "<" & ">" for now).  
 - If an album folder needs to be made, but already exists, it and its contents will be deleted.  
 - If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).
-- id3v2.3 tag format is be used for mp3 tags.
+- id3v2.3 tag format is used for mp3 tags.
 - **If the following files exists in the current working dir, they'll be deleted: (1-100).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes.**
 
 If you need to get in touch: Sorrow#5631
