@@ -1,6 +1,7 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows.   
-Latest version: 27th Jan 19 - Release 2.
+Latest version: 27th Jan 19 - Release 2A.
+
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/2.jpg)
@@ -40,6 +41,8 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 - Crash fixed when attempting to download albums with video goodies.
 - Ability to choose naming scheme via config file.
 - Ability to choose which size album cover to fetch via config file.
+## 27th Jan 19 - Release 2a ##
+- Check for empty user_auth_token field would prevent users from getting to the url input screen, thus not allowing them to get the uat.
 
 # Misc Info
 Tested on Python v3.6.7.  
