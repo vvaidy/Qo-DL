@@ -69,7 +69,7 @@ The following tag fields are wrote to:
 - tracktotal
 - year
 
-The tracktotal field won't be written to mp3s, instead, the track total will be written to the track field. Ex: (current_track)/(total_tracks) 
+The tracktotal field won't be written to mp3s. Instead, the track total will be written to the track field. Ex: (current_track)/(total_tracks) 
 
 Misc:
 - If a digital booklet is available, it will be downloaded and put in its respective album folder.
