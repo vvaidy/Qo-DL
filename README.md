@@ -96,16 +96,6 @@ Misc:
 - **If the following files exist in the current working dir, they'll be deleted: (1-100).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes.**
 
 If you need to get in touch: Sorrow#5631
-
-## Troubleshooting ##
-- If you are getting the message below and are 100% sure that you're inputting a valid URL, it's Qobuz's region lock. You'll need a VPN**
-```
-Not found (404). Bad URL? Returning to URL input screen...
-```
-If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qobuz-DL. It'll give you a new one. Input this into your config file. 
-```
-"Track <num> is restricted by right holders; can't download."
-```
 # To do
 - GUI version.
 - Fix known issues.
@@ -126,3 +116,13 @@ To make this clearer, track 1 of disk 2 wouldn't be tagged as track #1, but as t
 - Printing languages like Chinese, Japanese & Korean to the console prints garbage instead.
 
 This doesn't effect anything else in the code; tracks containing any of the above languages will still download & tag correctly.
+
+## Troubleshooting ##
+- If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN
+```
+Not found (404). Bad URL? Returning to URL input screen...
+```
+If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qobuz-DL. It'll give you a new one. Input this into your config file. 
+```
+"Track <num> is restricted by right holders; can't download."
+```
