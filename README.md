@@ -47,7 +47,7 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 - Unlimited tracks downloadable per album.
 - Code clean up - 1800 lines down to 400! Mainly thanks to the above.
 - "<" & ">" handled in file names.
-- uat input removed. You'll be given your uat automatically now if it's needed.
+- uat input removed - you'll be given your uat automatically now if it's needed.
 
 # Misc Info
 Tested on Python v3.6.7.  
@@ -100,7 +100,7 @@ If you need to get in touch: Sorrow#5631
 - General code clean up.
 - Commandline options.
 - Download from list of urls.
-- Reduce size of executables (exclude libs etc.). 
+- Reduce size of executables (exclude libs etc.).
 
 # Known issues
 - Albums with more than one disks will be treated as single-disk albums.
