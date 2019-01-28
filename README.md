@@ -13,11 +13,11 @@ The following need to be inputted into the config file:
 - App id
 - App secret - you can get your app id & app secret by contacting Qobuz (you can also use the ones already in the config file).
 - Email address
-- Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC)
+- Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC).
 - MD5 hashed password
 - User auth token - you'll be given this automatically if it's not already inputted in. App id + app secret is required.
-- Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -")
-- Cover size - cover size to request from API (1 = 230x230, 2 = 600x600)
+- Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -").
+- Cover size - cover size to request from API (1 = 230x230, 2 = 600x600).
 
 **You can't download ANY tracks with a free account.**
 ## Optional ##
