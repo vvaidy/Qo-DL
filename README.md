@@ -18,7 +18,8 @@ The following need to be inputted into the config file:
 - User auth token - you'll be given this automatically if it's not already inputted in. App id + app secret is required.
 - Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -")
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600)
-- **You can't download ANY tracks with a free account.**
+
+**You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag 
 
