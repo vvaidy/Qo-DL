@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows.   
-Latest version: 27th Jan 19 - Release 2a.
+Latest version: 27th Jan 19 - Release 3.
 
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
@@ -15,7 +15,7 @@ The following need to be inputted into the config file:
 - Email address
 - Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC)
 - MD5 hashed password
-- User auth token - input "uat" into the console to get this. App id + app secret is required.
+- User auth token - you'll be given this automatically if it's not already inputted in. App id + app secret is required.
 - Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -")
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600)
 ## Optional ##
@@ -43,6 +43,11 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 - Ability to choose which size album cover to fetch via config file.
 ## 27th Jan 19 - Release 2a ##
 - Check for empty user_auth_token field would prevent users from getting to the url input screen, thus not allowing them to get the uat.
+## 28th Jan 19 - Release 3 ##
+- Unlimited tracks downloadable per album.
+- Code clean up - 1800 lines down to 400! Mainly thanks to the above.
+- "<" & ">" handled in file names.
+- uat input removed. You'll be given your uat automatically now if it's needed.
 
 # Misc Info
 Tested on Python v3.6.7.  
@@ -89,14 +94,12 @@ If you need to get in touch: Sorrow#5631
 # To do
 - GUI version.
 - Fix known issues.
-- More efficient way of increasing max tracks downloadable per album.
 - Progress bar?
 - Download playlists.
 - Implement Japanese translation.
 - General code clean up.
 - Commandline options.
 - Download from list of urls.
-- "<" & ">" handling in file names.
 - Reduce size of executables (exclude libs etc.). 
 
 # Known issues
