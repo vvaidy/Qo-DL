@@ -117,7 +117,7 @@ To make this clearer, track 1 of disk 2 wouldn't be tagged as track #1, but as t
 
 This doesn't effect anything else in the code; tracks containing any of the above languages will still download & tag correctly.
 
-## Troubleshooting ##
+# Troubleshooting
 - If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN
 ```
 Not found (404). Bad URL? Returning to URL input screen...
