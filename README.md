@@ -100,7 +100,7 @@ If you need to get in touch: Sorrow#5631
 - General code clean up.
 - Commandline options.
 - Download from list of urls.
-- Reduce size of executables (exclude libs etc.).
+- Reduce size of executable (exclude libs etc.).
 
 # Known issues
 - Albums with more than one disks will be treated as single-disk albums.
