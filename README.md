@@ -118,11 +118,11 @@ To make this clearer, track 1 of disk 2 wouldn't be tagged as track #1, but as t
 This doesn't effect anything else in the code; tracks containing any of the above languages will still download & tag correctly.
 
 # Troubleshooting
-- If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN
+- If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN.
 ```
 Not found (404). Bad URL? Returning to URL input screen...
 ```
-If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qobuz-DL. It'll give you a new one. Input this into your config file. 
+- If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qobuz-DL. It'll give you a new one. Input this into your config file. 
 ```
 "Track <num> is restricted by right holders; can't download."
 ```
