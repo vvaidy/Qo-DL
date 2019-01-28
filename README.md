@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows.   
-Latest version: 28th Jan 19 - Release 3.
+Latest version: 28th Jan 19 - Release 3a.
 
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
@@ -18,6 +18,7 @@ The following need to be inputted into the config file:
 - User auth token - you'll be given this automatically if it's not already inputted in. App id + app secret is required.
 - Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -")
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600)
+- **You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag 
 
@@ -48,7 +49,11 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 - Code clean up - 1800 lines down to 400! Mainly thanks to the above.
 - "<" & ">" handled in file names.
 - uat input removed - you'll be given your uat automatically now if it's needed.
-
+## 28th Jan 19 - Release 3a ##
+- Handled the below. This happens when you try to download tracks using a free account. You can't.
+```
+TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-DL
+```
 # Misc Info
 Tested on Python v3.6.7.  
 Used libraries:
