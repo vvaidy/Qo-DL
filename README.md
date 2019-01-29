@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows.   
-Latest version: 28th Jan 19 - Release 3b.
+Latest version: 29th Jan 19 - Release 3b.
 
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
