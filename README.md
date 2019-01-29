@@ -57,7 +57,7 @@ TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-
 ```
 ## 29th Jan 19 - Release 3b ##
 - Download from list or URLs - put your urls inside a text file named "list.txt" in the current working dir (one per line), then load up Qobuz-DL and input "list" into the console.
-- Fixed crash which would happen if you were to download the same album again already with a booklet.pdf inside of it.
+- Fixed crash which would happen if you were to download the same album again already with booklet.pdf inside of it.
 - Improved code of checking if files exist and deleting them if they do. 
 
 # Misc Info
