@@ -111,7 +111,7 @@ If you need to get in touch: Sorrow#5631
 - Commandline options.
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
-- Line to print "<album artist> - <album title>" at the top of the console while downloading accidentally got removed in a recent ver. Put it back in.
+- Line to print "(album artist) - (album title)" at the top of the console while downloading accidentally got removed in a recent ver. Put it back in.
 
 # Known issues
 - Albums with more than one disks will be treated as single-disk albums.
