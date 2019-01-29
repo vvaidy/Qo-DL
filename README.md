@@ -101,7 +101,7 @@ Misc:
 - **If the following files exist in the current working dir, they'll be deleted: (1-1000).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. Filename clashes are also handled inside of album folders.**
 
 If you need to get in touch: Sorrow#5631
-# To do
+# To Do
 - GUI version.
 - Fix known issues.
 - Progress bar?
@@ -113,7 +113,7 @@ If you need to get in touch: Sorrow#5631
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Line to print "(album artist) - (album title)" at the top of the console while downloading accidentally got removed in a recent ver. Put it back in.
 
-# Known issues
+# Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
 
 To make this clearer, track 1 of disk 2 wouldn't be tagged as track #1, but as the track after the last track of disk 1.
