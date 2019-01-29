@@ -94,7 +94,7 @@ Misc:
 - If a digital booklet is available, it will be downloaded and put in its respective album folder.
 - Video goodies must be purchased. Qobuz-DL can't get them for you (API returns "None" when requesting).
 - Downloaded tracks are put in the "Qobuz-DL Downloads" folder. Ex. (Qobuz-DL Dir)\\Qobuz-DL Downloads\\(albumartist) - (albumtitle)\\(tracks)
-- Any specials characters that Windows doesn't support in filenames are replaced with "-" (except "<" & ">" for now).  
+- Any specials characters that Windows doesn't support in filenames are replaced with "-".  
 - If an album folder needs to be made, but already exists, it and its contents will be deleted.  
 - If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).
 - id3v2.3 tag format is used for mp3 tags.
