@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows.   
-Latest version: 28th Jan 19 - Release 3a.
+Latest version: 28th Jan 19 - Release 3b.
 
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
@@ -55,6 +55,11 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ```
 TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-DL
 ```
+## 29th Jan 19 - Release 3b ##
+- Download from list or URLs
+- Fixed crash which would happen if you were to download the same album again already with a booklet.pdf inside of it.
+- Improved code of checking if files exist and deleting them if they do. 
+
 # Misc Info
 Tested on Python v3.6.7.  
 Used libraries:
@@ -93,7 +98,7 @@ Misc:
 - If an album folder needs to be made, but already exists, it and its contents will be deleted.  
 - If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).
 - id3v2.3 tag format is used for mp3 tags.
-- **If the following files exist in the current working dir, they'll be deleted: (1-100).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes.**
+- **If the following files exist in the current working dir, they'll be deleted: (1-1000).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. Filename clashes are also handled inside of album folders.**
 
 If you need to get in touch: Sorrow#5631
 # To do
@@ -104,7 +109,6 @@ If you need to get in touch: Sorrow#5631
 - Implement Japanese translation.
 - General code clean up.
 - Commandline options.
-- Download from list of urls.
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 
