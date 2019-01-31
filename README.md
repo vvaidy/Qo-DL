@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows.   
-Latest version: 29th Jan 19 - Release 3b.
+Latest version: 31st Jan 19 - Release 3c.
 
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
@@ -59,7 +59,11 @@ TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-
 - Download from list or URLs - put your urls inside a text file named "list.txt" in the current working dir (one per line), then load up Qobuz-DL and input "list" into the console.
 - Fixed crash which would happen if you were to download the same album again already with booklet.pdf inside of it.
 - Improved code of checking if files exist and deleting them if they do. 
-
+## 31st Jan 19 - Release 3c ##
+Nothing major.
+- x86 binary added.
+Untested as I don't have any machines running on x86 OSs or a VM set up.
+- Put back in the accidentally removed line that prints "(album artist) - (album title)" at the top of the console while downloading albums.
 # Misc Info
 Tested on Python v3.6.7.  
 Used libraries:
@@ -111,7 +115,6 @@ If you need to get in touch: Sorrow#5631
 - Commandline options.
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
-- Line to print "(album artist) - (album title)" at the top of the console while downloading accidentally got removed in a recent ver. Put it back in.
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
