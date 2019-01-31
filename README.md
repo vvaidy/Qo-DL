@@ -62,7 +62,6 @@ TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-
 ## 31st Jan 19 - Release 3c ##
 Nothing major.
 - x86 binary added.
-Untested as I don't have any machines running on x86 OSs or a VM set up.
 - Put back in the accidentally removed line that prints "(album artist) - (album title)" at the top of the console while downloading albums.
 # Misc Info
 Tested on Python v3.6.7.  
