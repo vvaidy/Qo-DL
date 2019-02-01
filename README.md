@@ -141,4 +141,4 @@ Simple explanation: Qobuz lie about/mislabel the highest available streaming qua
 ```
 https://play.qobuz.com/album/qi7icfdkslpva
 ```
-Could it be something to do with label rights?
+Try playing the above album in 24/96 via Qobuz Player. Could it be something to do with label rights?
