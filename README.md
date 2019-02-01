@@ -36,6 +36,7 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 ## 26th Jan 19 - Release 1 ##
 ## 27th Jan 19 - Release 2 ##
 - Mp3 support.
+- metaflac is no longer needed. Mutagen handles tagging for both MP3s and FLACs.
 - Max downloadable tracks per album 50 -> 100.
 - More efficient code for checking if files exists & deleting them if they do. 
 - Integrated Get UAT into main exe.
