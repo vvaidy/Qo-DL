@@ -136,5 +136,9 @@ Not found (404). Bad URL? Returning to URL input screen...
 ```
 - My format id is set to "27", and the album is advertised as being 24-bit on the Qobuz Player and Qobuz store, but Qobuz-DL will only fetch it in 16-bit at best.
 
-Simple explanation: Qobuz lie/mislabel the highest available streaming quality. Ex URL: https://play.qobuz.com/album/qi7icfdkslpva
+Simple explanation: Qobuz lie about/mislabel the highest available streaming quality. Ex. URL:
+ 
+```
+https://play.qobuz.com/album/qi7icfdkslpva
+```
 Could it be something to do with label rights?
