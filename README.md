@@ -129,7 +129,8 @@ This doesn't effect anything else in the code; tracks containing any of the abov
 ```
 Traceback (most recent call last): File "Qobuz-DL.py", line 386, in <module> File "Qobuz-DL.py", line 340, in rip KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
 ```
-Already fixed (will use performer**s** key instead of performer key). Will be in the next build. Qobuz-DL isn't at fault, but the strange API structure.
+Already fixed (will use performer**s** key instead of performer key if performer key isn't in the response). Will be in the next build. Qobuz-DL isn't at fault, but the strange API structure.
+
 # Troubleshooting
 - If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN.
 ```
