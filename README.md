@@ -147,3 +147,8 @@ Try playing the above album in 24/96 via Qobuz Player. Could it be something to 
 {'status': 'error', 'code': 400, 'message': 'Invalid Request Signature parameter (req_sig)'}
 ```
 Not sure why this happens. The app id & secret are definitely correct.
+- You'll get the error below if the album doesn't have a "performer" key in the APIs response. Most albums will.
+```
+Traceback (most recent call last): File "Qobuz-DL.py", line 386, in <module> File "Qobuz-DL.py", line 340, in rip KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
+```
+Already fixed (will use performer*s* key instead of performer key). Will be in the next build.
