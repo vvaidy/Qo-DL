@@ -115,7 +115,7 @@ If you need to get in touch: Sorrow#5631
 - Commandline options.
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
-- Handle crash: https://play.qobuz.com/album/0883958011034 (escape album title special characters).
+- Handle crash: https://play.qobuz.com/album/0883958011034 (escape album title special characters). Fixed: ">" wasn't being escaped. Will include in next build
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
