@@ -142,7 +142,7 @@ If you need to get in touch: Sorrow#5631
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Linux version (requested).
-- Apparently the x86 binary isn't working. Look into that.
+- Apparently the x86 binary isn't working. Look into that. Update: tested working on Win 10 1809 x86.
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
