@@ -70,6 +70,7 @@ Nothing major.
 - x86 binary added.
 - Put back in the accidentally removed line that prints "(album artist) - (album title)" at the top of the console while downloading albums.
 ## 7th Feb 19 - Release 3d ##
+- Linux version added. I'm very inexperienced with it, so I apologize if it doesn't work on your distro. Tested working on Ubuntu 18.10 x64. 
 - Command line support. Pass a URL to Qobuz-DL
 ex: QOBUZ-DL_X64.EXE https://play.qobuz.com/album/hxyqb40xat3uc. 
 This is the only option for now. Passing "list" probably won't work. It will exit upon finishing.
@@ -141,7 +142,6 @@ If you need to get in touch: Sorrow#5631
 - More command line options.
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
-- Linux version (requested).
 - Apparently the x86 binary isn't working. Look into that. Update: tested working on Win 10 1809 x86.
 
 # Known Issues
