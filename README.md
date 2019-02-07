@@ -1,6 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows.   
-Latest version: 31st Jan 19 - Release 3c.
+Latest version: 7th Feb 19 - Release 3d.
 
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
@@ -64,8 +64,26 @@ TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-
 Nothing major.
 - x86 binary added.
 - Put back in the accidentally removed line that prints "(album artist) - (album title)" at the top of the console while downloading albums.
+## 31st Jan 19 - Release 3d ##
+- commandline option. Pass a URL to Qobuz-DL
+ex: QOBUZ-DL.EXE https://play.qobuz.com/album/hxyqb40xat3uc. This is the only option for now. Passing "list" probably won't work. It will exit upon finishing.
+- Better code to strip special characters for Windows filenames.
+- ">" wasn't being stripped in filenames. Fixed.
+- Added two new fields in the config file as requested.
+Tag_swap1 - Write to TRACKNUMBER instead of TRACK, Y or N.
+Tag_swap2 - Write to DATE instead of YEAR, Y or N.
+This only works for FLACs due to ID3 limitations. Not very tested. Metaflac can pick up the two new tags, but Mp3tag can't.
+- Handled the below. This happens when the API returns 'None' when requesting the release year for albums. 'xxxx' will be used instead. I'm not sure why the API would do this. It's not album specific, and only seems to hit a small percentage of users.
+```
+OSError: [Errno 22] Invalid argument [2084] Failed to execute script Qobuz-DL
+```
+- Handled the below. This happens when the API's album response doesn't conatin a performer key. Album specific. "performer**s**" will be used as a fallback.
+```
+KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
+```
+
 # Misc Info
-Tested on Python v3.6.7.  
+Written around Python v3.6.7.  
 Used libraries:
 - codecs
 - configparser
@@ -86,13 +104,15 @@ The following tag fields are wrote to:
 - album
 - albumartist
 - artist
+- date (depends on users' choice)
 - comment (depends on users' choice)
 - title
-- track
+- track (depends on users' choice)
+- tracknumber (depends on users' choice) 
 - tracktotal
-- year
+- year (depends on users' choice)
 
-The tracktotal field won't be written to mp3s. Instead, the track total will be written to the track field. Ex: (current_track)/(total_tracks) 
+The tracktotal field won't be written to mp3s. Instead, the track total will be written to the track field. Ex: (current_track)/(total_tracks). The date & tracknumber field can only be written to FLACs.  
 
 Misc:
 - If a digital booklet is available, it will be downloaded and put in its respective album folder.
@@ -112,10 +132,9 @@ If you need to get in touch: Sorrow#5631
 - Download playlists.
 - Implement Japanese translation.
 - General code clean up.
-- Commandline options.
+- More command line options.
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
-- Handle crash: https://play.qobuz.com/album/0883958011034 (escape album title special characters). Fixed: ">" wasn't being escaped. Will include in next build
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
