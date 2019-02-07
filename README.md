@@ -38,7 +38,7 @@ https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
 Qobuz-DL can also be used via command line. Pass the URL to it. 
 Ex:
 ```
-Qobuz-DL.exe https://play.qobuz.com/album/hxyqb40xat3uc
+Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
  ./Qobuz-DL https://play.qobuz.com/album/hxyqb40xat3uc
 
 ```
