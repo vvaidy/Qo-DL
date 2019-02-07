@@ -20,6 +20,7 @@ The following need to be inputted into the config file:
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600).
 - Tag_swap1 - FLAC only, write to TRACKNUMBER instead of TRACK, Y or N
 - Tag_swap2 - FLAC only, write to DATE instead of YEAR, Y or N 
+
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag 
