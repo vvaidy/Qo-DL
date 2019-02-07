@@ -66,7 +66,7 @@ Nothing major.
 - x86 binary added.
 - Put back in the accidentally removed line that prints "(album artist) - (album title)" at the top of the console while downloading albums.
 ## 7th Feb 19 - Release 3d ##
-- commandline option. Pass a URL to Qobuz-DL
+- command line option. Pass a URL to Qobuz-DL
 ex: QOBUZ-DL.EXE https://play.qobuz.com/album/hxyqb40xat3uc. This is the only option for now. Passing "list" probably won't work. It will exit upon finishing.
 - Better code to strip special characters for Windows filenames.
 - ">" wasn't being stripped in filenames. Fixed.
