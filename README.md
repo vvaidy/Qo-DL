@@ -32,7 +32,10 @@ Ex.
 ```
 https://play.qobuz.com/album/hxyqb40xat3uc
 https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
+
 ```
+Qobuz-DL can also be used via command line. Pass the URL to it.
+
 # Update Log
 ## 26th Jan 19 - Release 1 ##
 ## 27th Jan 19 - Release 2 ##
@@ -138,6 +141,8 @@ If you need to get in touch: Sorrow#5631
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Linux version (requested).
+- Apparently the x86 binary isn't working. Look into that.
+
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
 
