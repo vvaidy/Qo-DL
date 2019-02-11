@@ -1,7 +1,6 @@
 # Qobuz-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux (Ubuntu x64 only for now).  
-Latest version: 7th Feb 19 - Release 3d.   
-Next build ETA: any time next week (11th - 17th). Playlist support will be added.
+Latest version: 11th Feb 19 - Release 4.  
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/2.jpg)
@@ -43,8 +42,9 @@ Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
 
 ```
 # Update Log
-## 26th Jan 19 - Release 1 ##
-## 27th Jan 19 - Release 2 ##
+## Qobuz-DL ##
+### 26th Jan 19 - Release 1 ###
+### 27th Jan 19 - Release 2 ###
 - Mp3 support.
 - metaflac is no longer needed. Mutagen handles tagging for both MP3s and FLACs.
 - Max downloadable tracks per album 50 -> 100.
@@ -54,35 +54,34 @@ Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
 - Crash fixed when attempting to download albums with video goodies.
 - Ability to choose naming scheme via config file.
 - Ability to choose which size album cover to fetch via config file.
-## 27th Jan 19 - Release 2a ##
+### 27th Jan 19 - Release 2a ###
 - Check for empty user_auth_token field would prevent users from getting to the url input screen, thus not allowing them to get the uat.
-## 28th Jan 19 - Release 3 ##
+### 28th Jan 19 - Release 3 ###
 - Unlimited tracks downloadable per album.
 - Code clean up - 1800 lines down to 400! Mainly thanks to the above.
 - "<" & ">" handled in file names.
 - uat input removed - you'll be given your uat automatically now if it's needed.
-## 28th Jan 19 - Release 3a ##
+### 28th Jan 19 - Release 3a ###
 - Handled the below. This happens when you try to download tracks using a free account. You can't.
 ```
 TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-DL
 ```
-## 29th Jan 19 - Release 3b ##
+### 29th Jan 19 - Release 3b ###
 - Download from list or URLs - put your urls inside a text file named "list.txt" in the current working dir (one per line), then load up Qobuz-DL and input "list" into the console.
 - Fixed crash which would happen if you were to download the same album again already with booklet.pdf inside of it.
 - Improved code of checking if files exist and deleting them if they do. 
-## 31st Jan 19 - Release 3c ##
+### 31st Jan 19 - Release 3c ###
 Nothing major.
 - x86 binary added.
 - Put back in the accidentally removed line that prints "(album artist) - (album title)" at the top of the console while downloading albums.
-## 7th Feb 19 - Release 3d ##
+### 7th Feb 19 - Release 3d ###
 - x64 Linux version added. I'm very inexperienced with it, so I apologize if it doesn't work on your distro. Tested working on Ubuntu 18.10 x64. EDIT: put up a fixed version.
 - Command line support. Pass a URL.
 This is the only option for now. Passing "list" probably won't work. It will exit upon finishing.
 - Better code to strip special characters for Windows filenames.
 - ">" wasn't being stripped in filenames. Fixed.
-- Added two new fields in the config file as requested.
-Tag_swap1 - Write to TRACKNUMBER instead of TRACK, Y or N.
-Tag_swap2 - Write to DATE instead of YEAR, Y or N.
+- New field 'Tag_swap1' in config file - write to TRACKNUMBER instead of TRACK, Y or N.
+- New field 'Tag_swap2' in config file  - write to DATE instead of YEAR, Y or N.
 This only works for FLACs due to ID3 limitations. Not very tested. Metaflac can pick up the two new tags, but Mp3tag can't.
 - Handled the below. This happens when the API returns 'None' when requesting the release year for albums. 'xxxx' will be used instead. I'm not sure why the API would do this. It's not album specific, and only seems to hit a small percentage of users.
 ```
@@ -92,6 +91,15 @@ OSError: [Errno 22] Invalid argument [2084] Failed to execute script Qobuz-DL
 ```
 KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
 ```
+### 11th Feb 19 - Release 4 ###
+- Download playlists support using separate exe.
+
+**You can't use Qobuz-DL_xxx.exe to download playlists. I haven't merged the playlist code into the main exe yet, so you have to use Qobuz-DL_Playlist_xxx.exe for now.**
+- Download progress bar.
+- New field 'Move_to' in config file  - specify where to move album folder after downloading, "" = default.
+- New field 'Keep_cover' in config file  - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
+## Qobuz-DL Playlist ##
+### 11th Feb 19 - Release 1 ###
 
 # Misc Info
 Written around Python v3.6.7.  
