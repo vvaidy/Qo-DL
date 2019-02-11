@@ -7,7 +7,7 @@ Qobuz DL Playlist: 11th Feb 19 - Release 1
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/2.jpg)
-![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/3.jpg)
+![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/p1.jpg)
 
 # Setup
 ## Mandatory ##
