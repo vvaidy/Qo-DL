@@ -20,9 +20,10 @@ The following need to be inputted into the config file:
 - User auth token - you'll be given this automatically if it's not already inputted in. App id & app secret are required.
 - Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -").
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600).
-- Tag_swap1 - FLAC only, write to TRACKNUMBER instead of TRACK, Y or N
-- Tag_swap2 - FLAC only, write to DATE instead of YEAR, Y or N 
-
+- Tag_swap1 - FLAC only, write to TRACKNUMBER instead of TRACK, Y or N.
+- Tag_swap2 - FLAC only, write to DATE instead of YEAR, Y or N.
+- Move_to - specify where to move album folder after downloading, "" = default.
+- Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag 
@@ -155,14 +156,11 @@ If you need to get in touch: Sorrow#5631
 # To Do
 - GUI version.
 - Fix known issues.
-- Progress bar?
-- Download playlists.
 - Implement Japanese translation.
 - General code clean up.
 - More command line options.
 - Reduce size of executable (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
-- Apparently the x86 binary isn't working. Look into that. Update: tested working on Win 10 1809 x86.
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
