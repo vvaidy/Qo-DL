@@ -22,7 +22,6 @@ The following need to be inputted into the config file:
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600).
 - Tag_swap1 - FLAC only, write to TRACKNUMBER instead of TRACK, Y or N.
 - Tag_swap2 - FLAC only, write to DATE instead of YEAR, Y or N.
-- Move_to - specify where to move album folder after downloading, "" = default.
 - Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
 
 **You can't download ANY tracks with a free account.**
@@ -30,6 +29,7 @@ The following need to be inputted into the config file:
 - Comment tag 
 
 You can specify what you want to be put into the comment field in your tracks. Special characters will be escaped.
+- Move_to - specify where to move album folder after downloading, "" = default.
 
 # Usage
 It's simple; input Qobuz Player or Qobuz store URL. 
