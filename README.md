@@ -24,6 +24,7 @@ The following need to be inputted into the config file:
 - Tag_swap2 - FLAC only, write to DATE instead of YEAR, Y or N.
 - Move_to - specify where to move album folder after downloading, "" = default.
 - Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
+
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag 
