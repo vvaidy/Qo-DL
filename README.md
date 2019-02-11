@@ -94,7 +94,7 @@ OSError: [Errno 22] Invalid argument [2084] Failed to execute script Qobuz-DL
 KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
 ```
 ### 11th Feb 19 - Release 4 ###
-- Download playlists support using separate exe.
+- Download playlists using separate exe.
 
 **You can't use Qobuz-DL_xxx.exe to download playlists. I haven't merged the playlist code into the main exe yet, so you have to use Qobuz-DL_Playlist_xxx.exe for now.**
 - Download progress bar.
