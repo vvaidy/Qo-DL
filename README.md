@@ -101,7 +101,7 @@ KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
 ```
 ### 11th Feb 19 - Release 4 ###
 - Download playlists using separate exe.
-- Handled the below. This would happen if you were to download an album with no cover art.
+- Handled the below. This would happen if you were to download an album with no album cover.
 ```
 urllib.error.HTTPError: HTTP Error 404: Not Found [12000] Failed to execute script Qobuz-DL
 ```
