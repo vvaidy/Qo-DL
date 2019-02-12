@@ -105,7 +105,7 @@ KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
 - Download progress bar.
 - New field 'Move_to' in config file  - specify where to move album folder after downloading, "" = default.
 - New field 'Keep_cover' in config file  - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
-- Better way of checking if track is restricted by right holders. The previous method would crash and allow the below to happen:
+- Better way of checking if track is restricted by right holders. The previous method would crash and allow the below to happen with some albums:
 ```
 KeyError: 'url' [12992] Failed to execute script Qobuz-DL
 ```
