@@ -6,7 +6,7 @@ Qobuz-DL: 11th Feb 19 - Release 4
 Qobuz-DL Linux: 7th Feb - Release 3d.    
 Qobuz-DL Playlist: 12th Feb 19 - Release 1a.   
 I'm not focusing much on Linux builds at the moment. I need to do further testing on different distros.   
-**The 30 second samples for some tracks restricted by labels will be still be downloaded. Will retweak the checker tomorrow.**
+**The 30 second samples for some tracks restricted by right owners will be still be downloaded. Will retweak the checker tomorrow.**
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
