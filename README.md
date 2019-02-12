@@ -118,9 +118,13 @@ KeyError: 'url' [12992] Failed to execute script Qobuz-DL
 ### 11th Feb 19 - Release 1 ###
 ### 12th Feb 19 - Release 1a ###
 - Fixed major issue where the API would only provide info for the first 50 tracks. After finishing downloading track 50, it would loop back to track 1. 
-- Handled the below. This would happen if you were to download a track with no album cover.
+- Handled the below. This would happen when trying to download a track with no album cover.
 ```
 urllib.error.HTTPError: HTTP Error 404: Not Found [12000] Failed to execute script Qobuz-DL_Playlist
+```
+- Handled the below. This would happen when trying to download a track restricted by right holders in the playlist. This was already handled, but the below would prevent it from executing.
+```
+TypeError: an ineger is required (got type NoneType) [4728] Failed to execute script Qobuz-DL_Playlist
 ```
 # Misc Info
 Written around Python v3.6.7.  
