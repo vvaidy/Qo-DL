@@ -4,9 +4,11 @@ Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux (
 Latest versions:    
 Qobuz-DL: 11th Feb 19 - Release 4   
 Qobuz-DL Playlist: 11th Feb 19 - Release 1   
-**I'm looking into the playlist loop problem. Only affects playlists with 50 or more tracks.**  
+The API is only providing info for the first 50 tracks.
 Qobuz-DL Linux: 7th Feb - Release 3d.   
-I'm not focusing much on Linux builds at the moment. I need to do further testing on different distros.
+I'm not focusing much on Linux builds at the moment. I need to do further testing on different distros.   
+**I'm looking into the playlist loop problem. The API is only providing info for the first 50 tracks.**
+![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Plissue.jpg)
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
