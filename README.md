@@ -101,7 +101,10 @@ KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
 ```
 ### 11th Feb 19 - Release 4 ###
 - Download playlists using separate exe.
-
+- Handled the below. This would happen if you were to download an album with no cover art.
+```
+urllib.error.HTTPError: HTTP Error 404: Not Found [12000] Failed to execute script Qobuz-DL
+```
 **You can't use Qobuz-DL_xxx.exe to download playlists. I haven't merged the playlist code into the main exe yet, so you have to use Qobuz-DL_Playlist_xxx.exe for now.**
 - Download progress bar.
 - New field 'Move_to' in config file  - specify where to move album folder after downloading, "" = default.
@@ -115,7 +118,10 @@ KeyError: 'url' [12992] Failed to execute script Qobuz-DL
 ### 11th Feb 19 - Release 1 ###
 ### 12th Feb 19 - Release 1a ###
 - Fixed major issue where the API would only provide info for the first 50 tracks. After finishing downloading track 50, it would loop back to track 1. 
-
+- Handled the below. This would happen if you were to download a track with no album cover.
+```
+urllib.error.HTTPError: HTTP Error 404: Not Found [12000] Failed to execute script Qobuz-DL_Playlist
+```
 # Misc Info
 Written around Python v3.6.7.  
 Used libraries:
