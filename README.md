@@ -10,6 +10,7 @@ I'm not focusing much on Linux builds at the moment. I need to do further testin
 
 **I'm looking into the playlist loop problem. The API is only providing info for the first 50 tracks.**
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Plissue.jpg)
+
 **FIXED. New build coming.**
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
