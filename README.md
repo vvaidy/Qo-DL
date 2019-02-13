@@ -37,6 +37,7 @@ You can specify what you want to be put into the comment field in your tracks. S
 - Move_to - specify where to move album folder after downloading, "" = default.
 
 # Usage
+Fill in your config file first.
 ### Windows ###
 Run the exe.
 ### Linux ###
@@ -52,13 +53,11 @@ Launch it.
 ```
 ./Qobuz-DL_Lin_x64
 ```
-
-
 Qobuz-DL + Playlist can also be used via command line. Pass a URL to it. 
 Ex:
 ```
 Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
- ./Qobuz-DL https://play.qobuz.com/album/hxyqb40xat3uc
+./Qobuz-DL_Lin_x64 https://play.qobuz.com/album/hxyqb40xat3uc
 ```
 
 # Update Log
