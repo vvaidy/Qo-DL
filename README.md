@@ -96,8 +96,8 @@ Nothing major.
 - Put back in the accidentally removed line that prints "(album artist) - (album title)" at the top of the console while downloading albums.
 ### 7th Feb 19 - Release 3d ###
 - x64 Linux version added. I'm very inexperienced with it, so I apologize if it doesn't work on your distro. Tested working on Ubuntu 18.10 x64. EDIT: put up a fixed version.
-- Command line support. Pass a URL.
-This is the only option for now. Passing "list" probably won't work. It will exit upon finishing.
+- Command line support. Pass a URL. This is the only option for now. 
+It will automatically exit when it's finished its current task. Passing "list" probably won't work. 
 - Better code to strip special characters for Windows filenames.
 - ">" wasn't being stripped in filenames. Fixed.
 - New field 'Tag_swap1' in config file - write to TRACKNUMBER instead of TRACK, Y or N.
