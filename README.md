@@ -253,4 +253,5 @@ Chances are, Qobuz have to "activate" your app id & secret before you can use th
 
 # Disclaimer
 This application uses the Qobuz API but is not certified by Qobuz.
+
 By using this you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
