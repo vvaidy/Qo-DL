@@ -27,6 +27,7 @@ The following need to be inputted into the config file:
 - Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
 
 **If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.**
+
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag 
