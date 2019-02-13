@@ -120,6 +120,11 @@ KeyError: 'url'
 ```
 NameError: name 'exit' is not defined
 ```
+- Handled the below. Would happen when the API wouldn't return neither a performer key nor a performer**s** key.
+```
+During handling of the above exception, another exception occured:
+TypeError: string indices must be integers
+```
 
 ## Qobuz-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
