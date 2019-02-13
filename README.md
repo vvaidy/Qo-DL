@@ -57,6 +57,8 @@ Ex:
 ```
 Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
 ./Qobuz-DL_Lin_x64 https://play.qobuz.com/album/hxyqb40xat3uc
+Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
+./Qobuz-DL_Playlist_Lin_x64 https://play.qobuz.com/playlist/1285066
 ```
 
 # Update Log
