@@ -144,16 +144,8 @@ During handling of the above exception, another exception occured:
 TypeError: string indices must be integers
 ```
 ### 13th Feb 19 - Release 1b ###
-- Fixed the right holder restriction checker. Samples won't be downloaded any more and treated like full tracks. 
-- Handled the below. Would happen when exiting.
-```
-NameError: name 'exit' is not defined
-```
-- Handled the below. Would happen when the API wouldn't return neither a performer key nor a performer**s** key.
-```
-During handling of the above exception, another exception occured:
-TypeError: string indices must be integers
-```
+- Same notes as Qobuz-DL Release 4a.
+
 # Misc Info
 Written around Python v3.6.7.  
 Used libraries:
