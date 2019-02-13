@@ -250,3 +250,6 @@ Try playing the above album in 24/96 via Qobuz Player. Could it be something to 
 {'status': 'error', 'code': 400, 'message': 'Invalid Request Signature parameter (req_sig)'}
 ```
 Not sure why this happens. The app id & secret are definitely correct.
+
+# Disclaimer
+By using this you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
