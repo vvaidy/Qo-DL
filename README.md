@@ -6,7 +6,6 @@ Qobuz-DL: 13th Feb 19 - Release 4a
 Qobuz-DL Linux: 13th Feb 19 - Release 4a   
 Qobuz-DL Playlist: 13th Feb 19 - Release 1b   
 Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b   
-I'm not focusing much on Linux builds at the moment. I need to do further testing on different distros.   
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
