@@ -2,11 +2,10 @@
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux (Ubuntu x64 only for now).
 
 Latest versions:    
-Qobuz-DL: 11th Feb 19 - Release 4   
-Qobuz-DL Linux: 7th Feb - Release 3d.    
-Qobuz-DL Playlist: 12th Feb 19 - Release 1a.   
+Qobuz-DL: 13th Feb 19 - Release 4a   
+Qobuz-DL Linux: 7th Feb - Release 3d  
+Qobuz-DL Playlist: 13th Feb 19 - Release 1b   
 I'm not focusing much on Linux builds at the moment. I need to do further testing on different distros.   
-**The 30 second samples for some tracks restricted by right owners will be still be downloaded. Will retweak the checker tomorrow.**
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
@@ -72,7 +71,7 @@ Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
 ### 28th Jan 19 - Release 3a ###
 - Handled the below. This happens when you try to download tracks using a free account. You can't.
 ```
-TypeError: 'NoneType' object is not subsciptable Failed to execute script Qobuz-DL
+TypeError: 'NoneType' object is not subsciptable
 ```
 ### 29th Jan 19 - Release 3b ###
 - Download from list or URLs - put your urls inside a text file named "list.txt" in the current working dir (one per line), then load up Qobuz-DL and input "list" into the console.
@@ -93,17 +92,17 @@ This is the only option for now. Passing "list" probably won't work. It will exi
 This only works for FLACs due to ID3 limitations. Not very tested. Metaflac can pick up the two new tags, but Mp3tag can't.
 - Handled the below. This happens when the API returns 'None' when requesting the release year for albums. 'xxxx' will be used instead. I'm not sure why the API would do this. It's not album specific, and only seems to hit a small percentage of users.
 ```
-OSError: [Errno 22] Invalid argument [2084] Failed to execute script Qobuz-DL
+OSError: [Errno 22] Invalid argument
 ```
 - Handled the below. This happens when the API's album response doesn't conatin a performer key. Album specific. "performer**s**" will be used as a fallback.
 ```
-KeyError: 'performer' [12992] Failed to execute script Qobuz-DL
+KeyError: 'performer'
 ```
 ### 11th Feb 19 - Release 4 ###
 - Download playlists using separate exe.
 - Handled the below. This would happen if you were to download an album with no album cover.
 ```
-urllib.error.HTTPError: HTTP Error 404: Not Found [12000] Failed to execute script Qobuz-DL
+urllib.error.HTTPError: HTTP Error 404: Not Found
 ```
 **You can't use Qobuz-DL_xxx.exe to download playlists. I haven't merged the playlist code into the main exe yet, so you have to use Qobuz-DL_Playlist_xxx.exe for now.**
 - Download progress bar.
@@ -111,7 +110,13 @@ urllib.error.HTTPError: HTTP Error 404: Not Found [12000] Failed to execute scri
 - New field 'Keep_cover' in config file  - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
 - Better way of checking if track is restricted by right holders. The previous method would crash and allow the below to happen with some albums:
 ```
-KeyError: 'url' [12992] Failed to execute script Qobuz-DL
+KeyError: 'url'
+```
+### 13th Feb 19 - Release 4a ###
+- Fixed the right holder restriction checker. Samples won't be downloaded any more and treated like full tracks. 
+- Handled the below. Would happen when exiting.
+```
+NameError: name 'exit' is not defined
 ```
 
 ## Qobuz-DL Playlist ##
@@ -120,11 +125,27 @@ KeyError: 'url' [12992] Failed to execute script Qobuz-DL
 - Fixed major issue where the API would only provide info for the first 50 tracks. After finishing downloading track 50, it would loop back to track 1. 
 - Handled the below. This would happen when trying to download a track with no album cover.
 ```
-urllib.error.HTTPError: HTTP Error 404: Not Found [12000] Failed to execute script Qobuz-DL_Playlist
+urllib.error.HTTPError: HTTP Error 404: Not Found
 ```
 - Handled the below. This would happen when trying to download a track restricted by right holders in the playlist. This was already handled, but the below would prevent the handler from executing.
 ```
-TypeError: an ineger is required (got type NoneType) [4728] Failed to execute script Qobuz-DL_Playlist
+TypeError: an ineger is required (got type NoneType)
+```
+- Handled the below. Would happen when the API wouldn't return neither a performer key nor a performer**s** key.
+```
+During handling of the above exception, another exception occured:
+TypeError: string indices must be integers
+```
+### 13th Feb 19 - Release 1b ###
+- Fixed the right holder restriction checker. Samples won't be downloaded any more and treated like full tracks. 
+- Handled the below. Would happen when exiting.
+```
+NameError: name 'exit' is not defined
+```
+- Handled the below. Would happen when the API wouldn't return neither a performer key nor a performer**s** key.
+```
+During handling of the above exception, another exception occured:
+TypeError: string indices must be integers
 ```
 # Misc Info
 Written around Python v3.6.7.  
@@ -186,6 +207,15 @@ To make this clearer, track 1 of disk 2 wouldn't be tagged as track #1, but as t
 - Printing languages like Chinese, Japanese & Korean to the console prints garbage instead.
 
 This doesn't effect anything else in the code; tracks containing any of the above languages will still download & tag correctly.
+
+- If the "Downloading track x out of y" line is too long for the console, it'll be spammed instead of printed on a single line.
+
+You can fix this by setting the width & height before calling the exe, like this:
+```
+REM 200 & 30 should be fine
+MODE CON cols=200 lines=30
+QOBUZ-DL_X64.EXE
+```
 
 # Troubleshooting
 - If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN.
