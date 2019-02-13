@@ -115,7 +115,7 @@ urllib.error.HTTPError: HTTP Error 404: Not Found
 KeyError: 'url'
 ```
 ### 13th Feb 19 - Release 4a ###
-- Fixed the right holder restriction checker. Samples won't be downloaded any more and treated like full tracks. 
+- Fixed the right holder restriction checker. Restricted tracks with samples won't be downloaded any more and treated like full tracks. 
 - Handled the below. Would happen when exiting.
 ```
 NameError: name 'exit' is not defined
