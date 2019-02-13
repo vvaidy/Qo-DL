@@ -16,8 +16,6 @@ I'm not focusing much on Linux builds at the moment. I need to do further testin
 The following need to be inputted into the config file:
 - App id
 - App secret - you can get your app id & app secret by contacting Qobuz (you can also use the ones already in the config file).
-
-If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.
 - Email address
 - Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC).
 - MD5 hashed password
@@ -28,6 +26,7 @@ If the provided app id & secret get blacklisted, let me know. I have a bunch of 
 - Tag_swap2 - FLAC only, write to DATE instead of YEAR, Y or N.
 - Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
 
+**If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.**
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag 
