@@ -245,11 +245,11 @@ Simple explanation: Qobuz lie about/mislabel the highest available streaming qua
 https://play.qobuz.com/album/qi7icfdkslpva
 ```
 Try playing the above album in 24/96 via Qobuz Player. Could it be something to do with label rights?
-- I'm able to acquire my own app id & app secret without contacting Qobuz, but when used, the following is returned from the API:
+- You're able to acquire my own app id & app secret through sniffing without contacting Qobuz, but when used, the following is returned from the API:
 ```
 {'status': 'error', 'code': 400, 'message': 'Invalid Request Signature parameter (req_sig)'}
 ```
-Not sure why this happens. The app id & secret are definitely correct.
+Chances are, Qobuz have to "activate" your app id & secret before you can use them.
 
 # Disclaimer
 By using this you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
