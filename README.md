@@ -37,20 +37,30 @@ You can specify what you want to be put into the comment field in your tracks. S
 - Move_to - specify where to move album folder after downloading, "" = default.
 
 # Usage
-It's simple; input Qobuz Player or Qobuz store URL. 
-Ex. 
+### Windows ###
+Run the exe.
+### Linux ###
+CD to wherever the exe is.
 ```
-https://play.qobuz.com/album/hxyqb40xat3uc
-https://www.qobuz.com/xxxx/album/mount-to-nothing-sangam/hxyqb40xat3uc
+cd Desktop
+```
+Make it executable.
+```
+chmod +x Qobuz-DL_Lin_x64
+```
+Launch it.
+```
+./Qobuz-DL_Lin_x64
+```
 
-```
-Qobuz-DL can also be used via command line. Pass the URL to it. 
+
+Qobuz-DL + Playlist can also be used via command line. Pass a URL to it. 
 Ex:
 ```
 Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
  ./Qobuz-DL https://play.qobuz.com/album/hxyqb40xat3uc
-
 ```
+
 # Update Log
 ## Qobuz-DL ##
 ### 26th Jan 19 - Release 1 ###
@@ -216,6 +226,7 @@ REM 200 & 30 should be fine
 MODE CON cols=200 lines=30
 QOBUZ-DL_X64.EXE
 ```
+Enlarging the console window manually by dragging out from the edges might also work. The Linux builds are also affected by this.
 
 # Troubleshooting
 - If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN.
