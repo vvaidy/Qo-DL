@@ -206,8 +206,10 @@ If you need to get in touch: Sorrow#5631
 - Implement Japanese translation.
 - General code clean up.
 - More command line options.
-- Reduce size of executable (exclude libs etc.).
+- Reduce size of executables (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
+- Merge main exe and playlist exe.
+- Single track (https://open.qobuz.com/track/xxxxxxxx) support.
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
