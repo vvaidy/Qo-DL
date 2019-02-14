@@ -228,6 +228,9 @@ QOBUZ-DL_X64.EXE
 ```
 Enlarging the console window manually by dragging out from the edges might also work. The Linux builds are also affected by this.
 
+- The API has a limit of 500 tracks per playlist. I can't do anything about this.
+
+
 # Troubleshooting
 - If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN.
 ```
