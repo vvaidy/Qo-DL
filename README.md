@@ -5,7 +5,11 @@ Latest versions:
 Qobuz-DL: 13th Feb 19 - Release 4a   
 Qobuz-DL Linux: 13th Feb 19 - Release 4a   
 Qobuz-DL Playlist: 13th Feb 19 - Release 1b   
-Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b   
+Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b
+
+Coming soon:
+- Proxy support to get around 404s.
+- Very customizable tagging.
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
