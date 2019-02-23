@@ -139,7 +139,7 @@ During handling of the above exception, another exception occured:
 TypeError: string indices must be integers
 ```
 ### 23rd Feb 19 - Release 4b ###
-- proxy support.
+- Proxy support.
 Configure & enable via config file. Must be http**s**, and not http. It will only be used once (for the album/get? req).
 - Configure tagging via config file.
 
