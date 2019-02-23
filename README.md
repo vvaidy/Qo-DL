@@ -29,7 +29,7 @@ The following need to be inputted into the config file:
 - Proxy - <IP address>:<port> Must be https.
 - All tags under "[Tags]" except comment - "Y" or "N".  
  
-**If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.**
+**If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.**   
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 - Comment tag - custom comment. You can also input "URL" to write the album URL to the field. 
