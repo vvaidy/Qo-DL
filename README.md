@@ -7,7 +7,7 @@ Qobuz-DL Playlist: 23rd Feb 19 - Release 1c
 Qobuz-DL Linux: 13th Feb 19 - Release 4a
 Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b
 
-Older versions are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Older Builds).
+Older builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Older%20Builds/).
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
