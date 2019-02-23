@@ -233,7 +233,7 @@ Enlarging the console window manually by dragging out from the edges might also 
 
 
 # Troubleshooting
-- If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You'll need a VPN.
+- If you are getting the message below and are 100% sure that you're inputting a valid URL, it's because of Qobuz's region lock. You can either use a VPN or enable the proxy feature via the config file.
 ```
 Not found (404). Bad URL? Returning to URL input screen...
 ```
