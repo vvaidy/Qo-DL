@@ -2,14 +2,12 @@
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux (Linux builds have been fixed).
 
 Latest versions:    
-Qobuz-DL: 13th Feb 19 - Release 4a   
-Qobuz-DL Linux: 13th Feb 19 - Release 4a   
-Qobuz-DL Playlist: 13th Feb 19 - Release 1b   
+Qobuz-DL: 23rd Feb 19 - Release 4b
+Qobuz-DL Playlist: 23rd Feb 19 - Release 1c
+Qobuz-DL Linux: 13th Feb 19 - Release 4a
 Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b
 
-Coming soon:
-- Proxy support to get around 404s.
-- Very customizable tagging.
+Older versions are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/).
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
@@ -26,15 +24,15 @@ The following need to be inputted into the config file:
 - User auth token - you'll be given this automatically if it's not already inputted in. App id & app secret are required.
 - Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -").
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600).
-- Tag_swap1 - FLAC only, write to TRACKNUMBER instead of TRACK, Y or N.
-- Tag_swap2 - FLAC only, write to DATE instead of YEAR, Y or N.
 - Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
-
+- Use_proxy - enable or disable proxy.
+- Proxy - <IP address>:<port> Must be https.
+- All tags under "[Tags]" except comment - "Y" or "N".
 **If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.**
 
 **You can't download ANY tracks with a free account.**
 ## Optional ##
-- Comment tag 
+- Comment tag - custom comment. You can also input "URL" to write the album URL to the field. 
 
 You can specify what you want to be put into the comment field in your tracks. Special characters will be escaped.
 - Move_to - specify where to move album folder after downloading, "" = default.
@@ -140,6 +138,11 @@ NameError: name 'exit' is not defined
 During handling of the above exception, another exception occured:
 TypeError: string indices must be integers
 ```
+### 23rd Feb 19 - Release 4b ###
+- proxy support.
+Configure & enable via config file. Must be http**s**, and not http. It will only be used once (for the album/get? req).
+- Configure tagging via config file.
+
 
 ## Qobuz-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
@@ -161,6 +164,9 @@ TypeError: string indices must be integers
 ### 13th Feb 19 - Release 1b ###
 - Same notes as Qobuz-DL Release 4a.
 
+### 23rd Feb 19 - Release 1c ###
+- Same notes as Qobuz-DL Release 4b.
+
 # Misc Info
 Written around Python v3.6.7.  
 Used libraries:
@@ -179,19 +185,7 @@ Used libraries:
 - time
 - urllib.request
 
-The following tag fields are wrote to:
-- album
-- albumartist
-- artist
-- date (depends on users' choice)
-- comment (depends on users' choice)
-- title
-- track (depends on users' choice)
-- tracknumber (depends on users' choice) 
-- tracktotal
-- year (depends on users' choice)
-
-The tracktotal field won't be written to mp3s. Instead, the track total will be written to the track field. Ex: (current_track)/(total_tracks). The date & tracknumber field can only be written to FLACs.  
+The user can choose which tags are to be written to.
 
 Misc:
 - If a digital booklet is available, it will be downloaded and put in its respective album folder.
@@ -214,6 +208,7 @@ If you need to get in touch: Sorrow#5631
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Merge main exe and playlist exe.
 - Single track (https://open.qobuz.com/track/xxxxxxxx) support.
+- List feature broken? Look into that.
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
@@ -261,5 +256,6 @@ Try playing the above album in 24/96 via Qobuz Player. Could it be something to 
 Chances are, Qobuz have to "activate" your app id & secret before you can use them.
 
 # Disclaimer
-This application uses the Qobuz API but is not certified by Qobuz.   
+I will not be responsible for how you use these tools.
+These tools use the Qobuz API but are not certified by Qobuz.   
 By using this you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
