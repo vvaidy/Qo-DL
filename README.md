@@ -256,6 +256,6 @@ Try playing the above album in 24/96 via Qobuz Player. Could it be something to 
 Chances are, Qobuz have to "activate" your app id & secret before you can use them.
 
 # Disclaimer
-I will not be responsible for how you use these tools.
-These tools use the Qobuz API but are not certified by Qobuz.   
-By using this you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
+I will not be responsible for how you use these tools.   
+These tools use the Qobuz API but are not certified by Qobuz.      
+By using them you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
