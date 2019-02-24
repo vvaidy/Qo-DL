@@ -1,6 +1,5 @@
 # Qobuz-DL
-Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux (Linux builds have been fixed).    
-Sister of [Tidal-DL](https://github.com/Sorrow446/Tidal-DL).
+Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux. Sister of [Tidal-DL](https://github.com/Sorrow446/Tidal-DL).
 
 Latest versions:    
 Qobuz-DL: 23rd Feb 19 - Release 4b   
