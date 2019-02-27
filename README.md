@@ -201,7 +201,7 @@ If you need to get in touch: Sorrow#5631
 # To Do
 - **Fix this:**
 ```
-KeyError: composer [14928]**
+KeyError: composer [14928]
 ```
 Not every album has composer info.
 - GUI version.
