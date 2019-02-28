@@ -3,7 +3,7 @@ Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux. 
 
 Latest versions:    
 Qobuz-DL: 23rd Feb 19 - Release 4b 
-**Latest build is partially broken. Albums with no composer info will crash with: "KeyError: composer".**   
+**KeyError: composer crash fixed.**  
 Qobuz-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use the previous one.**   
 Qobuz-DL Linux: 13th Feb 19 - Release 4a   
 Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b   
