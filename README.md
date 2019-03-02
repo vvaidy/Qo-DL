@@ -2,8 +2,7 @@
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux. Sister of [Tidal-DL](https://github.com/Sorrow446/Tidal-DL).
 
 Latest versions:    
-Qobuz-DL: 23rd Feb 19 - Release 4b 
-**KeyError: composer crash fixed.**  
+Qobuz-DL: 23rd Feb 19 - Release 4c 
 Qobuz-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use the previous one.**   
 Qobuz-DL Linux: 13th Feb 19 - Release 4a   
 Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b   
@@ -55,15 +54,36 @@ Launch it.
 ```
 ./Qobuz-DL_Lin_x64
 ```
-Qobuz-DL + Playlist can also be used via command line. Pass a URL to it. 
-Ex:
+Qobuz-DL can also be used via command line.
+Ex
 ```
-Qobuz-DL_x64.exe https://play.qobuz.com/album/hxyqb40xat3uc
-./Qobuz-DL_Lin_x64 https://play.qobuz.com/album/hxyqb40xat3uc
-Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
-./Qobuz-DL_Playlist_Lin_x64 https://play.qobuz.com/playlist/1285066
-```
+usage: Qobuz-DL.py [-h] [-url URL] [-q Q] [-p P] [-list LIST] [-c C] [-s S]
+                   [-k K] [-proxy PROXY] [-comment COMMENT]
 
+optional arguments:
+  -h, --help        show this help message and exit
+  -url URL          Qobuz Player or Qobuz store URL.
+  -q Q              Download quality. 5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 =
+                    24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz
+                    =< 192 kHz FLAC. If the chosen qual is unavailable, the
+                    next best option will be used as a fallback.
+  -p P              Where to move album after downloading. Make sure you wrap
+                    this up in double quotes.
+  -list LIST        Download from a list of URLs. -list <txt filename>.
+  -c C              Cover size to fetch. 1 = 230x230, 2 = 600x600.
+  -s S              File naming scheme. 1 = "01. ", 2 = "01 -"
+  -k K              Leave folder.jpg in album dir. Y or N.
+  -proxy PROXY      <IP address>:<port>. Must be https. This can't be used to
+                    bypass Qobuz's region restrictions for track downloading.
+                    It only prevents 404s.
+  -comment COMMENT  Custom comment. You can also input "URL" to write the
+                    album URL to the field. Make sure you wrap this up in
+                    double quotes.
+```
+Qobuz-DL Playlist can also be used via command line, but only supports one option for now.
+```
+Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
+```
 # Update Log
 ## Qobuz-DL ##
 ### 26th Jan 19 - Release 1 ###
@@ -143,7 +163,11 @@ TypeError: string indices must be integers
 - Proxy support.
 Configure & enable via config file. Must be http**s**, and not http. It will only be used once (for the album/get? req).
 - Configure tagging via config file.
-
+### 2nd Mar 19 - Release 4c ###
+- Much more command line options.
+- Fixed downloading from a list via CLI.
+- Windows' max path limit handled.
+I couldn't do much about this. Qobuz-DL won't crash anymore if it runs into this. The track's filename will be left as it was before the renaming attempt. Tags won't be affected. 
 
 ## Qobuz-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
@@ -171,6 +195,7 @@ TypeError: string indices must be integers
 # Misc Info
 Written around Python v3.6.7.  
 Used libraries:
+- argparse
 - codecs
 - configparser
 - datetime
@@ -209,7 +234,6 @@ If you need to get in touch: Sorrow#5631
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Merge main exe and playlist exe.
 - Single track (https://open.qobuz.com/track/xxxxxxxx) support.
-- List feature broken? Look into that.
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
@@ -232,13 +256,12 @@ Enlarging the console window manually by dragging out from the edges might also 
 
 - The API has a limit of 500 tracks per playlist. I can't do anything about this.
 
-
 # Troubleshooting
-- If you are getting the message below and are 100% sure that you're inputting a valid URL, you need to either use a VPN or enable the proxy feature via the config file.
+- If you are getting the message below and are 100% sure that you're inputting a valid URL, you need to either use a VPN or enable the proxy feature via the config file. **Nothing can be done about region locks. Your region is tied to your account.**
 ```
 Not found (404). Bad URL? Returning to URL input screen...
 ```
-- If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qobuz-DL. It'll give you a new one. Input this into your config file. 
+- If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qobuz-DL. It'll give you a new one. Input this into your config file.
 ```
 "Track <num> is restricted by right holders; can't download."
 ```
@@ -257,6 +280,7 @@ Try playing the above album in 24/96 via Qobuz Player. Could it be something to 
 Chances are, Qobuz have to "activate" your app id & secret before you can use them.
 
 # Disclaimer
-I will not be responsible for how you use these tools.   
-These tools use the Qobuz API but are not certified by Qobuz.      
+I will not be responsible for how you use these tools.
+These tools do NOT contain code to bypass Qobuz's region restrictions for track downloading.
+These tools use the Qobuz API but are not certified by Qobuz.
 By using them you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
