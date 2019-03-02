@@ -227,7 +227,6 @@ If you need to get in touch: Sorrow#5631
 - Fix known issues.
 - Implement Japanese translation.
 - General code clean up.
-- More command line options.
 - Reduce size of executables (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Merge main exe and playlist exe.
