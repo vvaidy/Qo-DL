@@ -2,7 +2,7 @@
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux. Sister of [Tidal-DL](https://github.com/Sorrow446/Tidal-DL).
 
 Latest versions:    
-Qobuz-DL: 2nd Mar 19 - Release 4c   
+Qobuz-DL: 2nd Mar 19 - Release 4d   
 Qobuz-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use the previous one.**   
 Qobuz-DL Linux: 13th Feb 19 - Release 4a   
 Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b   
@@ -166,6 +166,8 @@ Configure & enable via config file. Must be http**s**, and not http. It will onl
 - Fixed downloading from a list via CLI.
 - Windows' max path limit handled.
 I couldn't do much about this. Qobuz-DL won't crash anymore if it runs into this. The track's filename will be left as it was before the renaming attempt. Tags won't be affected.
+### 2nd Mar 19 - Release 4d ###
+- Single track download support. This can be used with the "-url" arg too.
 
 ## Qobuz-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
@@ -227,10 +229,8 @@ If you need to get in touch: Sorrow#5631
 - Fix known issues.
 - Implement Japanese translation.
 - General code clean up.
-- Reduce size of executables (exclude libs etc.).
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Merge main exe and playlist exe.
-- Single track (https://open.qobuz.com/track/xxxxxxxx) support.
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
