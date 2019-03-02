@@ -25,17 +25,15 @@ The following need to be inputted into the config file:
 - Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -").
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600).
 - Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
-- Use_proxy - enable or disable proxy.
-- Proxy - <IP address>:<port> Must be https.
+- Use_proxy - enable or disable proxy. "Y" or "N".  
 - All tags under "[Tags]" except comment - "Y" or "N".  
  
 **If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.**   
 **You can't download ANY tracks with a free account.**
 ## Optional ##
-- Comment tag - custom comment. You can also input "URL" to write the album URL to the field. 
 
-You can specify what you want to be put into the comment field in your tracks. Special characters will be escaped.
 - Move_to - specify where to move album folder after downloading, "" = default.
+- Proxy - <IP address>:<port> Must be https. This can't be used to bypass Qobuz's region restrictions for track downloading. It only prevents 404s.
 
 # Usage
 Fill in your config file first.
