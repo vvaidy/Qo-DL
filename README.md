@@ -231,6 +231,7 @@ If you need to get in touch: Sorrow#5631
 - General code clean up.
 - Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
 - Merge main exe and playlist exe.
+- Fix downloading tracks with no copyright info (key error).
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
