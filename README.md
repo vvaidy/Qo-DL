@@ -275,6 +275,6 @@ Try playing the above album in 24/96 via Qobuz Player. Could it be something to 
 # Disclaimer
 I will not be responsible for how you use these tools.   
 These tools do NOT contain code to bypass Qobuz's region restrictions for track downloading.   
-These tools are not affiliated with Qobuz.   
+These tools are NOT affiliated with Qobuz.   
 These tools use the Qobuz API but are not certified by Qobuz.   
 By using them you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
