@@ -1,4 +1,4 @@
-# Qobuz-DL
+# Qo-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux. Sister of [Tidal-DL](https://github.com/Sorrow446/Tidal-DL).
 
 Latest versions:    
