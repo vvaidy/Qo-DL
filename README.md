@@ -43,17 +43,22 @@ The following need to be inputted into the config file:
 Fill in your config file first.
 ### Windows ###
 Run the exe.
-### Linux ###
+### Linux & macOS ###
 CD to wherever the exe is.
 ```
 cd Desktop
+```
+Make it executable.
+```
+chmod +x Qo-DL_Lin_x64
 ```
 Launch it.
 ```
 ./Qo-DL_Lin_x64
 ```
-or
+or just:
 ```
+chmod +x /Desktop/Qo-DL_Lin_x64
 ./Desktop/Qo-DL_Lin_x64
 ```
 
