@@ -286,8 +286,7 @@ https://play.qobuz.com/album/qi7icfdkslpva
 Try playing the above album in 24/96 via Qobuz Player. Could it be something to do with label rights?
 
 # Disclaimer
-I will not be responsible for how you use these tools.   
-These tools do NOT contain code to bypass Qobuz's region restrictions for track downloading.   
-These tools are NOT affiliated with Qobuz.   
-These tools use the Qobuz API but are not certified by Qobuz.   
-By using them you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
+I will not be responsible for how you use Qo-DL and Qo-DL Playlist   
+Neither Qo-DL nor Qo-DL Playlist contain code to bypass Qobuz's region restrictions for track downloading.     
+Qo-DL & Qo-DL Playlist use the Qobuz API but are not endorsed, certified or otherwise approved in any way by Qobuz. Qobuz brand and name is the registered trademark of its respective owner. Qo-DL & Qo-DL Playlist has no partnership, sponsorship or endorsement with Qobuz.   
+By using Qo-DL & Qo-DL Playlist, you agree to the following: http://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf
