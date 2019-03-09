@@ -2,10 +2,15 @@
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux. Sister of [Tidal-DL](https://github.com/Sorrow446/Tidal-DL).
 
 Latest versions:   
-Qo-DL: 9th Mar 19 - Release 4e **GUI added.**  
-Qo-DL Linux: 9th Mar 19 - Release 4e    
+Windows:   
+Qo-DL: 9th Mar 19 - Release 4e **GUI added.**
 Qo-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use the previous one.**   
-Qo-DL Playlist Linux: 13th Feb 19 - Release 1b   
+Linux:   
+Qo-DL: 9th Mar 19 - Release 4e  
+Qo-DL Playlist: 13th Feb 19 - Release 1b   
+macOS:   
+Qo-DL: 9th Mar 19 - Release 4e   
+
 **You'll need [this config template](https://thoas.feralhosting.com/sorrow/Qobuz-DL/config.ini) instead to use playlist.**   
 
 Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/).
