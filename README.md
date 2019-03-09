@@ -45,13 +45,9 @@ CD to wherever the exe is.
 ```
 cd Desktop
 ```
-Make it executable.
-```
-chmod +x Qobuz-DL_Lin_x64
-```
 Launch it.
 ```
-./Qobuz-DL_Lin_x64
+./Qo-DL_Lin_x64
 ```
 Qo-DL can also be used via command line.
 Ex
