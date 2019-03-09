@@ -140,7 +140,7 @@ KeyError: 'performer'
 urllib.error.HTTPError: HTTP Error 404: Not Found
 ```
 **You can't use Qo-DL_xxx.exe to download playlists. I haven't merged the playlist code into the main exe yet, so you have to use Qobuz-DL_Playlist_xxx.exe for now.**
-- Download progress bar.
+- Download progress percentage.
 - New field 'Move_to' in config file  - specify where to move album folder after downloading, "" = default.
 - New field 'Keep_cover' in config file  - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
 - Better way of checking if track is restricted by right holders. The previous method would crash and allow the below to happen with some albums:
@@ -170,6 +170,7 @@ I couldn't do much about this. Qo-DL won't crash anymore if it runs into this. T
 ### 2nd Mar 19 - Release 4d ###
 - Single track download support. This can be used with the "-url" arg too.
 ### 9th Mar 19 - Release 4e ###
+- Linux builds updates.
 - Fixed downloading from list.
 - Less strict filename & dir name replace regex. Brackets and commas were being replaced before. Only the characters Windows / Linux doesn't support in filenames will be replaced now.
 - Unneeded cover.jpg wasn't being deleted before termination. This would only happen when used via command line.
