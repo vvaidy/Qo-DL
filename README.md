@@ -272,7 +272,7 @@ Enlarging the console window manually by dragging out from the edges might also 
 ```
 Not found (404). Bad URL? Returning to URL input screen...
 ```
-- If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qo-DL. It'll give you a new one. Input this into your config file. If you're getting this for specific albums, there's either a region lock or the track is actually restricted by the right holders.
+- If you're getting this for every album you're trying to download, you either need a new uat or the app id + sec are dead. To get a new uat, wipe your current uat from the config file and start up Qo-DL. It'll give you a new one. Input this into your config file. If you're getting this for specific albums, there's either a region lock or the track is actually restricted by the right holders.
 ```
 "Track <num> is restricted by right holders; can't download."
 ```
