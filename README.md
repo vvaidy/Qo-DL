@@ -6,6 +6,7 @@ Qo-DL: 9th Mar 19 - Release 4e
 Qo-DL Linux: 13th Feb 19 - Release 4a   
 Qo-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use the previous one.**   
 Qo-DL Playlist Linux: 13th Feb 19 - Release 1b   
+**You'll need [this config template](https://thoas.feralhosting.com/sorrow/Qobuz-DL/config.ini) instead to use playlist.**   
 
 Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/).
 
@@ -17,7 +18,7 @@ Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%
 ## Mandatory ##
 The following need to be inputted into the config file:
 - App id
-- App secret - you can get your app id & app secret by contacting Qobuz (you can also use the ones already in the config file).
+- App secret - App IDs & secrets hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/App.txt).
 - Email address
 - Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC).
 - MD5 hashed password
