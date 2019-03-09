@@ -49,6 +49,11 @@ Launch it.
 ```
 ./Qo-DL_Lin_x64
 ```
+or
+```
+./Desktop/Qo-DL_Lin_x64
+```
+
 Qo-DL can also be used via command line.
 Ex
 ```
