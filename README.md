@@ -171,7 +171,7 @@ I couldn't do much about this. Qo-DL won't crash anymore if it runs into this. T
 - Single track download support. This can be used with the "-url" arg too.
 ### 9th Mar 19 - Release 4e ###
 - Fixed downloading from list.
-- Less strict filename & dir name replace regex. Brackets and commas were being replaced before. Only the characters Windows doesn't support in filenames will be replaced now.
+- Less strict filename & dir name replace regex. Brackets and commas were being replaced before. Only the characters Windows / Linux doesn't support in filenames will be replaced now.
 - Unneeded cover.jpg wasn't being deleted before termination. This would only happen when used via command line.
 - Composer would always be set to "xxxx". Even if the API returned composer info.
 - Handled the below.
