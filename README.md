@@ -10,9 +10,9 @@ Qo-DL Playlist Linux: 13th Feb 19 - Release 1b
 
 Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/).
 
+![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/GUI3.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/GUI1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/GUI2.jpg)
-![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/GUI3.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
 
