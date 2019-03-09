@@ -179,8 +179,9 @@ I couldn't do much about this. Qo-DL won't crash anymore if it runs into this. T
 KeyError: 'copyright'
 ```
 This would happen when the API wouldn't return copyright info.
+- Default download folder changed from "Qobuz-DL Downloads" to "Qo-DL Downloads".
 
-## Qobuz-DL Playlist ##
+## Qo-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
 ### 12th Feb 19 - Release 1a ###
 - Fixed major issue where the API would only provide info for the first 50 tracks. After finishing downloading track 50, it would loop back to track 1. 
