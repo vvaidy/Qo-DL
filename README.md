@@ -53,10 +53,10 @@ Launch it.
 ```
 ./Qobuz-DL_Lin_x64
 ```
-Qobuz-DL can also be used via command line.
+Qo-DL can also be used via command line.
 Ex
 ```
-usage: Qobuz-DL.py [-h] [-url URL] [-q Q] [-p P] [-list LIST] [-c C] [-s S]
+usage: Qo-DL.py [-h] [-url URL] [-q Q] [-p P] [-list LIST] [-c C] [-s S]
                    [-k K] [-proxy PROXY] [-comment COMMENT]
 
 optional arguments:
@@ -84,7 +84,7 @@ Qobuz-DL Playlist can also be used via command line, but only supports one optio
 Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
 ```
 # Update Log
-## Qobuz-DL ##
+## Qo-DL ##
 ### 26th Jan 19 - Release 1 ###
 ### 27th Jan 19 - Release 2 ###
 - Mp3 support.
@@ -109,7 +109,7 @@ Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
 TypeError: 'NoneType' object is not subsciptable
 ```
 ### 29th Jan 19 - Release 3b ###
-- Download from list or URLs - put your urls inside a text file named "list.txt" in the current working dir (one per line), then load up Qobuz-DL and input "list" into the console.
+- Download from list or URLs - put your urls inside a text file named "list.txt" in the current working dir (one per line), then load up Qo-DL and input "list" into the console.
 - Fixed crash which would happen if you were to download the same album again already with booklet.pdf inside of it.
 - Improved code of checking if files exist and deleting them if they do. 
 ### 31st Jan 19 - Release 3c ###
@@ -139,7 +139,7 @@ KeyError: 'performer'
 ```
 urllib.error.HTTPError: HTTP Error 404: Not Found
 ```
-**You can't use Qobuz-DL_xxx.exe to download playlists. I haven't merged the playlist code into the main exe yet, so you have to use Qobuz-DL_Playlist_xxx.exe for now.**
+**You can't use Qo-DL_xxx.exe to download playlists. I haven't merged the playlist code into the main exe yet, so you have to use Qobuz-DL_Playlist_xxx.exe for now.**
 - Download progress bar.
 - New field 'Move_to' in config file  - specify where to move album folder after downloading, "" = default.
 - New field 'Keep_cover' in config file  - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
@@ -166,13 +166,19 @@ Configure & enable via config file. Must be http**s**, and not http. It will onl
 - Much more command line options.
 - Fixed downloading from a list via CLI.
 - Windows' max path limit handled.
-I couldn't do much about this. Qobuz-DL won't crash anymore if it runs into this. The track's filename will be left as it was before the renaming attempt. Tags won't be affected.
+I couldn't do much about this. Qo-DL won't crash anymore if it runs into this. The track's filename will be left as it was before the renaming attempt. Tags won't be affected.
 ### 2nd Mar 19 - Release 4d ###
 - Single track download support. This can be used with the "-url" arg too.
 ### 9th Mar 19 - Release 4e ###
 - Fixed downloading from list.
 - Less strict filename & dir name replace regex. Brackets and commas were being replaced before. Only the characters Windows doesn't support in filenames will be replaced now.
 - Unneeded cover.jpg wasn't being deleted before termination. This would only happen when used via command line.
+- Composer would always be set to "xxxx". Even if the API returned composer info.
+- Handled the below.
+```
+KeyError: 'copyright'
+```
+This would happen when the API wouldn't return copyright info.
 
 ## Qobuz-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
@@ -192,10 +198,10 @@ During handling of the above exception, another exception occured:
 TypeError: string indices must be integers
 ```
 ### 13th Feb 19 - Release 1b ###
-- Same notes as Qobuz-DL Release 4a.
+- Same notes as Qo-DL Release 4a.
 
 ### 23rd Feb 19 - Release 1c ###
-- Same notes as Qobuz-DL Release 4b.
+- Same notes as Qo-DL Release 4b.
 
 # Misc Info
 Written around Python v3.6.7.  
@@ -220,8 +226,8 @@ The user can choose which tags are to be written to.
 
 Misc:
 - If a digital booklet is available, it will be downloaded and put in its respective album folder.
-- Video goodies must be purchased. Qobuz-DL can't get them for you (API returns "None" when requesting).
-- Downloaded tracks are put in the "Qobuz-DL Downloads" folder. Ex. (Qobuz-DL Dir)\\Qobuz-DL Downloads\\(albumartist) - (albumtitle)\\(tracks)
+- Video goodies must be purchased. Qo-DL can't get them for you (API returns "None" when requesting).
+- Downloaded tracks are put in the "Qo-DL Downloads" folder. Ex. (Qo-DL Dir)\\Qo-DL Downloads\\(albumartist) - (albumtitle)\\(tracks)
 - Any specials characters that Windows doesn't support in filenames are replaced with "-".  
 - If an album folder needs to be made, but already exists, it and its contents will be deleted.  
 - If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).
@@ -252,7 +258,7 @@ You can fix this by setting the width & height before calling the exe, like this
 ```
 REM 200 & 30 should be fine
 MODE CON cols=200 lines=30
-QOBUZ-DL_X64.EXE
+QO-DL_X64.EXE
 ```
 Enlarging the console window manually by dragging out from the edges might also work. The Linux builds are also affected by this.
 
@@ -263,11 +269,11 @@ Enlarging the console window manually by dragging out from the edges might also 
 ```
 Not found (404). Bad URL? Returning to URL input screen...
 ```
-- If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qobuz-DL. It'll give you a new one. Input this into your config file. If you're getting this for specific albums, there's either a region lock or the track is actually restricted by the right holders.
+- If you're getting this for every album you're trying to download, you need a new uat. Wipe your current uat from the config file and start up Qo-DL. It'll give you a new one. Input this into your config file. If you're getting this for specific albums, there's either a region lock or the track is actually restricted by the right holders.
 ```
 "Track <num> is restricted by right holders; can't download."
 ```
-- My format id is set to "27", and the album is advertised as being 24-bit on the Qobuz Player and Qobuz store, but Qobuz-DL will only fetch it in 16-bit at best.
+- My format id is set to "27", and the album is advertised as being 24-bit on the Qobuz Player and Qobuz store, but Qo-DL will only fetch it in 16-bit at best.
 
 Simple explanation: Qobuz lie about/mislabel the highest available streaming quality. Ex. URL:
  
