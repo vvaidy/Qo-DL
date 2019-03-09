@@ -1,11 +1,11 @@
 # Qo-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows & Linux. Sister of [Tidal-DL](https://github.com/Sorrow446/Tidal-DL).
 
-Latest versions:    
-Qobuz-DL: 2nd Mar 19 - Release 4d   
-Qobuz-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use the previous one.**   
-Qobuz-DL Linux: 13th Feb 19 - Release 4a   
-Qobuz-DL Playlist Linux: 13th Feb 19 - Release 1b   
+Latest versions:
+Qo-DL: 9th Mar 19 - Release 4e
+Qo-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use the previous one.**   
+Qo-DL Linux: 13th Feb 19 - Release 4a   
+Qo-DL Playlist Linux: 13th Feb 19 - Release 1b   
 
 Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/).
 
@@ -168,6 +168,10 @@ Configure & enable via config file. Must be http**s**, and not http. It will onl
 I couldn't do much about this. Qobuz-DL won't crash anymore if it runs into this. The track's filename will be left as it was before the renaming attempt. Tags won't be affected.
 ### 2nd Mar 19 - Release 4d ###
 - Single track download support. This can be used with the "-url" arg too.
+### 9th Mar 19 - Release 4e ###
+- Fixed downloading from list.
+- Less strict filename & dir name replace regex. Brackets and commas were being replaced before. Only the characters Windows doesn't support in filenames will be replaced now.
+- Unneeded cover.jpg wasn't being deleted before termination. This would only happen when used via command line.
 
 ## Qobuz-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
