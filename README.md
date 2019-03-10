@@ -41,7 +41,6 @@ The following need to be inputted into the config file:
 - Use_proxy - enable or disable proxy. "Y" or "N".  
 - All tags under "[Tags]" except comment - "Y" or "N".  
  
-**If the provided app id & secret get blacklisted, let me know. I have a bunch of working ones.**   
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 
@@ -71,7 +70,7 @@ chmod +x /Desktop/Qo-DL_Lin_x64
 ./Desktop/Qo-DL_Lin_x64
 ```
 
-Qo-DL can also be used via command line.
+Qo-DL can also be used via command line.   
 **Make sure you cd to Qo-DL's dir before calling it or it might not be able to read your config file properly.**   
 ```
 usage: Qo-DL.py [-h] [-url URL] [-q Q] [-p P] [-list LIST] [-c C] [-s S]
