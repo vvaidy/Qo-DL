@@ -237,6 +237,7 @@ Used libraries:
 - re
 - requests
 - shutil
+- ssl (mac builds only)
 - sys
 - time
 - urllib.request
