@@ -72,7 +72,7 @@ chmod +x /Desktop/Qo-DL_Lin_x64
 ```
 
 Qo-DL can also be used via command line.
-Ex
+**Make sure you cd to Qo-DL's dir before calling it or it might not be able to read your config file properly.**   
 ```
 usage: Qo-DL.py [-h] [-url URL] [-q Q] [-p P] [-list LIST] [-c C] [-s S]
                    [-k K] [-proxy PROXY] [-comment COMMENT]
