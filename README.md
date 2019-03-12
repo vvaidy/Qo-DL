@@ -284,7 +284,7 @@ Enlarging the console window manually by dragging out from the edges might also 
 - The API has a limit of 500 tracks per playlist. I can't do anything about this.
 
 # Troubleshooting
-- If you are getting the message below and are 100% sure that you're inputting a valid URL, you need to either use a VPN or enable the proxy feature via the config file. **Nothing can be done about region locks. Your region is tied to your account.**
+- If you are getting the message below and are 100% sure that you're inputting a valid URL, you need to either use a VPN or enable the proxy feature via the config file. **This message has nothing to do with region locking. Nothing can be done about them. Your region is tied to your account.**
 ```
 Not found (404). Bad URL? Returning to URL input screen...
 ```
