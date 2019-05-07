@@ -4,16 +4,16 @@ Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS & 
 Latest versions:   
 
 Windows:   
-Qo-DL: 9th Mar 19 - Release 4e    
+Qo-DL: 7th May 19 - Release 5   
 Qo-DL GUI: 9th Mar 19 - v0.0.5   
 Qo-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use previous one.**   
 
 Linux:   
-Qo-DL: 9th Mar 19 - Release 4e  
+Qo-DL: 7th May 19 - Release 5     
 Qo-DL Playlist: 13th Feb 19 - Release 1b   
 
 macOS:   
-Qo-DL: 9th Mar 19 - Release 4e   
+Qo-DL: 7th May 19 - Release 5   
 
 **You'll need [this config template](https://thoas.feralhosting.com/sorrow/Qobuz-DL/config.ini) instead to use playlist.**   
 
@@ -38,7 +38,9 @@ The following need to be inputted into the config file:
 - Naming scheme - file naming scheme (1 = "01. ", 2 = "01 -").
 - Cover size - cover size to request from API (1 = 230x230, 2 = 600x600).
 - Keep_cover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
-- Use_proxy - enable or disable proxy. "Y" or "N".  
+- Use_proxy - enable or disable proxy. "Y" or "N".
+- skip_pw_hash_check - skip check to see if password is a valid MD5 hash. "Y" or "N".
+- embed_cover - write covers to tracks. "Y" or "N".
 - All tags under "[Tags]" except comment - "Y" or "N".  
  
 **You can't download ANY tracks with a free account.**
@@ -46,6 +48,7 @@ The following need to be inputted into the config file:
 
 - Move_to - specify where to move album folder after downloading, "" = default.
 - Proxy - <IP address>:<port> Must be https. This can't be used to bypass Qobuz's region restrictions for track downloading. It only prevents 404s.
+- Comment - write text to comment fields in tracks tags. You can also input "URL" to write the album URL to it.
 
 # Usage
 Fill in your config file first.
@@ -95,6 +98,8 @@ optional arguments:
   -comment COMMENT  Custom comment. You can also input "URL" to write the
                     album URL to the field. Make sure you wrap this up in
                     double quotes.
+  -embed EMBED          Write album covers to tracks. "Y" or "N".
+  -skipcheck SKIPCHECK  Skip check to see if password is a valid MD5 hash. "Y" or "N".
 ```
 Qobuz-DL Playlist can also be used via command line, but only supports one option for now.
 ```
@@ -198,6 +203,15 @@ KeyError: 'copyright'
 ```
 This would happen when the API wouldn't return copyright info.
 - Default download folder changed from "Qobuz-DL Downloads" to "Qo-DL Downloads".
+### 7th May 19 - Release 5 ###
+- Two new fields in config file / CLI switches: embed_cover, skip_pw_hash_check (-embed, -skipcheck).
+- Two new options for cover_size: 0, 3 (thumbnail, max). I'm not sure if Qobuz provides max for every single track; I didn't implement fallback code.
+- Handled crashing when attempting to download tracks with no album artist or track artist info.
+- Qo-DL will now inform you when there are missing or empty required fields in your config file. It will create any missing fields automatically if there are any.
+- Your inputted password will be checked to see if it's a valid MD5 hashed string. If it's not, Qo-DL will assume that it's in plain text, hash it for you, and then write it to your config file.
+- Better UAT system. It will now write your UAT to your config file instead of asking you to paste it in yourself, and then carry on doing it's thing.
+- Optimized code for reading data from config file.
+- Removed unnecessary params from getFileUrl API call.
 
 ## Qo-DL Playlist ##
 ### 11th Feb 19 - Release 1 ###
