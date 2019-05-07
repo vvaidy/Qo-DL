@@ -209,7 +209,7 @@ This would happen when the API wouldn't return copyright info.
 - Handled crashing when attempting to download tracks with no album artist or track artist info.
 - Qo-DL will now inform you when there are missing or empty required fields in your config file. It will write any missing fields if there are any.
 - Your inputted password will be checked to see if it's a valid MD5 hashed string. If it's not, Qo-DL will assume that it's in plain text, hash it for you, and then write it to your config file. You can disable this with skip_pw_hash_check or -skipcheck.
-- Better UAT system. It will now write your UAT to your config file instead of asking you to paste it in yourself, and then carry on doing it's thing.
+- Better UAT system. It will now write your UAT to your config file instead of asking you to paste it in yourself, and then carry on doing its thing.
 - Optimized code for reading data from config file.
 - Removed unnecessary params from getFileUrl API call.
 
