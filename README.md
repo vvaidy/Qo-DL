@@ -208,7 +208,7 @@ This would happen when the API wouldn't return copyright info.
 - Two new options for cover_size: 0, 3 (thumbnail, max). I'm not sure if Qobuz provides max for every single track; I didn't implement fallback code.
 - Handled crashing when attempting to download tracks with no album artist or track artist info.
 - Qo-DL will now inform you when there are missing or empty required fields in your config file. It will create any missing fields automatically if there are any.
-- Your inputted password will be checked to see if it's a valid MD5 hashed string. If it's not, Qo-DL will assume that it's in plain text, hash it for you, and then write it to your config file.
+- Your inputted password will be checked to see if it's a valid MD5 hashed string. If it's not, Qo-DL will assume that it's in plain text, hash it for you, and then write it to your config file. You can disable this with skip_pw_hash_check or -skipcheck.
 - Better UAT system. It will now write your UAT to your config file instead of asking you to paste it in yourself, and then carry on doing it's thing.
 - Optimized code for reading data from config file.
 - Removed unnecessary params from getFileUrl API call.
@@ -251,7 +251,7 @@ Used libraries:
 - re
 - requests
 - shutil
-- ssl (mac builds only)
+- ssl (Lin & Mac builds only)
 - sys
 - time
 - urllib.request
@@ -268,13 +268,7 @@ Misc:
 - ID3v2.4 tag format is used for mp3 tags.
 - **If the following files exist in the current working dir, they'll be deleted: (1-1000).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. Filename clashes are also handled inside of album folders.**
 
-If you need to get in touch: Sorrow#5631
-# To Do
-- Fix known issues.
-- Implement Japanese translation.
-- General code clean up.
-- Add a check to see if the user has inputted a plain password into the config file instead of an MD5 hashed one.
-- Merge main exe and playlist exe.
+If you need to get in touch: Sorrow#5631 or Reddit
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
