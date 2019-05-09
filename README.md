@@ -343,6 +343,11 @@ Simple explanation: Qobuz lie about/mislabel the highest available streaming qua
 https://play.qobuz.com/album/qi7icfdkslpva
 ```
 Try playing the above album in 24/96 via Qobuz Player. Could it be something to do with label rights?
+- When upgrading to Release 5 without grabbing the new config file.
+```
+option ';1' in section 'Config' already exists.
+```
+You can simply delete line 13 if you don't want to get the new config file and fill it in again. You should fill it in with line 13 from the new config file though.
 
 # Disclaimer
 I will not be responsible for how you use Qo-DL or Qo-DL Playlist.   
