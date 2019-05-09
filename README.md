@@ -1,5 +1,5 @@
 # Qo-DL
-Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS & Linux. Sister of [Ti-DL](https://github.com/Sorrow446/Tidal-DL).
+Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS, Linux and Android. Sister of [Ti-DL](https://github.com/Sorrow446/Tidal-DL).
 
 **Looking for Android testers!**   
 I've successfully compiled and tested a build for ARM64. I plan to make a build for ARM too.   
