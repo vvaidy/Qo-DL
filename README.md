@@ -20,6 +20,14 @@ Qo-DL Playlist: 13th Feb 19 - Release 1b
 macOS:   
 Qo-DL: 7th May 19 - Release 5   
 
+Android:   
+ARM:   
+Coming soon   
+ARM64:  
+Coming soon   
+x86:   
+Coming soon   
+
 **You'll need [this config template](https://thoas.feralhosting.com/sorrow/Qobuz-DL/config.ini) instead to use playlist.**   
 
 Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/).
@@ -72,11 +80,33 @@ Launch it.
 ```
 ./Qo-DL_Lin_x64
 ```
-or just:
+### Android (non-rooted) ###
+1. Establish which architecture your device is and choose the respective build. You can use an app [like this](https://play.google.com/store/apps/details?id=com.inkwired.droidinfo). 
+See under "Instruction Sets." Most Android devices nowadays are either ARM or ARM64.
+
+2. Download your respective build and config file to your device. For this guide, we'll be downloading them both to: /storage/emulated/0/download.
+
+3. Download and install Termux from Play Store. Andoid 5.0 / Lollipop or newer required?
+
+4. Launch Termux
+
+4. Give it access to your files.
 ```
-chmod +x /Desktop/Qo-DL_Lin_x64
-./Desktop/Qo-DL_Lin_x64
+termux-setup-storage
 ```
+5. Move your build and config file into Termux's home folder. Don't forget the fullstop at the end, ignore any ownership errors.
+```
+mv /storage/emulated/0/download/Qo-DL_ARM64 /storage/emulated/0/download/config.ini .
+```
+6. Make it executable.
+```
+chmod +x Qo-DL_ARM64
+```
+7. Launch it.
+```
+./Qo-DL_ARM64
+```
+
 
 Qo-DL can also be used via command line.   
 **Make sure you cd to Qo-DL's dir before calling it or it might not be able to read your config file properly.**   
