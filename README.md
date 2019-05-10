@@ -17,7 +17,7 @@ Qo-DL: 7th May 19 - Release 5
 
 Android:   
 ARM:   
-Qo-DL: 7th May 19 - Release 5     
+Qo-DL: 7th May 19 - Release 5 (compiled by SPAstef, thank you)     
 ARM64:  
 Qo-DL: 7th May 19 - Release 5     
 x86:   
