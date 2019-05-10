@@ -1,11 +1,6 @@
 # Qo-DL
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS, Linux and Android. Sister of [Ti-DL](https://github.com/Sorrow446/Tidal-DL).
 
-**Looking for Android testers!**   
-I've successfully compiled and tested a build for ARM64. I plan to make a build for ARM too.   
-You must be able to install Termux. Root not required.
-Sorrow#5631, [Reddit](https://old.reddit.com/user/Sorrow446/).
-
 Latest versions:   
 
 Windows:   
@@ -22,9 +17,9 @@ Qo-DL: 7th May 19 - Release 5
 
 Android:   
 ARM:   
-Coming soon   
+Qo-DL: 7th May 19 - Release 5     
 ARM64:  
-Coming soon   
+Qo-DL: 7th May 19 - Release 5     
 x86:   
 Coming soon   
 
@@ -80,7 +75,7 @@ Launch it.
 ```
 ./Qo-DL_Lin_x64
 ```
-### Android (non-rooted) ###
+### Android ###
 1. Establish which architecture your device is and choose the respective build. You can use an app [like this](https://play.google.com/store/apps/details?id=com.inkwired.droidinfo). 
 See under "Instruction Sets." Most Android devices nowadays are either ARM or ARM64.
 
@@ -94,6 +89,8 @@ See under "Instruction Sets." Most Android devices nowadays are either ARM or AR
 ```
 termux-setup-storage
 ```
+Rooted users may skip the next step. Non-rooted users can only launch Qo-DL in Termux's home folder.
+
 5. Move your build and config file into Termux's home folder. Don't forget the fullstop at the end, ignore any ownership errors.
 ```
 mv /storage/emulated/0/download/Qo-DL_ARM64 /storage/emulated/0/download/config.ini .
