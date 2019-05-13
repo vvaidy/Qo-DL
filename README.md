@@ -19,9 +19,7 @@ Android:
 ARM:   
 Qo-DL: 7th May 19 - Release 5 (compiled by SPAstef, thank you)     
 ARM64:  
-Qo-DL: 7th May 19 - Release 5     
-x86:   
-Coming soon   
+Qo-DL: 7th May 19 - Release 5      
 
 **You'll need [this config template](https://thoas.feralhosting.com/sorrow/Qobuz-DL/config.ini) instead to use playlist.**   
 
@@ -85,21 +83,21 @@ See under "Instruction Sets." Most Android devices nowadays are either ARM or AR
 
 4. Launch Termux
 
-4. Give it access to your files.
+5. Give it access to your files.
 ```
 termux-setup-storage
 ```
 Rooted users may skip the next step. Non-rooted users can only launch Qo-DL in Termux's home folder.
 
-5. Move your build and config file into Termux's home folder. Don't forget the fullstop at the end, ignore any ownership errors.
+6. Move your build and config file into Termux's home folder. Don't forget the fullstop at the end, ignore any ownership errors.
 ```
 mv /storage/emulated/0/download/Qo-DL_ARM64 /storage/emulated/0/download/config.ini .
 ```
-6. Make it executable.
+7. Make it executable.
 ```
 chmod +x Qo-DL_ARM64
 ```
-7. Launch it.
+8. Launch it.
 ```
 ./Qo-DL_ARM64
 ```
