@@ -44,7 +44,7 @@ The following need to be inputted into the config file:
 - MD5 hashed password - as of release 5, you may input it in plain text instead.
 - UserAuthToken - you'll be given this automatically if it's not already inputted in. App id & app secret are required.
 - NamingScheme - file naming scheme (1 = "01. ", 2 = "01 -").
-- Cover size - cover size to request from API (0 = 50x50, 1 = 230x230, 2 = 600x600, 3 = max).
+- coverSize - cover size to request from API (0 = 50x50, 1 = 230x230, 2 = 600x600, 3 = max).
 - KeepCover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
 - UseProxy - enable or disable proxy. "Y" or "N".
 - skipPwHashCheck - skip check to see if password is a valid MD5 hash. "Y" or "N".
