@@ -148,6 +148,7 @@ Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
 - Replaced move_to with superior DownloadDir from GPM-DL. Tracks will now be processed entirely in the specified dir, instead of being processed in the default dir and then moved to your specified dir.
 - x64 Win build scrapped; not needed.
 - Config file clean up.
+- Fixed single track download dir name. <albumArtist> - <TrackTitle> -> <albumArtist> - <AlbumTitle>
 ### 7th May 19 - Release 5 ###
 - Two new fields in config file / CLI switches: embed_cover, skip_pw_hash_check (-embed, -skipcheck).
 - Two new options for cover_size: 0, 3 (thumbnail, max). I'm not sure if Qobuz provides max for every single track; I didn't implement fallback code.
