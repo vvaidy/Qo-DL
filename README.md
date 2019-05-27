@@ -2,8 +2,9 @@
 Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS, Linux and Android. Sister of [Ti-DL](https://github.com/Sorrow446/Tidal-DL) and [GPM-DL](https://github.com/Sorrow446/GPM-DL).
 
 Latest pre-compiled versions:   
-**Source released. You can now compile yourself.** 
+**Source released. You can now compile yourself.**   
 **New template required if updating to 5a** 
+
 Windows:   
 Qo-DL: 27th May 19 - Release 5a   
 Qo-DL GUI: 9th Mar 19 - v0.0.5   
