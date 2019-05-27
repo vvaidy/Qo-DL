@@ -627,10 +627,10 @@ def init():
 								album_id = line.strip()
 								album_id2 = album_id.split('/')[-2]
 								album_id = album_id.split('/')[-1]
-								if album_id2.lower() == "track":
+								if album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
 									isTrack = True
 									album_id == album_id2
-								elif album_id2.lower() == "album":
+								elif album_id2.lower() or album_id2.split('/')[-3].lower() == "album":
 									isTrack = False
 								else:
 									print("Invalid URL. Skipping...")
@@ -679,9 +679,9 @@ def init():
 					time.sleep(2)
 					osCommands('clear')
 					continue
-				if album_id2.lower() == "track":
+				if album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
 					isTrack = True
-				elif album_id2.lower() == "album":
+				elif album_id2.lower() or album_id2.split('/')[-3].lower() == "album":
 					isTrack = False
 				else:
 					print("Invalid URL. Returning to URL input screen...")
