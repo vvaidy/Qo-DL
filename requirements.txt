@@ -1,4 +1,4 @@
-argpars==1.4.0
+argparse==1.4.0
 clint==0.5.1
 configparser==3.7.4
 mutagen==1.42.0
