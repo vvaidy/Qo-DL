@@ -1,0 +1,7 @@
+argpars==1.4.0
+clint==0.5.1
+configparser==3.7.4
+mutagen==1.42.0
+nested-lookup==0.2.15
+requests==2.22.0
+six==1.12.0
