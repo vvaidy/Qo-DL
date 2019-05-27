@@ -14,7 +14,7 @@ Qo-DL: 27th May 19 - Release 5a
 Qo-DL Playlist: 13th Feb 19 - Release 1b   
 
 OSX:   
-Can't build for OSX at the moment.
+Can't build for OSX at the moment.   
 Qo-DL: 7th May 19 - Release 5   
 
 Android:   
