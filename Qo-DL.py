@@ -774,8 +774,7 @@ def init():
 			num = data['track_number']
 			version = data['version']
 			altitlets = data['album']['title']
-		altitle, tracktrtmp = data['title'], data['title']
-
+			altitle, tracktrtmp = data['title'], data['title']
 		try:
 			trarttmp = data['performer']['name']
 		except (KeyError, TypeError):
@@ -791,7 +790,6 @@ def init():
 		dlDir0 = "Qo-DL Downloads"
 		if not os.path.exists(dlDir0):
 			os.makedirs(dlDir0)
-
 		if GetOsType():
 			dlDir1a2 = re.sub(r'[\\/:*?"><|]', '-', altitlets)
 			dlDir1ar2 = re.sub(r'[\\/:*?"><|]', '-', artistts)
