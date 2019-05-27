@@ -662,7 +662,7 @@ def init():
 					listStatus = "D"
 					if album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
 						isTrack = True
-					elif album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
+					elif album_id2.lower() or album_id2.split('/')[-3].lower() == "album":
 						isTrack = False
 					else:
 						print("Invalid URL. Exiting...")
