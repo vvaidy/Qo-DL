@@ -3,10 +3,11 @@ Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS, L
 
 Latest pre-compiled versions:   
 **Source released. You can now compile yourself.**   
-**New config file template required if updating to 5a** 
+**New config file template required if updating to 5a**    
+**5a is Experimental!**   
 
 Windows:   
-Qo-DL: 27th May 19 - Release 5a   
+Qo-DL: 27th May 19 - Release 5a 
 Qo-DL GUI: 9th Mar 19 - v0.0.5   
 Qo-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use previous one.**   
 
