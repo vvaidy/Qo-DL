@@ -9,6 +9,7 @@ import re
 import ssl
 import sys
 import time
+import gzip
 import codecs
 import shutil
 import hashlib
@@ -30,6 +31,31 @@ from nested_lookup import nested_lookup
 from mutagen.id3 import ID3NoHeaderError
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC, TRCK, APIC, WOAS, TPUB, TOPE, TCOP
 
+class BundleError(Exception):
+	pass
+
+class BundleNotFoundError(BundleError):
+	def __init__(self, login_page_req):
+		with open("login.html.gz", "wb") as login_file:
+			login_file.write(
+				gzip.compress(login_page_req.content)
+			)
+
+class BundleParseError(BundleError):
+	def __init__(self, bundle_req):
+		self.url = bundle_req.url
+		# save local copy of bundle file for debugging purposes
+		with open("bundle.js.gz", "wb") as bundle_file:
+			bundle_file.write(
+				gzip.compress(bundle_req.content)
+			)
+
+class AppIdNotFoundError(BundleParseError):
+	pass
+
+class SecretNotFoundError(BundleParseError):
+	pass
+
 def getConfig(option, req, section='Main'):
 	config = configparser.ConfigParser()
 	config.read('config.ini')
@@ -46,6 +72,26 @@ def takeDataFromJSON(data):
 	for num, trackid in enumerate(data['tracks']['items'], start=0):
 		yield {'num': num, 'id': trackid['id'], 'title': trackid['title']}
 		
+def getAppIdAndSecret():
+	login_page_req = requests.get("https://play.qobuz.com/login")
+	login_page = login_page_req.text
+	bundle_url_match = re.search(r'<script src="(/resources/\d+\.\d+\.\d+-[a-z]\d{3}/bundle\.js)"></script>',
+		login_page)
+	if not bundle_url_match:
+		raise BundleNotFoundError(login_page_req)
+	else:
+		bundle_url = bundle_url_match.group(1)
+	bundle_req = requests.get("https://play.qobuz.com" + bundle_url)
+	bundle = bundle_req.text
+	id_secret_match = re.search(r'{app_id:"(?P<app_id>\d{9})",app_secret:"(?P<secret>\w{32})",base_port:"80",base_url:"https://www\.qobuz\.com",base_method:"/api\.json/0\.2/"},n\.base_url="https://play\.qobuz\.com"', bundle)
+	if id_secret_match is None or "app_id" not in id_secret_match.groupdict():
+		raise AppIdNotFoundError(bundle_req)
+	elif "secret" not in id_secret_match.groupdict():
+		raise SecretNotFoundError(bundle_req)
+	else:
+		return (id_secret_match.group("app_id"), id_secret_match.group("secret"))
+
+
 def get_uat():
 	print("UserAuthToken field in config file is empty. Fetching it...")
 		
@@ -519,10 +565,10 @@ def init():
 			alcovs = "large"
 		else:
 			alcovs = cover_size	
-	appId = getConfig('appId', True, 'Main')
-	appSecret = getConfig('appSecret', True, 'Main')
 	email = getConfig('email', True, 'Main')
 	password = getConfig('password', True, 'Main')
+	appId = getConfig('appId', False, 'Main')
+	appSecret = getConfig('appSecret', False, 'Main')
 	userAuthToken = getConfig('userAuthToken', False, 'Main')
 	useProxy = getConfig('useProxy', True, 'Main')
 	skipPwHashCheck = getConfig('skipPwHashCheck', True, 'Main')
@@ -596,6 +642,29 @@ def init():
 	)
 	ssc0 = responset0.json()
 	rc = responset0.status_code
+	if ssc0.get("message") == "Invalid or missing app_id parameter":
+		print("appId in config missing on not working; getting new one...")
+		try:
+			appId, appSecret = getAppIdAndSecret()
+			config = configparser.ConfigParser(comment_prefixes='/', allow_no_value=True)
+			config.optionxform=str
+			config.read('config.ini')
+			config.set('Main', 'appId', f'"{appId}"')
+			config.set('Main', 'appSecret', f'"{appSecret}"')
+			with open("config.ini", "w") as fi:
+				config.write(fi)
+			print("Obtained new appId and appSecret.")
+		except BundleError as error:
+			if isinstance(error, BundleNotFoundError):
+				print("Unable to find URL for bundle.js in login page")
+				print("If you raise an issue about this, please include the file login.html.gz, residing in " + os.getcwd(), end="\n\n")
+			elif isinstance(error, AppIdNotFoundError):
+				print("Unable to get AppId (and possibly appSecret) from bundle.js")
+				print("If you raise an issue about this, please include the file bundle.js.gz, residing in " + os.getcwd(), end="\n\n")
+			elif isinstance(error, SecretNotFoundError):
+				print("Unable to get appSecret from bundle.js")
+				print("If you raise an issue about this, please include the file bundle.js.gz, residing in " + os.getcwd(), end="\n\n")
+			sys.exit()
 	if rc == 401:
 		print("Bad credentials. Exiting...")
 		time.sleep(3)
