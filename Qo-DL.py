@@ -91,33 +91,6 @@ def getAppIdAndSecret():
 	else:
 		return (id_secret_match.group("app_id"), id_secret_match.group("secret"))
 
-
-def get_uat():
-	print("UserAuthToken field in config file is empty. Fetching it...")
-		
-	responsetuat = requests.post("https://www.qobuz.com/api.json/0.2/user/login?",
-		params={
-			"email": email,
-			"password": password,
-			"app_id": appId,
-		}
-	)
-	responset = responsetuat.json()
-	rc = responsetuat.status_code
-	if rc == 401:
-		print("Bad credentials. Exiting...")
-		time.sleep(3)
-		sys.exit()
-	elif rc == 200:
-		uat = responset['user_auth_token']
-		config = configparser.ConfigParser(comment_prefixes='/', allow_no_value=True)
-		config.optionxform=str
-		config.read('config.ini')
-		config.set('Main', 'UserAuthToken', f'"{uat}"')
-		with open("config.ini", "w") as fi:
-			config.write(fi)
-		print("Wrote UAT token to config file.")
-
 def add_mp3_tags(filename, title, alartist, trart, year, altitle, curTr, totaltracks, comment, composer,
 				copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg, performertg, yeartg, 
 				composertg, copyrighttg, genretg, labeltg):
@@ -436,7 +409,7 @@ def init():
 	cwd = os.getcwd()
 	currentVer = "R5a"
 	ssl._create_default_https_context = ssl._create_unverified_context
-	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "userAuthToken", "namingScheme", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates"]
+	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "namingScheme", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates"]
 	try:
 		if sys.argv[1]:
 			cline = True
@@ -569,7 +542,6 @@ def init():
 	password = getConfig('password', True, 'Main')
 	appId = getConfig('appId', False, 'Main')
 	appSecret = getConfig('appSecret', False, 'Main')
-	userAuthToken = getConfig('userAuthToken', False, 'Main')
 	useProxy = getConfig('useProxy', True, 'Main')
 	skipPwHashCheck = getConfig('skipPwHashCheck', True, 'Main')
 	proxy = getConfig('proxy', False, 'Main')
@@ -676,11 +648,10 @@ def init():
 			print("Free accounts are not eligible to get tracks.\nExiting...")
 			time.sleep(3)
 			sys.exit()
+		userAuthToken = ssc0["userAuthToken"]
 		if not cline:
 			print(f"Signed in successfully - {ssc1} account. \n")
 	while True:
-		if not userAuthToken:
-			get_uat()
 		if cline:
 			try:
 				if txtFilename:
