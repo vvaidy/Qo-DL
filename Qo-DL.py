@@ -186,8 +186,8 @@ def add_flac_cover(filename, albumart):
 		os.remove(fullDlDir)
 	desFile = f"{cwd}/{fullDlDir}/{filename}"
 	if os.path.isfile(desFile):
-		os.remove(desFile)
-	shutil.move(filename, fullDlDir)
+		return
+	shutil.move(filename, fullDlDir + "/")
 
 def reporthook(blocknum, blocksize, totalsize):
 		readsofar = blocknum * blocksize
@@ -220,19 +220,18 @@ def reporthook(blocknum, blocksize, totalsize):
 
 def rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrack, data, fn2,
 		downloadDir, dlDir0, alcovfapi, fn, artist, year2, altitle, totaltracks, comment,
-		composer, copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg, 
+		composer, copyright, genre, label, album_url, url, tracktg, albumtg, albatsttg, artisttg, 
 		performertg, yeartg, composertg, copyrighttg, genretg, labeltg, dlDir1, datetg, 
 		trnumtg, trtotaltg, trtotal2tg, trarttmp):
-	reqsigt = f"trackgetFileUrlformat_id{formatId}track_id{trackid}{timeunx}{appSecret}"
+	reqsigt = f"trackgetFileUrlformat_id{formatId}intentstreamtrack_id{trackid}{timeunx}0e47db7842364064b7019225eb19f5d2"
 	reqsighst = (hashlib.md5(reqsigt.encode('utf-8')).hexdigest())
-	responset = requests.post("https://www.qobuz.com/api.json/0.2/track/getFileUrl?",
+	responset = session.post("https://www.qobuz.com/api.json/0.2/track/getFileUrl?",
 			params={
-				"user_auth_token": userAuthToken,
-				"app_id": appId,
 				"request_ts": timeunx,
 				"request_sig": reqsighst,
 				"track_id": trackid,
-				"format_id": formatId
+				"format_id": formatId,
+				"intent": "stream"
 			}
 		)
 	tr = responset.json()
@@ -282,6 +281,9 @@ def rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrac
 			if os.path.isfile(fullDlDir):
 				os.remove(fullDlDir)
 			cwd = downloadDir
+		opener = urllib.request.build_opener()
+		opener.addheaders = [('range', 'bytes=0-'), ('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'), ('referer', album_url)]
+		urllib.request.install_opener(opener)
 		urllib.request.urlretrieve(finalurltr, f"{curTr}{fext}", reporthook)
 		if alcovfapi == True:
 			albumart2 = open('cover.jpg', 'rb').read()
@@ -605,7 +607,10 @@ def init():
 			time.sleep(3)
 			sys.exit()
 	timeunx = int(time.time())
-	responset0 = requests.post("https://www.qobuz.com/api.json/0.2/user/login?",
+	global session
+	session = requests.Session()
+	session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"})
+	responset0 = session.post("https://www.qobuz.com/api.json/0.2/user/login?",
 		params={
 			"email": email,
 			"password": password,
@@ -618,14 +623,6 @@ def init():
 		print("appId in config missing on not working; getting new one...")
 		try:
 			appId, appSecret = getAppIdAndSecret()
-			config = configparser.ConfigParser(comment_prefixes='/', allow_no_value=True)
-			config.optionxform=str
-			config.read('config.ini')
-			config.set('Main', 'appId', f'"{appId}"')
-			config.set('Main', 'appSecret', f'"{appSecret}"')
-			with open("config.ini", "w") as fi:
-				config.write(fi)
-			print("Obtained new appId and appSecret.")
 		except BundleError as error:
 			if isinstance(error, BundleNotFoundError):
 				print("Unable to find URL for bundle.js in login page")
@@ -637,6 +634,27 @@ def init():
 				print("Unable to get appSecret from bundle.js")
 				print("If you raise an issue about this, please include the file bundle.js.gz, residing in " + os.getcwd(), end="\n\n")
 			sys.exit()
+		config = configparser.ConfigParser(comment_prefixes='/', allow_no_value=True)
+		config.optionxform=str
+		config.read('config.ini')
+		config.set('Main', 'appId', f'"{appId}"')
+		config.set('Main', 'appSecret', f'"{appSecret}"')
+		with open("config.ini", "w") as fi:
+			config.write(fi)
+		print("Obtained new appId and appSecret.")
+		responset0 = session.post("https://www.qobuz.com/api.json/0.2/user/login?",
+			params={
+				"email": email,
+				"password": password,
+				"app_id": appId,
+			}
+		)
+		ssc0 = responset0.json()
+		rc = responset0.status_code
+		if ssc0.get("message") == "Invalid or missing app_id parameter":
+			print("Obtained appId invalid, exiting...")
+			sys.exit()
+	session.headers.update({"X-App-Id": appId})
 	if rc == 401:
 		print("Bad credentials. Exiting...")
 		time.sleep(3)
@@ -648,7 +666,8 @@ def init():
 			print("Free accounts are not eligible to get tracks.\nExiting...")
 			time.sleep(3)
 			sys.exit()
-		userAuthToken = ssc0["userAuthToken"]
+		userAuthToken = ssc0["user_auth_token"]
+		session.headers.update(({"X-User-Auth-Token": userAuthToken}))
 		if not cline:
 			print(f"Signed in successfully - {ssc1} account. \n")
 	while True:
@@ -719,9 +738,9 @@ def init():
 					time.sleep(2)
 					osCommands('clear')
 					continue
-				if album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
+				if album_id2.lower() == "track" or album_id2.lower() == "track":
 					isTrack = True
-				elif album_id2.lower() or album_id2.split('/')[-3].lower() == "album":
+				elif album_id2.lower() == "album" or album_id2.lower() == "album":
 					isTrack = False
 				else:
 					print("Invalid URL. Returning to URL input screen...")
@@ -736,24 +755,22 @@ def init():
 		else:
 			proxies = None
 		if isTrack:
-			response = requests.post("https://www.qobuz.com/api.json/0.2/track/get?",
+			response = session.post("https://www.qobuz.com/api.json/0.2/track/get?",
 				params={
-					"app_id": appId,
 					"track_id": album_id,
 				},
 				proxies=proxies
 			)		
 		else:
-				response = requests.post("https://www.qobuz.com/api.json/0.2/album/get?",
+				response = session.post("https://www.qobuz.com/api.json/0.2/album/get?",
 					params={
-						"app_id": appId,
 						"album_id": album_id,
 					},
 					proxies=proxies
 				)
 		rc2 = response.status_code
 		if rc2 == 404:
-			print("Not found (404). a proxy / VPN is needed. If you're already connected to a proxy, "
+			print("Not found (404). a proxy / VPN may be needed (or this could be a bug). If you're already connected to a proxy, "
 				  "try a different one in a different country and make sure it's https, and not http.\n" 
 				  "Returning to URL input screen...")
 			time.sleep(3)
@@ -859,7 +876,7 @@ def init():
 			print("The API didn't return a release year. Tag will be left empty.") 
 			year2 = ""
 		if not isTrack:
-			print(f"{artist} - {altitle}\n")
+			print(f"{artist} - {altitlets}\n")
 		else:
 			print(f"{trarttmp} - {tracktrtmp}\n")
 		# WEB tracks shouldn't really have disks anyway.
@@ -885,8 +902,8 @@ def init():
 					fn2 = f"{curTr}{fp}"
 				# Do something about arg passing.
 				rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrack, data, fn2,
-					downloadDir, dlDir0, alcovfapi, fn, artist, year2, altitle, totaltracks, comment,
-					composer, copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg,
+					downloadDir, dlDir0, alcovfapi, fn, artist, year2, altitlets, totaltracks, comment,
+					composer, copyright, genre, label, album_url, url, tracktg, albumtg, albatsttg, artisttg,
 					performertg, yeartg, composertg, copyrighttg, genretg, labeltg, dlDir1, datetg, 
 					trnumtg, trtotaltg, trtotal2tg, trarttmp)
 		else:
@@ -904,7 +921,7 @@ def init():
 			# Do something about arg passing.	
 			rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrack, data, fn2,
 					downloadDir, dlDir0, alcovfapi, fn, artist, year2, altitle, totaltracks, comment,
-					composer, copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg,
+					composer, copyright, genre, label, album_url, url, tracktg, albumtg, albatsttg, artisttg,
 					performertg, yeartg, composertg, copyrighttg, genretg, labeltg, dlDir1, datetg, 
 					trnumtg, trtotaltg, trtotal2tg, trarttmp)
 		if keepCover.lower() == "y":
