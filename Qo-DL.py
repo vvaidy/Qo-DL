@@ -262,6 +262,7 @@ def rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrac
 		global blet
 		global tspa
 		global tspb
+		blet = "N"
 		tspa = tr['bit_depth']
 		tspb = tr['sampling_rate']
 		tfn0 = f"{fn2}{trackTr}{fext}"
@@ -269,7 +270,6 @@ def rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrac
 			tfn = re.sub(r'[\\/:*?"><|]', '-', tfn0)
 		else:
 			tfn = re.sub('/', '-', tfn0)
-		blet = "N"	
 		if downloadDir:
 			os.chdir(downloadDir)
 			if not os.path.isdir(dlDir0):
@@ -933,6 +933,7 @@ def init():
 			blid = data['goodies'][0]['file_format_id']
 			if blid == 21:	
 				booklet = data['goodies'][0]['original_url']
+				global blet
 				blet = "Y"
 				urllib.request.urlretrieve(booklet, 'booklet.pdf', reporthook)
 		if cline:
