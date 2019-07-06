@@ -4,7 +4,7 @@ Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS, L
 Latest pre-compiled versions:   
 **Source released. You can now compile yourself.**   
 **New config file template required if updating to 5a**    
-**5a is Experimental!**
+**5a is Experimental!**    
 **5b has been released, but is not compiled yet. You can use it by running Qo-DL.py. See update log for more info**   
 
 Windows:   
