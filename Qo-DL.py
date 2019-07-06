@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# r5a
+# r5b
 # It needs a lot of TLC, not fully refactored.
 
 # standard:
@@ -335,7 +335,7 @@ def update(currentVer):
 		latestVer = urllib.request.urlopen('https://thoas.feralhosting.com/sorrow/Qobuz-DL/Check/Qo-DL_x86.txt').read().decode('utf-8').lower()
 	except:
 		print("Failed to check for update.\n")
-	if latestVer != "r5a":
+	if latestVer != "r5a": # not changing until builds are compiled
 		q = None
 		while q not in ("y", "n"):
 			q = input(f"New version is available: {latestVer}. You have {currentVer}. Update now? [y/n]").lower()
@@ -389,9 +389,9 @@ def osCommands(a):
 			os.system("clear")
 	else:
 		if GetOsType():
-			os.system('title Qo-DL R5a (by Sorrow446)')
+			os.system('title Qo-DL R5b (by Sorrow446)')
 		else:
-			sys.stdout.write("\x1b]2;Qo-DL R5a (by Sorrow446)\x07")
+			sys.stdout.write("\x1b]2;Qo-DL R5b (by Sorrow446)\x07")
 		
 def init():
 	if not os.path.isfile('config.ini'):
@@ -412,7 +412,7 @@ def init():
 	lin2 = int(-1)
 	listStatus = ""
 	cwd = os.getcwd()
-	currentVer = "R5a"
+	currentVer = "R5b"
 	ssl._create_default_https_context = ssl._create_unverified_context
 	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "namingScheme", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates"]
 	try:
