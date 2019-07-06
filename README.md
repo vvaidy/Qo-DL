@@ -4,7 +4,8 @@ Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS, L
 Latest pre-compiled versions:   
 **Source released. You can now compile yourself.**   
 **New config file template required if updating to 5a**    
-**5a is Experimental!**   
+**5a is Experimental!**
+**5b has been released, but is not compiled yet. You can use it by running Qo-DL.py. See update log for more info**   
 
 Windows:   
 Qo-DL: 27th May 19 - Release 5a 
@@ -39,12 +40,9 @@ Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%
 # Setup
 ## Mandatory ##
 The following need to be inputted into the config file:
-- App id
-- App secret - App IDs & secrets hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/App.txt).
 - Email address
 - Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC).
 - MD5 hashed password - as of release 5, you may input it in plain text instead.
-- UserAuthToken - you'll be given this automatically if it's not already inputted in. App id & app secret are required.
 - NamingScheme - file naming scheme (1 = "01. ", 2 = "01 -").
 - coverSize - cover size to request from API (0 = 50x50, 1 = 230x230, 2 = 600x600, 3 = max).
 - KeepCover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
@@ -139,6 +137,12 @@ Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
 ```
 # Update Log
 ## Qo-DL ##
+### 6th July 19 - Release 5b ###
+- appId and appSecret are now automatically fetched if not present or not working.
+- userAuthToken no longer saved (will remove from config.ini in another update)
+- Downloading functionality fixed from 5a
+- Store, album, and track (from Qobuz player) URLs are now all working
+- Booklet downloads are properly logged
 ### 27th May 19 - Release 5a ###
 **New config file req.**
 - Source code released.
