@@ -127,6 +127,9 @@ def add_mp3_tags(filename, title, alartist, trart, year, altitle, curTr, totaltr
 			audio["COMM"] = COMM(encoding=3, lang=u'eng', text=comment)
 	audio.save(filename, 'v2_version=3')
 	
+def getAlbumId(link):
+	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track)/|[a-z]{2}-[a-z]{2}/album/\w+(?:-\w+)*/)(\w+)", link).group(1)
+
 def add_mp3_cover(filename, albumart):
 	if alcovfapi == True:
 		audio = ID3(filename)
@@ -671,41 +674,23 @@ def init():
 		if not cline:
 			print(f"Signed in successfully - {ssc1} account. \n")
 	while True:
+		# TODO: stick rip() call here and obtain arguments in rip function
 		if cline:
 			try:
 				if txtFilename:
 					if not os.path.isfile('config.ini'):
 						os.chdir(cwd)
 					if os.path.isfile(txtFilename):
-						totalLines = sum(1 for line in open(txtFilename))
-						lin = lin + 1
-						lin2 = lin - 1
 						with open(txtFilename) as fin:
-							for line in islice(fin, lin2, lin):
+							for line in fin:
 								listStatus = "ND"
-								album_id = line.strip()
-								album_id2 = album_id.split('/')[-2]
-								album_id = album_id.split('/')[-1]
-								if album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
-									isTrack = True
-									album_id == album_id2
-								elif album_id2.lower() or album_id2.split('/')[-3].lower() == "album":
-									isTrack = False
-								else:
-									print("Invalid URL. Skipping...")
-									continue
-						if totalLines == lin:
-							listStatus = "D"
-							album_id = line.strip()
-							album_id2 = album_id.split('/')[-2]
-							album_id = album_id.split('/')[-1]
-							if album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
-								isTrack = True
-								album_id == album_id2
-							elif album_id2.lower() or album_id2.split('/')[-3].lower() == "album":
-								isTrack = False
-							else:		
-								print("Invalid URL. Skipping...")							
+								album_url = line.strip()
+								try:
+									album_id = getAlbumId(album_url)
+								except AttributeError:
+									print(f"Invalid URL {album_url}, skipping...")
+								isTrack = "/track/" in album_url # could be better, but does it really matter?
+							listStatus = "D"						
 					else:
 						print(f"Specified text file {txtFilename} doesn't exist. Exiting...")
 						time.sleep(2)
@@ -716,37 +701,25 @@ def init():
 			try:
 				if args.url:
 					album_url = args.url
-					album_id = album_url.split('/')[-1]
-					album_id2 = album_url.split('/')[-2]
 					listStatus = "D"
-					if album_id2.lower() or album_id2.split('/')[-3].lower() == "track":
-						isTrack = True
-					elif album_id2.lower() or album_id2.split('/')[-3].lower() == "album":
-						isTrack = False
-					else:
+					try:
+						album_id = getAlbumId(album_url)
+					except:
 						print("Invalid URL. Exiting...")
 						time.sleep(2)
 						osCommands('clear')
 						sys.exit()
+					isTrack = "/track/" in album_url
 			except NameError:
 				album_url = input("Input Qobuz Player or Qobuz store URL:")
 				try:
-					album_id = album_url.split('/')[-1]
-					album_id2 = album_url.split('/')[-2]
+					album_id = getAlbumId(album_url)
 				except IndexError:
 					print("Invalid URL. Returning to URL input screen...")
 					time.sleep(2)
 					osCommands('clear')
 					continue
-				if album_id2.lower() == "track" or album_id2.lower() == "track":
-					isTrack = True
-				elif album_id2.lower() == "album" or album_id2.lower() == "album":
-					isTrack = False
-				else:
-					print("Invalid URL. Returning to URL input screen...")
-					time.sleep(2)
-					osCommands('clear')
-					continue		
+				isTrack = "/track/" in album_url		
 		osCommands('clear')
 		if useProxy == "y":
 			proxies={
@@ -760,7 +733,8 @@ def init():
 					"track_id": album_id,
 				},
 				proxies=proxies
-			)		
+			)
+			album_url = "https://play.qobuz.com/album/" + response.json()["album"]["id"]		
 		else:
 				response = session.post("https://www.qobuz.com/api.json/0.2/album/get?",
 					params={
@@ -768,6 +742,7 @@ def init():
 					},
 					proxies=proxies
 				)
+				album_url = "https://play.qobuz.com/album/" + album_id
 		rc2 = response.status_code
 		if rc2 == 404:
 			print("Not found (404). a proxy / VPN may be needed (or this could be a bug). If you're already connected to a proxy, "
