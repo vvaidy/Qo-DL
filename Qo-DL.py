@@ -17,13 +17,13 @@ import pathlib
 import argparse
 import datetime
 import platform
+import configparser
 import urllib.request
 from itertools import islice
 from urllib.error import HTTPError
 
 # third party:
 import requests
-import configparser
 from mutagen import File
 from clint.textui import progress
 from mutagen.flac import FLAC, Picture
@@ -250,7 +250,7 @@ def rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrac
 	except:
 		isRes = True
 	if isRes:
-		print(f"Track {curtr} is restricted by right holders. Can't download.")
+		print(f"Track {curTr} is restricted by right holders. Can't download.")
 	else:
 		if not isTrack:
 			try:
