@@ -14,6 +14,7 @@ import codecs
 import shutil
 import hashlib
 import pathlib
+import argparse
 import datetime
 import platform
 import urllib.request
@@ -21,7 +22,6 @@ from itertools import islice
 from urllib.error import HTTPError
 
 # third party:
-import argparse
 import requests
 import configparser
 from mutagen import File
