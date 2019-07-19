@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# r5b
+# r5c
 # It needs a lot of TLC, not fully refactored.
 
 # standard:
@@ -303,45 +303,55 @@ def GetOsType():
 # Untested. Only for compiled builds.
 def update(currentVer):
 	try:
-		latestVer = urllib.request.urlopen('https://thoas.feralhosting.com/sorrow/Qobuz-DL/Check/Qo-DL_x86.txt').read().decode('utf-8').lower()
+		latestVer = requests.get("https://thoas.feralhosting.com/sorrow/Qobuz-DL/latestVersion.txt").text.lower()
 	except:
 		print("Failed to check for update.\n")
-	if latestVer != "r5a": # not changing until builds are compiled
+	if latestVer != currentVer:
 		q = None
 		while q not in ("y", "n"):
 			q = input(f"New version is available: {latestVer}. You have {currentVer}. Update now? [y/n]").lower()
 			if q != "y" or q != "n":
 				osCommands('clear')
 		if q == "y":
-			if "x64" and "OSX" in sys.argv[0]:
+			filename = sys.argv[0]
+			if "x64" in filename and "OSX" in filename:
 				arch = "OSX_x64"
-			elif "x86" and "OSX" in sys.argv[0]:
+			elif "x86" in filename and "OSX" in filename:
 				arch = "OSX_x86"
-			elif "x64" and "Lin" in sys.argv[0]:
+			elif "x64" in filename and "Lin" in filename:
 				arch = "Lin_x64"
-			elif "x86" and "Lin" in sys.argv[0]:
-				arch = "Lin_x86"
-			else:
+			elif "x86" in filename and "Lin" in filename:
+				arch = "Lin_x86"	
+			elif "x86" in filename and "Win" in filename:
 				arch = "Win_x86.exe"
+			elif "x64" in filename and "Win" in filename:
+				arch = "Win_x64.exe"
+			elif ".py" in filename:
+				arch = ".py"
+			else:
+				print("Cannot determine version: did you rename Qo-DL? If so, please rename it back or download the latest version from the Releases tab on GitHub.")
+				time.sleep(5)
+				sys.exit()
 			if os.path.isdir(f"Qo-DL_{arch}_{latestVer}"):
 				shutil.rmtree(f"Qo-DL_{arch}_{latestVer}")
 			os.mkdir(f"Qo-DL_{arch}_{latestVer}")
 			os.chdir(f"Qo-DL_{arch}_{latestVer}")
-			GHubPost = requests.post(f"https://raw.githubusercontent.com/Sorrow446/Qo-DL/master/Qo-DL_{arch}",
-				params={
-					# fake user agent to prevent 404.
-					"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
-				}
-			)
-			if GHubPost.status_code != 200:
-				print("Failed to fetch updated build from GitHub. Trying FTP mirror...\n")
-				urllib.request.urlretrieve(f'https://thoas.feralhosting.com/sorrow/Qobuz-DL/Latest%20Build/Qo-DL_{arch}', f'Qo-DL_{arch}', reporthook)
-				urllib.request.urlretrieve(f'https://thoas.feralhosting.com/sorrow/Qobuz-DL/Latest%20Build/config.ini', 'config.ini')
-			else:
-				urllib.request.urlretrieve(f'https://raw.githubusercontent.com/Sorrow446/Qo-DL/master/Qo-DL_{arch}', f'Qo-DL_{arch}', reporthook)
-				urllib.request.urlretrieve(f'https://raw.githubusercontent.com/Sorrow446/Qo-DL/master/config.ini', 'config.ini')
+			latestInfo = requests.get("http://sorrow.thoas.feralhosting.com/Qobuz-DL/versionLinks.json").json()
+			latestBuildURL = latestInfo[arch]
+			latestConfigURL = latestInfo["config"]
+			print(f"Downloading Qo-DL_{arch}...")
+			latestBuild = pySmartDL.SmartDL(latestBuildURL, f"./Qo-DL_{arch}")
+			latestBuild.start()
+			print("Downloading config file...")
+			latestConfig = pySmartDL.SmartDL(latestConfigURL, f"./config.ini")
+			latestConfig.start()
+			if arch == ".py":
+				print("Downloading requirements.txt...")
+				latestRequirementsURL = latestInfo["requirements"]
+				latestRequirements = pySmartDL.SmartDL(latestRequirementsURL, f"./requirements.txt")
+				latestRequirements.start()
 			os.chdir('..')
-			print(f"Done. Updated build can be found in the 'Qo-DL_{arch}_{latestVer}' folder.\nExiting...")
+			print(f"Done. Updated build can be found in the 'Qo-DL_{arch}_{latestVer}' folder. Make sure to re-fill config.ini \nExiting...")
 			time.sleep(3)
 			sys.exit()
 		else:
@@ -360,9 +370,9 @@ def osCommands(a):
 			os.system("clear")
 	else:
 		if GetOsType():
-			os.system('title Qo-DL R5b (by Sorrow446)')
+			os.system('title Qo-DL R5c (by Sorrow446)')
 		else:
-			sys.stdout.write("\x1b]2;Qo-DL R5b (by Sorrow446)\x07")
+			sys.stdout.write("\x1b]2;Qo-DL R5c (by Sorrow446)\x07")
 		
 def init():
 	if not os.path.exists('config.ini'):
@@ -375,7 +385,7 @@ def init():
 	lin2 = int(-1)
 	listStatus = ""
 	cwd = os.getcwd()
-	currentVer = "R5b"
+	currentVer = "r5d"
 	ssl._create_default_https_context = ssl._create_unverified_context
 	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "namingScheme", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates"]
 	try:
