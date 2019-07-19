@@ -124,7 +124,7 @@ def add_mp3_cover(filename, albumart):
 def add_flac_tags(filename, metadata):
 	audio = FLAC(filename)
 	for tag, value in metadata.items():
-		audio[tag] = value
+		audio[tag] = value if value is not None else ""
 	audio.save()
 
 def add_flac_cover(filename, albumart):
