@@ -10,6 +10,7 @@ import ssl
 import sys
 import time
 import gzip
+from pathlib import Path
 import codecs
 import shutil
 import hashlib
@@ -24,13 +25,11 @@ from urllib.error import HTTPError
 
 # third party:
 import requests
+import pySmartDL
 from mutagen import File
-from clint.textui import progress
 from mutagen.flac import FLAC, Picture
-from nested_lookup import nested_lookup
 from mutagen.id3 import ID3NoHeaderError
-from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC, TRCK, APIC, WOAS, TPUB, TOPE, TCOP
-
+import mutagen.id3 as id3
 class BundleError(Exception):
 	pass
 
@@ -63,15 +62,16 @@ def getConfig(option, req, section='Main'):
 		if req:
 			if not config[section][option].strip('"'):
 				msList.append(option)
-				return
 		return config[section][option].strip('"')
 	except KeyError:
 		msList2.append(option)
 
-def takeDataFromJSON(data):
-	for num, trackid in enumerate(data['tracks']['items'], start=0):
-		yield {'num': num, 'id': trackid['id'], 'title': trackid['title']}
-		
+def sanitizeFilename(filename):
+	if GetOsType():
+		return re.sub(r'[\\/:*?"><|]', '-', filename)
+	else:
+		return re.sub('/', '-', filename)
+
 def getAppIdAndSecret():
 	login_page_req = requests.get("https://play.qobuz.com/login")
 	login_page = login_page_req.text
@@ -91,236 +91,211 @@ def getAppIdAndSecret():
 	else:
 		return (id_secret_match.group("app_id"), id_secret_match.group("secret"))
 
-def add_mp3_tags(filename, title, alartist, trart, year, altitle, curTr, totaltracks, comment, composer,
-				copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg, performertg, yeartg, 
-				composertg, copyrighttg, genretg, labeltg):
-	try: 
-		audio = ID3(filename)
-	except ID3NoHeaderError:
-		audio = ID3()
-	if tracktg.lower() == "y":
-		audio["TIT2"] = TIT2(encoding=3, text=title)			
-	if albumtg.lower() == "y":		
-		audio["TALB"] = TALB(encoding=3, text=altitle)
-	if albatsttg.lower() == "y":
-		audio["TPE2"] = TPE2(encoding=3, text=alartist)
-	if artisttg.lower() == "y":
-		audio["TPE1"] = TPE1(encoding=3, text=trart)
-	if performertg.lower() == "y":
-		audio["TOPE"] = TOPE(encoding=3, text=trart)
-	if yeartg.lower() == "y":	
-		audio["TDRC"] = TDRC(encoding=3, text=year)
-	if tracktg.lower() == "y":				
-		audio["TRCK"] = TRCK(encoding=3, text=str(curTr) + "/" + str(totaltracks))
-	if composertg.lower() == "y":
-		audio["TCOM"] = TCOM(encoding=3, text=composer)
-	if copyrighttg.lower() == "y":	
-		audio["TCOP"] = TCOP(encoding=3, text=copyright)
-	if genretg.lower() == "y":	
-		audio["TCON"] = TCON(encoding=3, text=genre)
-	if labeltg.lower() == "y":
-		audio["TPUB"] = TPUB(encoding=3, text=label)			
-	if comment != "":
-		if comment.lower() == "url":
-			audio["COMM"] = COMM(encoding=3, lang=u'eng', text=url)
-		else:
-			audio["COMM"] = COMM(encoding=3, lang=u'eng', text=comment)
+def add_mp3_tags(filename, metadata):
+	audio = id3.ID3(filename)
+	# ID3 is weird about the track number and total so we have to set that manually
+	audio["TRCK"] = id3.TRCK(encoding=3, text=f"{metadata.pop('TRACKNUMBER')}/{metadata.pop('TRACKTOTAL')}")
+	legend = {
+		"ALBUM": id3.TALB,
+		"ALBUMARTIST": id3.TPE2,
+		"ARTIST": id3.TPE1,
+		"COMMENT": id3.COMM,
+		"COMPOSER": id3.TCOM,
+		"COPYRIGHT": id3.TCOP,
+		"DATE": id3.TDAT,
+		"GENRE": id3.TCON,
+		"ORGANIZATION": id3.TPUB,
+		"TITLE": id3.TIT2,
+		"ISRC": id3.TSRC
+	}
+	for tag, value in metadata.items():
+		id3tag = legend[tag]
+		audio[id3tag.__name__] = id3tag(encoding=3, text=value)
 	audio.save(filename, 'v2_version=3')
 	
 def getAlbumId(link):
 	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track)/|[a-z]{2}-[a-z]{2}/album/\w+(?:-\w+)*/)(\w+)", link).group(1)
 
 def add_mp3_cover(filename, albumart):
-	if alcovfapi == True:
-		audio = ID3(filename)
-		audio.add(APIC(3, 'image/jpeg', 3, '', albumart))
-		audio.save(filename, 'v2_version=3')
+	audio = id3.ID3(filename)
+	audio.add(id3.APIC(3, 'image/jpeg', 3, '', albumart))
+	audio.save(filename, 'v2_version=3')
 
-def add_flac_tags(filename, title, alartist, trart, year, altitle, curTr, totaltracks, comment, composer,
-				copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg, performertg, yeartg, 
-				composertg, copyrighttg, genretg, labeltg, datetg, trnumtg, trtotaltg, trtotal2tg):
+def add_flac_tags(filename, metadata):
 	audio = FLAC(filename)
-	if albumtg.lower() == "y":
-		audio['album'] = altitle
-	if albatsttg.lower() == "y":
-		audio['albumartist'] = alartist
-	if artisttg.lower() == "y":
-		audio['artist'] = trart		
-	if comment != "":
-		if comment.lower() == "url":
-			audio['artist'] = url	
-		else:
-			audio['artist'] = comment
-	if composertg.lower() == "y":
-		audio['composer'] = composer		
-	if copyrighttg.lower() == "y":
-		audio['copyright'] = copyright	
-	if datetg.lower() == "y":
-		audio['date'] = year
-	if genretg.lower() == "y":
-		audio['genre'] = genre
-	if labeltg.lower() == "y":
-		audio['label'] = label
-	if albumtg.lower() == "y":
-		audio['title'] = title
-	if albumtg.lower() == "y":			
-		audio['track'] = str(curTr)
-	if yeartg.lower() == "y":			
-		audio['year'] = year
-	if trnumtg.lower() == "y":	
-		audio['tracknumber'] = str(curTr)
-	if trtotaltg.lower() == "y":	
-		audio['tracktotal'] = str(totaltracks)
-	if trtotal2tg.lower() == "y":	
-		audio['totaltracks'] = str(totaltracks)
+	for tag, value in metadata.items():
+		audio[tag] = value
 	audio.save()
 
 def add_flac_cover(filename, albumart):
-	if alcovfapi == True:
-		audio = File(filename)
-		image = Picture()
-		image.type = 3
-		mime = 'image/jpeg'
-		with open(albumart, 'rb') as f:
-			image.data = f.read()
-			audio.add_picture(image)
-			audio.save()
-	if os.path.isfile(fullDlDir):
-		os.remove(fullDlDir)
-	desFile = f"{cwd}/{fullDlDir}/{filename}"
-	if os.path.isfile(desFile):
-		return
-	shutil.move(filename, fullDlDir + "/")
+	audio = File(filename)
+	image = Picture()
+	image.type = 3
+	image.mime = "image/jpeg"
+	with open(albumart, 'rb') as f:
+		image.data = f.read()
+		audio.add_picture(image)
+		audio.save()
 
-def reporthook(blocknum, blocksize, totalsize):
-		readsofar = blocknum * blocksize
-		if totalsize > 0:
-			percent = readsofar * 1e2 / totalsize		
-			try:
-				if blet:
-					pass
-			except NameError:
-				l = "Downloading new build..."
-			else:
-				if blet == "N":
-					if fext == ".mp3":
-						if not isTrack:
-							l = f"Downloading track {curTr} of {totaltracks}: {trackTr} - 320 kbps MP3"
-						else:
-							l = f"Downloading track 1 of 1: {trackTr} - 320 kbps MP3"	
-					if fext == ".flac":
-						if not isTrack:
-							l = f"Downloading track {curTr} of {totaltracks}: {trackTr} - {tspa}-bit / {tspb} kHz FLAC"
-						else:
-							l = f"Downloading track 1 of 1: {trackTr} - {tspa}-bit / {tspb} kHz FLAC"			
-				elif blet == "Y":
-					l = "Digital booklet available. Downloading..."
-			s = "\r%5.f%%" % (
-			percent)		
-			sys.stderr.write(f"{l}{percent:5.0f}%\r")			
-			if readsofar >= totalsize:
-				sys.stderr.write("\n")
-
-def rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrack, data, fn2,
-		downloadDir, dlDir0, alcovfapi, fn, artist, year2, altitle, totaltracks, comment,
-		composer, copyright, genre, label, album_url, url, tracktg, albumtg, albatsttg, artisttg, 
-		performertg, yeartg, composertg, copyrighttg, genretg, labeltg, dlDir1, datetg, 
-		trnumtg, trtotaltg, trtotal2tg, trarttmp):
-	reqsigt = f"trackgetFileUrlformat_id{formatId}intentstreamtrack_id{trackid}{timeunx}0e47db7842364064b7019225eb19f5d2"
-	reqsighst = (hashlib.md5(reqsigt.encode('utf-8')).hexdigest())
-	responset = session.post("https://www.qobuz.com/api.json/0.2/track/getFileUrl?",
-			params={
-				"request_ts": timeunx,
-				"request_sig": reqsighst,
-				"track_id": trackid,
-				"format_id": formatId,
-				"intent": "stream"
-			}
-		)
-	tr = responset.json()
-	isRes = False
-	try:
-		finalurltr = tr['url']
-	except KeyError:
-		isRes = True
-	try:
-		finalurltrc = finalurltr[:25]
-		if finalurltrc == "https://sample2.qobuz.com":
-			isRes = True
-	except:
-		isRes = True
-	if isRes:
-		print(f"Track {curTr} is restricted by right holders. Can't download.")
+def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, naming_scheme, keep_cover):
+	if formatId == "5":
+		fext = ".mp3"
 	else:
-		if not isTrack:
+		fext = ".flac"
+	if isTrack:
+		response = session.post("https://www.qobuz.com/api.json/0.2/track/get?",
+			params={
+				"track_id": album_id,
+			},
+		)
+		albumMetadata = response.json()["album"]
+		album_url = "https://play.qobuz.com/album/" + albumMetadata["id"]
+		tracks = [response.json()]
+	else:
+		response = session.post("https://www.qobuz.com/api.json/0.2/album/get?",
+			params={
+				"album_id": album_id,
+			},
+		)
+		album_url = "https://play.qobuz.com/album/" + album_id
+		albumMetadata = response.json()
+		tracks = [track for track in albumMetadata["tracks"]["items"]]
+	if alcovs == "3":
+		album_cover_url = albumMetadata["image"]["large"][:-7] + "max.jpg"
+	elif alcovs == "-1":
+		pass
+	else:
+		album_cover_url = albumMetadata["image"][
+			("thumbnail", "small", "large")[alcovs]
+		]
+	download_headers = {
+		"range": "bytes=0-", 
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0", 
+		"referer": album_url
+	}
+	base_download_dir = Path(downloadDir)
+	album_download_dir = base_download_dir / sanitizeFilename(albumMetadata["artist"]["name"] + " - " + albumMetadata["title"])
+	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
+	coverobj.start()
+	for track in tracks:
+		track_number = tracks.index(track) + 1
+		metadata = {
+			"ALBUM": albumMetadata["title"],
+			"ALBUMARTIST": albumMetadata["artist"]["name"],
+			"ARTIST": track["performer"]["name"],
+			"COMMENT": comment,
+			"COMPOSER": track["composer"]["name"]
+						if track.get("composer", False)
+						else print("The API didn't return a composer. Tag will be left empty."),
+			"COPYRIGHT": track["copyright"],
+			"GENRE": albumMetadata["genre"]["name"],
+			"ORGANIZATION": albumMetadata["label"]["name"],
+			"TITLE": track["title"],
+			"TRACKNUMBER": str(track_number),
+			"TRACKTOTAL": str(len(tracks)),
+			"ISRC": track["isrc"]
+		}
+		date_fields = ["release_date_original", "release_date_stream", "release_date_download"]
+		date_field = 0
+		while not metadata.get("DATE"):
 			try:
-				trart = data['tracks']['items'][(num)]['performer']['name']
-			except (KeyError, TypeError):
-				try:
-					trart = data['tracks']['items'][(num)]['performers']['name']
-				except (KeyError, TypeError):
-					trart = ""
-		else:
-			trart = trarttmp
-		global blet
-		global tspa
-		global tspb
-		blet = "N"
-		tspa = tr['bit_depth']
-		tspb = tr['sampling_rate']
-		tfn0 = f"{fn2}{trackTr}{fext}"
-		if GetOsType():
-			tfn = re.sub(r'[\\/:*?"><|]', '-', tfn0)
-		else:
-			tfn = re.sub('/', '-', tfn0)
-		if downloadDir:
-			os.chdir(downloadDir)
-			if not os.path.isdir(dlDir0):
-				os.mkdir(dlDir0)		
-			os.chdir(dlDir0)		
-			if not os.path.isdir(dlDir1):
-				os.mkdir(dlDir1)
-			os.chdir(dlDir1)
-			if os.path.isfile(fullDlDir):
-				os.remove(fullDlDir)
-			cwd = downloadDir
-		opener = urllib.request.build_opener()
-		opener.addheaders = [('range', 'bytes=0-'), ('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'), ('referer', album_url)]
-		urllib.request.install_opener(opener)
-		urllib.request.urlretrieve(finalurltr, f"{curTr}{fext}", reporthook)
-		if alcovfapi == True:
-			albumart2 = open('cover.jpg', 'rb').read()
-		else:
-			albumart2 = ""
-		if fext == ".mp3":
-			add_mp3_tags(fn, trackTr, artist, trart, year2, altitle, curTr, totaltracks, comment, composer, 
-						 copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg, performertg,
-						 yeartg, composertg, copyrighttg, genretg, labeltg)
-			add_mp3_cover(fn, albumart2)
-		else:
-			add_flac_tags(fn, trackTr, artist, trart, year2, altitle, curTr, totaltracks, comment, composer, 
-						 copyright, genre, label, url, tracktg, albumtg, albatsttg, artisttg, performertg,
-						 yeartg, composertg, copyrighttg, genretg, labeltg, datetg, trnumtg, trtotaltg,
-						 trtotal2tg)
-			add_flac_cover(fn, 'cover.jpg')
-		# clean this up
-		if downloadDir:
-			flcdirn = f"{cwd}/{fullDlDir}/{tfn}"
-			flcdir = f"{cwd}/{fullDlDir}/{fn}"
-		else:
-			flcdirn = f"{fullDlDir}/{tfn}"
-			flcdir = f"{fullDlDir}/{fn}"
-		list = ["booklet.pdf", "folder.jpg"]
-		for item in list:
-			a = os.path.isfile(item)
-			if a:
-				os.remove(item)
-		if os.path.isfile(tfn):
-			os.remove(tfn)
+				metadata["DATE"] = albumMetadata[date_fields[date_field]]
+			except KeyError:
+				pass
+			date_field += 1
+			if date_field == 3:
+				print("The API didn't return a date field. Tag will be left empty, \
+and you may want to report this on the GitHub with the album URL.")
+				metadata["DATE"] = ""
+				break
+		for field in metadata:
+			if getConfig(field, False, "Tags") == "n":
+				del metadata[field]
+		if getConfig('extendedMetadata', True, 'Tags').lower() == "y" and formatId != "5":
+			performers = dict()
+			for performerItem in track["performers"].split(" - "):
+				person, role = performerItem.split(", ")[:2]
+				role = role.upper()
+				if role != "UNKNOWN":
+					if performers.get(role, False):
+						performers[role].append(person)
+					else:
+						performers[role] = [person]
+			for role, people in performers.items():
+				if len(people) <= 1:
+					metadata[role] = people[0]
+				elif len(people) > 1:
+					metadata[role + "s"] = ", ".join(people)
+		current_time = time.time()
+		reqsigt = f"trackgetFileUrlformat_id{formatId}intentstreamtrack_id{track['id']}{current_time}0e47db7842364064b7019225eb19f5d2"
+		reqsighst = hashlib.md5(reqsigt.encode('utf-8')).hexdigest()
+		responset = session.post("https://www.qobuz.com/api.json/0.2/track/getFileUrl?",
+				params={
+					"request_ts": current_time,
+					"request_sig": reqsighst,
+					"track_id": track["id"],
+					"format_id": formatId,
+					"intent": "stream"
+				}
+			)
+		tr = responset.json()
+		isRes = False
 		try:
-			os.rename(fn, tfn)
+			finalurltr = tr['url']
+		except KeyError:
+			isRes = True
+		try:
+			finalurltrc = finalurltr[:25]
+			if finalurltrc == "https://sample2.qobuz.com":
+				isRes = True
+		except:
+			isRes = True
+		else:
+			isRes = False
+		if isRes:
+			print(f"Track {track_number} is restricted by right holders. Can't download.")
+		temporary_filename = album_download_dir / f"{track_number}{fext}"
+		songobj = pySmartDL.SmartDL(finalurltr, str(temporary_filename))
+		songobj.headers = download_headers
+		# TODO: add option for including format in folder name and check if album format matches song formats
+		if formatId == "5":
+			albumFormat = "320kbps MP3"
+		else:
+			albumFormat = albumMetadata['maximum_technical_specifications']
+		print(f"Downloading track {track_number} of {len(tracks)}: {track['title']} - {albumFormat}")
+		songobj.start()
+		if alcovs != "-1":
+			albumArt = (album_download_dir / "cover.jpg").open(mode='rb').read()
+		else:
+			albumArt = ""
+		if fext == ".mp3":
+			add_mp3_tags(temporary_filename, metadata)
+			if alcovs != "-1":
+				add_mp3_cover(temporary_filename, albumArt)
+		else:
+			add_flac_tags(temporary_filename, metadata)
+			if alcovs != "-1":
+				add_flac_cover(temporary_filename, album_download_dir / 'cover.jpg')
+		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{track['title']}{fext}")
+		if filename.exists():
+			os.remove(filename)
+		try:
+			os.rename(temporary_filename, filename)
 		except OSError:
 			print("Failed to rename track. Maybe it exceeds the max path length for your OS.")
+	if alcovs != "-1":
+		if keep_cover.lower() == "n":
+			if (album_download_dir / "cover.jpg").exists():
+				os.remove(album_download_dir / "cover.jpg")
+		else:
+			os.rename(album_download_dir / "cover.jpg", album_download_dir / "folder.jpg")
+
+	if "goodies" in albumMetadata:
+		if albumMetadata["goodies"][0]["file_format_id"] == 21:
+			print("Booklet available, downloading...")
+			bookletobj = pySmartDL.SmartDL(albumMetadata["goodies"][0]["original_url"], str(album_download_dir / "booklet.pdf"))
+			bookletobj.headers = download_headers
+			bookletobj.start()
 		
 def GetOsType():
 	osPlatform = platform.system()
@@ -399,15 +374,9 @@ def init():
 		time.sleep(2)
 		sys.exit()
 	osCommands('t')
-	# Use alternative method instead of setting globals. Needed for reporthook function. More Global functions defined in rip func too.
-	global fext
-	global isTrack
-	global curTr
-	global trackTr
-	global totaltracks
-	global alcovfapi
-	global cwd
-	global fullDlDir
+	global msList
+	global msList2
+	global msList3
 	lin = int(0)
 	lin2 = int(-1)
 	listStatus = ""
@@ -439,7 +408,7 @@ def init():
 			parser.add_argument(
 				'-c',
 				default='',
-				help='Cover size to fetch. 0 = 50x50, 1 = 230x230, 2 = 600x600. 3 = max')
+				help='Cover size to fetch. -1 = no cover fetched, 0 = 50x50, 1 = 230x230, 2 = 600x600. 3 = max')
 			parser.add_argument(
 				'-s',
 				default='',
@@ -457,10 +426,6 @@ def init():
 				default='',
 				help='Custom comment. You can also input "URL" to write the album URL to the field. Make sure you wrap this up in double quotes.')
 			parser.add_argument(
-				'-embed',
-				default='',
-				help='Write album covers to tracks.')
-			parser.add_argument(
 				'-skipcheck',
 				default='',
 				help='Skip check to see if password is a valid MD5 hash.')
@@ -471,10 +436,6 @@ def init():
 				formatId = args.q
 			else:
 				formatId = getConfig('formatId', True, 'Main')
-			if formatId == "5":
-				fext = ".mp3"
-			else:
-				fext = ".flac"
 			if not args.c == "":
 				cover_size = args.c
 			else:
@@ -512,10 +473,6 @@ def init():
 				comment = args.comment
 			else:
 				comment = getConfig('comment', False, 'Tags')		
-			if args.embed:
-				embed_cover	= args.embed
-			else:
-				embed_cover = getConfig('embedCover', True, 'Tags')
 			if args.skipcheck:
 				skipPwHashCheck = args.skipcheck
 	except IndexError:
@@ -526,7 +483,6 @@ def init():
 		naming_scheme = getConfig('namingScheme', True, 'Main')
 		keepCover = getConfig('keepCover', True, 'Main')
 		comment = getConfig('comment', False, 'Tags')			
-		embed_cover = getConfig('embedCover', True, 'Tags')
 		if naming_scheme == "1":
 			fp = ". "
 		elif naming_scheme == "2":
@@ -551,21 +507,6 @@ def init():
 	skipPwHashCheck = getConfig('skipPwHashCheck', True, 'Main')
 	proxy = getConfig('proxy', False, 'Main')
 	checkForUpdates = getConfig('checkForUpdates', True, 'Main')
-	albumtg = getConfig('album', True, 'Tags')
-	albatsttg = getConfig('albumArtist', True, 'Tags')
-	artisttg = getConfig('artist', True, 'Tags')
-	composertg = getConfig('composer', True, 'Tags')
-	copyrighttg = getConfig('copyright', True, 'Tags')
-	genretg = getConfig('genre', True, 'Tags')
-	labeltg = getConfig('label', True, 'Tags')
-	performertg = getConfig('performer', 'y', 'Tags')
-	titletg = getConfig('title', True, 'Tags')
-	tracktg = getConfig('track', True, 'Tags')
-	yeartg = getConfig('year', True, 'Tags')
-	datetg = getConfig('date', True, 'Tags')
-	trnumtg = getConfig('trackNumber', True, 'Tags')
-	trtotaltg = getConfig('trackTotal', True, 'Tags')
-	trtotal2tg = getConfig('totalTracks', True, 'Tags')
 	if checkForUpdates.lower() == "y":
 		update(currentVer)
 	if msList2:
@@ -674,7 +615,6 @@ def init():
 		if not cline:
 			print(f"Signed in successfully - {ssc1} account. \n")
 	while True:
-		# TODO: stick rip() call here and obtain arguments in rip function
 		if cline:
 			try:
 				if txtFilename:
@@ -719,208 +659,21 @@ def init():
 					time.sleep(2)
 					osCommands('clear')
 					continue
-				isTrack = "/track/" in album_url		
-		osCommands('clear')
+				isTrack = "/track/" in album_url
 		if useProxy == "y":
-			proxies={
+			session.proxies.update({
 				"https":str(proxy)
-			}
-		else:
-			proxies = None
-		if isTrack:
-			response = session.post("https://www.qobuz.com/api.json/0.2/track/get?",
-				params={
-					"track_id": album_id,
-				},
-				proxies=proxies
-			)
-			album_url = "https://play.qobuz.com/album/" + response.json()["album"]["id"]		
-		else:
-				response = session.post("https://www.qobuz.com/api.json/0.2/album/get?",
-					params={
-						"album_id": album_id,
-					},
-					proxies=proxies
-				)
-				album_url = "https://play.qobuz.com/album/" + album_id
-		rc2 = response.status_code
-		if rc2 == 404:
-			print("Not found (404). a proxy / VPN may be needed (or this could be a bug). If you're already connected to a proxy, "
-				  "try a different one in a different country and make sure it's https, and not http.\n" 
-				  "Returning to URL input screen...")
-			time.sleep(3)
+			})
+		rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, fp, keepCover)
+		if listStatus == "ND":
+			print("Moving onto next item in list...")
+			time.sleep(1)
 			osCommands('clear')
 			continue
-		data = response.json()
-		if not isTrack:
-			try:
-				composer = data['composer']['name']
-			except KeyError:
-				print("The API didn't return a composer. Tag will be left empty.") 
-				composer = ""
-			totaltracks = data['tracks_count']
-			artist = data['artist']['name']
-			if not artist:
-				print("The API didn't return an album artist. Tag will be left empty.") 			
-				artist = ""
-			artistts = data['artist']['name']
-			if not artistts:
-				artistts = ""
-			if not artistts:
-				print("The API didn't return a track artist. Tag will be left empty.") 			
-				artistts = ""
-			genre = data['genre']['name']
-			label = data['label']['name']
-			url = data['url']
-			if alcovs == '3':
-				alcov = data['image']['large'][:-7] + "max.jpg"
-			else:
-				alcov = data['image'][str(alcovs)]
-			year = data['released_at']
-			diskCount = data['media_count']
-			altitlets = data['title']
-		else:
-			try:
-				composer = data['album']['composer']['name']
-			except KeyError:
-				print("The API didn't return a composer. Tag will be left empty.") 
-				composer = ""
-			totaltracks = data['album']['tracks_count']
-			artist = data['album']['artist']['name']
-			if not artist:
-				print("The API didn't return an album artist. Tag will be left empty.") 			
-				artist = ""
-			artistts = data['album']['artist']['name']
-			if not artistts:
-				print("The API didn't return a track artist. Tag will be left empty.") 			
-				artistts = ""
-			genre = data['album']['genre']['name']
-			label = data['album']['label']['name']
-			url = data['album']['url']
-			if alcovs == '3':
-				alcov = data['album']['image']['large'][:-7] + "max.jpg"
-			else:
-				alcov = data['album']['image'][str(alcovs)]
-			year = data['album']['released_at']
-			diskCount = data['album']['media_count']
-			num = data['track_number']
-			version = data['version']
-			altitlets = data['album']['title']
-			altitle, tracktrtmp = data['title'], data['title']
-		try:
-			trarttmp = data['performer']['name']
-		except (KeyError, TypeError):
-			try:
-				trarttmp = data['performers']['name']
-			except (KeyError, TypeError):
-				trarttmp = ""
-		try:
-			copyright = data['copyright']
-		except KeyError:
-			print("The API didn't return copyright information. Tag will be left empty.") 
-			copyright = ""
-		dlDir0 = "Qo-DL Downloads"
-		if not os.path.exists(dlDir0):
-			os.makedirs(dlDir0)
-		if GetOsType():
-			dlDir1a2 = re.sub(r'[\\/:*?"><|]', '-', altitlets)
-			dlDir1ar2 = re.sub(r'[\\/:*?"><|]', '-', artistts)
-		else:
-			dlDir1a2 = re.sub('/', '-', altitlets)
-			dlDir1ar2 = re.sub('/', '-', artistts)
-		dlDir1 = f"{dlDir1ar2} - {dlDir1a2}"		
-		fullDlDir = f"{dlDir0}/{dlDir1}"
-		if not os.path.exists(fullDlDir):
-			pathlib.Path(fullDlDir).mkdir(parents=True)
-		if embed_cover.lower() == "y":
-			alcovfapi = True
-		else:
-			alcovfapi = False
-		if downloadDir:
-			os.chdir(f"{downloadDir}/{dlDir0}/{dlDir1}")
-		else:
-			os.chdir(f"{dlDir0}/{dlDir1}")
-		try:
-			urllib.request.urlretrieve(alcov, 'cover.jpg')
-		except HTTPError:
-			print("This album doesn't have an album cover.")
-			alcovfapi = False
-		try:	
-			year2 = datetime.datetime.fromtimestamp(year).strftime('%Y')
-		except OSError:
-			print("The API didn't return a release year. Tag will be left empty.") 
-			year2 = ""
-		if not isTrack:
-			print(f"{artist} - {altitlets}\n")
-		else:
-			print(f"{trarttmp} - {tracktrtmp}\n")
-		# WEB tracks shouldn't really have disks anyway.
-		if diskCount >= 2:
-			print("This album has multiple disks. It can still be downloaded, but it will be treated as a single disk album.") 	
-		if not isTrack:
-			# Temporary nested_lookup to recurse through track versions. Couldn't get enumerate to work properly.
-			for item, version in zip(takeDataFromJSON(data), nested_lookup("version", data, True)):
-				trackid = item.get("id")
-				if version:
-					trackTr = f"{item.get('title')} ({version})"
-				else:
-					trackTr = item.get("title")
-				num = item.get("num")
-				curTr = int(num + 1)
-				if fext == ".mp3":
-					fn = f"{curTr}.mp3"
-				else:
-					fn = f"{curTr}.flac"
-				if curTr <= 9:
-					fn2 = f"0{curTr}{fp}"
-				else:
-					fn2 = f"{curTr}{fp}"
-				# Do something about arg passing.
-				rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrack, data, fn2,
-					downloadDir, dlDir0, alcovfapi, fn, artist, year2, altitlets, totaltracks, comment,
-					composer, copyright, genre, label, album_url, url, tracktg, albumtg, albatsttg, artisttg,
-					performertg, yeartg, composertg, copyrighttg, genretg, labeltg, dlDir1, datetg, 
-					trnumtg, trtotaltg, trtotal2tg, trarttmp)
-		else:
-			trackid = album_id
-			trackTr = tracktrtmp
-			curTr = num
-			if curTr <= 9:
-				fn2 = f"0{curTr}{fp}"
-			else:
-				fn2 = f"{curTr}{fp}"
-			if fext == ".mp3":
-				fn = f"{curTr}.mp3"
-			else:
-				fn = f"{curTr}.flac"
-			# Do something about arg passing.	
-			rip(trackid, num, appId, appSecret, formatId, timeunx, userAuthToken, isTrack, data, fn2,
-					downloadDir, dlDir0, alcovfapi, fn, artist, year2, altitle, totaltracks, comment,
-					composer, copyright, genre, label, album_url, url, tracktg, albumtg, albatsttg, artisttg,
-					performertg, yeartg, composertg, copyrighttg, genretg, labeltg, dlDir1, datetg, 
-					trnumtg, trtotaltg, trtotal2tg, trarttmp)
-		if keepCover.lower() == "y":
-			os.rename('cover.jpg', 'folder.jpg')
-		else:
-			os.remove('cover.jpg')
-		bl = "goodies" in data.keys()
-		if bl:
-			blid = data['goodies'][0]['file_format_id']
-			if blid == 21:	
-				booklet = data['goodies'][0]['original_url']
-				global blet
-				blet = "Y"
-				urllib.request.urlretrieve(booklet, 'booklet.pdf', reporthook)
-		if cline:
-			if listStatus == "ND":
-				print("Moving onto next item in list...")
-				time.sleep(1)
-				osCommands('clear')
-				continue
-			elif listStatus == "D":
-				print("Exiting...")
-				time.sleep(2)
-				sys.exit()
+		elif listStatus == "D":
+			print("Exiting...")
+			time.sleep(2)
+			sys.exit()
 		print("Returning to URL input screen...")
 		lin = int(0)
 		lin2 = int(-1)
