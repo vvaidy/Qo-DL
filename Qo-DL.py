@@ -369,7 +369,7 @@ def osCommands(a):
 			sys.stdout.write("\x1b]2;Qo-DL R5b (by Sorrow446)\x07")
 		
 def init():
-	if not os.path.isfile('config.ini'):
+	if not os.path.exists('config.ini'):
 		print("Config file is missing.\nExiting...")
 		time.sleep(2)
 		sys.exit()
