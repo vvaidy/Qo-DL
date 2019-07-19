@@ -372,9 +372,7 @@ def osCommands(a):
 		
 def init():
 	if not os.path.exists('config.ini'):
-		print("Config file is missing.\nExiting...")
-		time.sleep(2)
-		sys.exit()
+		print("Config file appears to be missing, but this may be a false positive. Please check and re-download the file if necessary.\n\n")
 	osCommands('t')
 	global msList
 	global msList2
