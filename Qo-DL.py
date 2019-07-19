@@ -110,7 +110,7 @@ def add_mp3_tags(filename, metadata):
 	}
 	for tag, value in metadata.items():
 		id3tag = legend[tag]
-		audio[id3tag.__name__] = id3tag(encoding=3, text=value)
+		audio[id3tag.__name__] = id3tag(encoding=3, text=value if value is not None else "")
 	audio.save(filename, 'v2_version=3')
 	
 def getAlbumId(link):
