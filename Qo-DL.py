@@ -257,11 +257,13 @@ and you may want to report this on the GitHub with the album URL.")
 		temporary_filename = album_download_dir / f"{track_number}{fext}"
 		songobj = pySmartDL.SmartDL(finalurltr, str(temporary_filename))
 		songobj.headers = download_headers
-		# TODO: add option for including format in folder name and check if album format matches song formats
 		if formatId == "5":
 			albumFormat = "320kbps MP3"
 		else:
-			albumFormat = albumMetadata['maximum_technical_specifications']
+			try:
+				albumFormat = f"{track['maximum_bit_depth']} bits / {track['maximum_sampling_rate']} kHz - {track['maximum_channel_count']} channels"
+			except KeyError:
+				albumFormat = "Unknown" 
 		print(f"Downloading track {track_number} of {len(tracks)}: {track['title']} - {albumFormat}")
 		songobj.start()
 		if alcovs != "-1":
