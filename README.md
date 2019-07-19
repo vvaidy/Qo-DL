@@ -297,7 +297,7 @@ Misc:
 - ID3v2.4 tag format is used for mp3 tags.
 - **If the following files exist in the current working dir, they'll be deleted: (1-1000).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. Filename clashes are also handled inside of album folders.**
 
-For support if you're too impatient to use GitHub issues or for general questions:
+For support via Discord if you're too impatient to use GitHub issues or for general questions:
 * DashLt: Dash#0297 (note that in the first case I will match your impatience)
 * Sorrow446: Sorrow#5631
 
