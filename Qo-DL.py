@@ -385,7 +385,7 @@ def init():
 	lin2 = int(-1)
 	listStatus = ""
 	cwd = os.getcwd()
-	currentVer = "r5d"
+	currentVer = "r5c"
 	ssl._create_default_https_context = ssl._create_unverified_context
 	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "namingScheme", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates"]
 	try:
