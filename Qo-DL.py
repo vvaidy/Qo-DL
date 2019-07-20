@@ -199,7 +199,7 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 		date_field = 0
 		while not metadata.get("DATE"):
 			try:
-				metadata["DATE"] = albumMetadata[date_fields[date_field]]
+				metadata["DATE"] = albumMetadata[date_fields[date_field]].split("-")[0]
 			except KeyError:
 				pass
 			date_field += 1
