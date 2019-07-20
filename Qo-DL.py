@@ -195,6 +195,8 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 			"TRACKTOTAL": str(len(tracks)),
 			"ISRC": track["isrc"]
 		}
+		if not comment:
+			metadata.pop('COMMENT')
 		date_fields = ["release_date_original", "release_date_stream", "release_date_download"]
 		date_field = 0
 		while not metadata.get("DATE"):
@@ -362,14 +364,14 @@ def update(currentVer):
 def osCommands(a):
 	if a == "pause":
 		if GetOsType():
-			os.system('pause')
+			os.system('pause >nul')
 		else:
-			os.system("read -rsp $\"\"")
+			os.system('read -rsp $\"\"')
 	elif a == "clear":
 		if GetOsType():
 			os.system('cls')
 		else:
-			os.system("clear")
+			os.system('clear')
 	else:
 		if GetOsType():
 			os.system('title Qo-DL R5c (by Sorrow446)')
@@ -379,7 +381,7 @@ def osCommands(a):
 def init():
 	if not os.path.exists('config.ini'):
 		print("Config file appears to be missing, but this may be a false positive. Please check and re-download the file if necessary.\n\n")
-	osCommands('t')
+	osCommands('title')
 	global msList
 	global msList2
 	global msList3
@@ -530,14 +532,13 @@ def init():
 				config.write(fi)
 		print("Wrote missing field(s) to config file. Please fill them in.\n"
 			  "Exiting...")
-		time.sleep(5)
+		time.sleep(3)
 		sys.exit()
 	if msList:
 		msList = ', '.join(msList)
 		print(f"The following required fields in your config file are empty: {msList}.\n"
 			   "Please fill them in\n. Press any key to exit.")
-		os.system("pause >nul")
-		os.system("read -rsp $\"\"")
+		osCommands('pause')
 		sys.exit()
 	if skipPwHashCheck.lower() == "n":
 		if not re.findall(r"\b([a-f\d]{32}|[A-F\d]{32})\b", password):
@@ -555,7 +556,7 @@ def init():
 		if not proxy:
 			print("You have useProxy enabled, but didn't provide a proxy. Exiting...")
 			time.sleep(3)
-			sys.exit()
+			sys.exit(1)
 	timeunx = int(time.time())
 	global session
 	session = requests.Session()
@@ -607,14 +608,14 @@ def init():
 	session.headers.update({"X-App-Id": appId})
 	if rc == 401:
 		print("Bad credentials. Exiting...")
-		time.sleep(3)
+		time.sleep(2)
 		sys.exit()
 	elif rc == 200:
 		try:
 			ssc1 = ssc0['user']['credential']['parameters']['label']
 		except TypeError:
 			print("Free accounts are not eligible to get tracks.\nExiting...")
-			time.sleep(3)
+			time.sleep(2)
 			sys.exit()
 		userAuthToken = ssc0["user_auth_token"]
 		session.headers.update(({"X-User-Auth-Token": userAuthToken}))
@@ -640,7 +641,7 @@ def init():
 					else:
 						print(f"Specified text file {txtFilename} doesn't exist. Exiting...")
 						time.sleep(2)
-						sys.exit()
+						sys.exit(1)
 			except NameError:
 				pass
 		if not listStatus or listStatus == "ND":
@@ -652,9 +653,9 @@ def init():
 						album_id = getAlbumId(album_url)
 					except:
 						print("Invalid URL. Exiting...")
-						time.sleep(2)
+						time.sleep(1)
 						osCommands('clear')
-						sys.exit()
+						sys.exit(1)
 					isTrack = "/track/" in album_url
 			except NameError:
 				album_url = input("Input Qobuz Player or Qobuz store URL:")
@@ -662,7 +663,7 @@ def init():
 					album_id = getAlbumId(album_url)
 				except IndexError:
 					print("Invalid URL. Returning to URL input screen...")
-					time.sleep(2)
+					time.sleep(1)
 					osCommands('clear')
 					continue
 				isTrack = "/track/" in album_url
@@ -678,13 +679,13 @@ def init():
 			continue
 		elif listStatus == "D":
 			print("Exiting...")
-			time.sleep(2)
+			time.sleep(1)
 			sys.exit()
 		print("Returning to URL input screen...")
 		lin = int(0)
 		lin2 = int(-1)
 		listStatus = ""
-		time.sleep(2)
+		time.sleep(1)
 		osCommands('clear')
 
 if __name__ == '__main__':
