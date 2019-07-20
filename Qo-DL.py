@@ -30,6 +30,7 @@ from mutagen import File
 from mutagen.flac import FLAC, Picture
 from mutagen.id3 import ID3NoHeaderError
 import mutagen.id3 as id3
+
 class BundleError(Exception):
 	pass
 
