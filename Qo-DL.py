@@ -10,7 +10,6 @@ import ssl
 import sys
 import time
 import gzip
-from pathlib import Path
 import codecs
 import shutil
 import hashlib
@@ -20,6 +19,7 @@ import datetime
 import platform
 import configparser
 import urllib.request
+from pathlib import Path
 from itertools import islice
 from urllib.error import HTTPError
 
@@ -27,9 +27,9 @@ from urllib.error import HTTPError
 import requests
 import pySmartDL
 from mutagen import File
+import mutagen.id3 as id3
 from mutagen.flac import FLAC, Picture
 from mutagen.id3 import ID3NoHeaderError
-import mutagen.id3 as id3
 
 class BundleError(Exception):
 	pass
