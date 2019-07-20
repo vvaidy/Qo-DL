@@ -375,9 +375,9 @@ def osCommands(a):
 			os.system('clear')
 	else:
 		if getOsType():
-			os.system('title Qo-DL R5c (by Sorrow446 & DashLt)')
+			os.system('title Qo-DL R5c (by Sorrow446 ^& DashLt)')
 		else:
-			sys.stdout.write("\x1b]2;Qo-DL R5c (by Sorrow446 & DashLt)\x07")
+			sys.stdout.write("\x1b]2;Qo-DL R5c (by Sorrow446 ^& DashLt)\x07")
 		
 def init():
 	if not os.path.exists('config.ini'):
