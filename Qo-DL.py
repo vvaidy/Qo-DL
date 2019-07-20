@@ -67,7 +67,7 @@ def getConfig(option, req, section='Main'):
 		msList2.append(option)
 
 def sanitizeFilename(filename):
-	if GetOsType():
+	if getOsType():
 		return re.sub(r'[\\/:*?"><|]', '-', filename)
 	else:
 		return re.sub('/', '-', filename)
@@ -297,7 +297,7 @@ and you may want to report this on the GitHub with the album URL.")
 			bookletobj.headers = download_headers
 			bookletobj.start()
 		
-def GetOsType():
+def getOsType():
 	osPlatform = platform.system()
 	if osPlatform == 'Windows':
 		return True
@@ -363,20 +363,20 @@ def update(currentVer):
 
 def osCommands(a):
 	if a == "pause":
-		if GetOsType():
+		if getOsType():
 			os.system('pause >nul')
 		else:
 			os.system('read -rsp $\"\"')
 	elif a == "clear":
-		if GetOsType():
+		if getOsType():
 			os.system('cls')
 		else:
 			os.system('clear')
 	else:
-		if GetOsType():
-			os.system('title Qo-DL R5c (by Sorrow446)')
+		if getOsType():
+			os.system('title Qo-DL R5c (by Sorrow446 & DashLt)')
 		else:
-			sys.stdout.write("\x1b]2;Qo-DL R5c (by Sorrow446)\x07")
+			sys.stdout.write("\x1b]2;Qo-DL R5c (by Sorrow446 & DashLt)\x07")
 		
 def init():
 	if not os.path.exists('config.ini'):
