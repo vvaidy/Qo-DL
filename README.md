@@ -3,21 +3,19 @@ Tool written in Python to download MP3s & FLACs from Qobuz for Windows, macOS, L
 
 Latest pre-compiled versions:   
 **Source released. You can now compile yourself.**   
-**New config file template required if updating to 5a**    
-**5a is Experimental!**    
-**5b has been released, but is not compiled yet. You can use it by running Qo-DL.py. See update log for more info**   
+**New config file template required if updating to 5c**    
 
 Windows:   
-Qo-DL: 27th May 19 - Release 5a 
+Qo-DL: 19th July 19 - Release 5c  
 Qo-DL GUI: 9th Mar 19 - v0.0.5   
 Qo-DL Playlist: 23rd Feb 19 - Release 1c **Latest build is broken. Use previous one.**   
 
 Linux:   
-Qo-DL: 27th May 19 - Release 5a     
+Qo-DL: 19th July 19 - Release 5a     
 Qo-DL Playlist: 13th Feb 19 - Release 1b   
 
 OSX:   
-Can't build for OSX at the moment.   
+~~Can't build for OSX at the moment.~~ OSX build coming soon.
 Qo-DL: 7th May 19 - Release 5   
 
 Android:   
@@ -43,21 +41,12 @@ The following need to be inputted into the config file:
 - Email address
 - Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC).
 - MD5 hashed password - as of release 5, you may input it in plain text instead.
-- NamingScheme - file naming scheme (1 = "01. ", 2 = "01 -").
-- coverSize - cover size to request from API (0 = 50x50, 1 = 230x230, 2 = 600x600, 3 = max).
-- KeepCover' - leave folder.jpg in album dir, Y or N. Not usable with Qobuz-DL_Playlist.
-- UseProxy - enable or disable proxy. "Y" or "N".
-- skipPwHashCheck - skip check to see if password is a valid MD5 hash. "Y" or "N".
-- embedCover - write covers to tracks. "Y" or "N".
-- checkForUpdates - check for updates. "Y" or "N".
-- All tags under "[Tags]" except comment - "Y" or "N".  
  
 **You can't download ANY tracks with a free account.**
 ## Optional ##
 
-- Move_to - specify where to move album folder after downloading, "" = default.
-- Proxy - <IP address>:<port> Must be https. This can't be used to bypass Qobuz's region restrictions for track downloading. It only prevents 404s.
-- Comment - write text to comment fields in tracks tags. You can also input "URL" to write the album URL to it.
+- Tags: change value to "n" to omit any tag from the download.  
+Everything else is documented in config.ini.
 
 # Usage
 Fill in your config file first.
@@ -137,6 +126,12 @@ Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
 ```
 # Update Log
 ## Qo-DL ##
+### 19th July 199 - Release 5c ###
+- Lots of internal refactoring
+- Changed downloader to pySmartDL: uses multi-segmented downloads, should be much faster
+- Added extended metadata support: adds instrument players, conductors, etc. Please see config.ini for more info
+- Fixed autoupdater
+- Binaries are now stored in GitHub Releases
 ### 6th July 19 - Release 5b ###
 - appId and appSecret are now automatically fetched if not present or not working.
 - userAuthToken no longer saved (will remove from config.ini in another update)
