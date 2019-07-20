@@ -245,7 +245,9 @@ and you may want to report this on the GitHub with the album URL.")
 		except KeyError:
 			isRes = True
 		else:
-			isRes = "restrictions" in tr
+			if "restrictions" in tr:
+				if "TrackRestrictedByRightHolders" in tr['restrictions']:
+					isRes = True 
 		if isRes:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
 		temporary_filename = album_download_dir / f"{track_number}{fext}"
