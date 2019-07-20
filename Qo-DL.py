@@ -152,6 +152,10 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 		albumMetadata = response.json()["album"]
 		album_url = "https://play.qobuz.com/album/" + albumMetadata["id"]
 		tracks = [response.json()]
+		if albumMetadata['version']:
+			ver = f" ({albumMetadata['version']})"
+		else:
+			ver = ""
 	else:
 		response = session.post("https://www.qobuz.com/api.json/0.2/album/get?",
 			params={
@@ -170,8 +174,8 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 			("thumbnail", "small", "large")[alcovs]
 		]
 	download_headers = {
-		"range": "bytes=0-", 
-		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0", 
+		"range": "bytes=0-",
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0",
 		"referer": album_url
 	}
 	base_download_dir = Path(downloadDir)
@@ -180,24 +184,30 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 	coverobj.start()
 	for track in tracks:
 		track_number = tracks.index(track) + 1
+		if track['version']:
+			ver = f" ({track['version']})"
+		else:
+			ver = ""
 		metadata = {
-			"ALBUM": albumMetadata["title"],
-			"ALBUMARTIST": albumMetadata["artist"]["name"],
-			"ARTIST": track["performer"]["name"],
+			"ALBUM": albumMetadata['title'],
+			"ALBUMARTIST": albumMetadata['artist']['name'],
+			"ARTIST": track['performer']['name'],
 			"COMMENT": comment,
-			"COMPOSER": track["composer"]["name"]
+			"COMPOSER": track['composer']['name']
 						if track.get("composer", False)
 						else print("The API didn't return a composer. Tag will be left empty."),
-			"COPYRIGHT": track["copyright"],
-			"GENRE": albumMetadata["genre"]["name"],
-			"ORGANIZATION": albumMetadata["label"]["name"],
-			"TITLE": track["title"],
+			"COPYRIGHT": track['copyright'],
+			"GENRE": albumMetadata['genre']['name'],
+			"ORGANIZATION": albumMetadata['label']['name'],
+			"TITLE": f"{track['title']}{ver}",
 			"TRACKNUMBER": str(track_number),
 			"TRACKTOTAL": str(len(tracks)),
 			"ISRC": track["isrc"]
 		}
 		if not comment:
 			metadata.pop('COMMENT')
+		elif comment.lower() == "url":
+			metadata["COMMENT"] = albumMetadata['url']
 		date_fields = ["release_date_original", "release_date_stream", "release_date_download"]
 		date_field = 0
 		while not metadata.get("DATE"):
@@ -253,6 +263,7 @@ and you may want to report this on the GitHub with the album URL.")
 					isRes = True 
 		if isRes:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
+			return
 		temporary_filename = album_download_dir / f"{track_number}{fext}"
 		songobj = pySmartDL.SmartDL(finalurltr, str(temporary_filename))
 		songobj.headers = download_headers
@@ -277,7 +288,7 @@ and you may want to report this on the GitHub with the album URL.")
 			add_flac_tags(temporary_filename, metadata)
 			if alcovs != "-1":
 				add_flac_cover(temporary_filename, album_download_dir / 'cover.jpg')
-		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{track['title']}{fext}")
+		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{track['title']}{ver}{fext}")
 		if filename.exists():
 			os.remove(filename)
 		try:
