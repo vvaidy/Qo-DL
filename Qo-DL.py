@@ -93,7 +93,10 @@ def getAppIdAndSecret():
 		return (id_secret_match.group("app_id"), id_secret_match.group("secret"))
 
 def add_mp3_tags(filename, metadata):
-	audio = id3.ID3(filename)
+	try: 
+		audio = id3.ID3(filename)
+	except ID3NoHeaderError:
+		audio = id3.ID3()
 	# ID3 is weird about the track number and total so we have to set that manually
 	audio["TRCK"] = id3.TRCK(encoding=3, text=f"{metadata.pop('TRACKNUMBER')}/{metadata.pop('TRACKTOTAL')}")
 	legend = {
