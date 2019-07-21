@@ -152,8 +152,8 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 		albumMetadata = response.json()["album"]
 		album_url = "https://play.qobuz.com/album/" + albumMetadata["id"]
 		tracks = [response.json()]
-		if albumMetadata['version']:
-			ver = f" ({albumMetadata['version']})"
+		if tracks['version']:
+			ver = f" ({tracks[0]['version']})"
 		else:
 			ver = ""
 	else:
