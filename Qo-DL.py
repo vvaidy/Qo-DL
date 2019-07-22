@@ -210,15 +210,13 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 			"ISRC": getMetadata(track, "ISRC", "isrc")		
 			}
 		if isTrack:
-			metadata["VERSION"] = tracks[0].get("version", str())
+			ver = tracks[0].get("version", str())
 		else:
-			metadata["VERSION"] = track.get("version", str())
-		if getConfig("versionInTitle", True, "Tags") == "y" \
-		   and metadata["VERSION"] not in metadata["TITLE"] \
-		   and metadata["VERSION"]:
-			fileTitle = f"{metadata['TITLE']} ({metadata['VERSION']})"
-		else:
-			fileTitle = metadata["TITLE"]
+			ver = track.get("version", str())
+		if getConfig("versionInTitle", True, "Tags").lower() == "y" \
+		   and ver not in metadata["TITLE"] \
+		   and ver:
+			metadata['TITLE'] = f"{metadata['TITLE']} ({ver})"
 		if not comment:
 			metadata.pop('COMMENT')
 		elif comment.lower() == "url":
@@ -303,7 +301,7 @@ and you may want to report this on the GitHub with the album URL.")
 			add_flac_tags(temporary_filename, metadata)
 			if alcovs != "-1":
 				add_flac_cover(temporary_filename, album_download_dir / 'cover.jpg')
-		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{fileTitle}{fext}")
+		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{metadata['TITLE']}{fext}")
 		if filename.exists():
 			os.remove(filename)
 		try:
