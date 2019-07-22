@@ -67,6 +67,16 @@ def getConfig(option, req, section='Main'):
 	except KeyError:
 		msList2.append(option)
 
+def getMetadata(metadict, friendlyname, *keys):
+	currentVal = metadict
+	for key in keys:
+		try:
+			currentVal = currentVal[key]
+		except KeyError:
+			print(f"The API did not return a(n) {friendlyname}. Tag will be left empty.")
+			return None
+	return currentVal
+
 def sanitizeFilename(filename):
 	if getOsType():
 		return re.sub(r'[\\/:*?"><|]', '-', filename)
@@ -113,8 +123,9 @@ def add_mp3_tags(filename, metadata):
 		"ISRC": id3.TSRC
 	}
 	for tag, value in metadata.items():
-		id3tag = legend[tag]
-		audio[id3tag.__name__] = id3tag(encoding=3, text=value if value is not None else "")
+		if value:
+			id3tag = legend[tag]
+			audio[id3tag.__name__] = id3tag(encoding=3, text=value)
 	audio.save(filename, 'v2_version=3')
 	
 def getAlbumId(link):
@@ -128,7 +139,8 @@ def add_mp3_cover(filename, albumart):
 def add_flac_tags(filename, metadata):
 	audio = FLAC(filename)
 	for tag, value in metadata.items():
-		audio[tag] = value if value is not None else ""
+		if value:
+			audio[tag] = value
 	audio.save()
 
 def add_flac_cover(filename, albumart):
@@ -155,10 +167,6 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 		albumMetadata = response.json()["album"]
 		album_url = "https://play.qobuz.com/album/" + albumMetadata["id"]
 		tracks = [response.json()]
-		if tracks['version']:
-			ver = f" ({tracks[0]['version']})"
-		else:
-			ver = ""
 	else:
 		response = session.post("https://www.qobuz.com/api.json/0.2/album/get?",
 			params={
@@ -187,26 +195,30 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 	coverobj.start()
 	for track in tracks:
 		track_number = tracks.index(track) + 1
-		if track['version']:
-			ver = f" ({track['version']})"
-		else:
-			ver = ""
 		metadata = {
-			"ALBUM": albumMetadata['title'],
-			"ALBUMARTIST": albumMetadata['artist']['name'],
-			"ARTIST": track['performer']['name'],
+			"ALBUM": getMetadata(albumMetadata, "Album", "title"),
+			"ALBUMARTIST": getMetadata(albumMetadata, "Album Artist", "artist", "name"),
+			"ARTIST": getMetadata(track, "Artist", "performer", "name"),
 			"COMMENT": comment,
-			"COMPOSER": track['composer']['name']
-						if track.get("composer", False)
-						else print("The API didn't return a composer. Tag will be left empty."),
-			"COPYRIGHT": track['copyright'],
-			"GENRE": albumMetadata['genre']['name'],
-			"ORGANIZATION": albumMetadata['label']['name'],
-			"TITLE": f"{track['title']}{ver}",
+			"COMPOSER": getMetadata(track, "Composer", "composer", "name"),
+			"COPYRIGHT": getMetadata(track, "Copyright", "copyright"),
+			"GENRE": getMetadata(albumMetadata, "Genre", "genre", "name"),
+			"ORGANIZATION": getMetadata(albumMetadata, "Record Label", "label", "name"),
+			"TITLE": getMetadata(track, "Title", "title"),
 			"TRACKNUMBER": str(track_number),
 			"TRACKTOTAL": str(len(tracks)),
-			"ISRC": track["isrc"]
-		}
+			"ISRC": getMetadata(track, "ISRC", "isrc")		
+			}
+		if isTrack:
+			metadata["VERSION"] = tracks[0].get("version", str())
+		else:
+			metadata["VERSION"] = track.get("version", str())
+		if getConfig("versionInTitle", True, "Tags") == "y" \
+		   and metadata["VERSION"] not in metadata["TITLE"] \
+		   and metadata["VERSION"]:
+			fileTitle = f"{metadata['TITLE']} ({metadata['VERSION']})"
+		else:
+			fileTitle = metadata["TITLE"]
 		if not comment:
 			metadata.pop('COMMENT')
 		elif comment.lower() == "url":
@@ -291,7 +303,7 @@ and you may want to report this on the GitHub with the album URL.")
 			add_flac_tags(temporary_filename, metadata)
 			if alcovs != "-1":
 				add_flac_cover(temporary_filename, album_download_dir / 'cover.jpg')
-		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{track['title']}{ver}{fext}")
+		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{fileTitle}{fext}")
 		if filename.exists():
 			os.remove(filename)
 		try:
