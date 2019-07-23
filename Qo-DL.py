@@ -214,8 +214,8 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 		else:
 			ver = track.get("version", str())
 		if getConfig("versionInTitle", True, "Tags").lower() == "y" \
-		   and ver not in metadata["TITLE"] \
-		   and ver:
+		   and ver \
+		   and ver not in metadata["TITLE"]:
 			metadata['TITLE'] = f"{metadata['TITLE']} ({ver})"
 		if not comment:
 			metadata.pop('COMMENT')
@@ -234,9 +234,13 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 and you may want to report this on the GitHub with the album URL.")
 				metadata["DATE"] = ""
 				break
-		for field in metadata:
-			if getConfig(field, False, "Tags") == "n":
-				del metadata[field]
+		metadata_keys = [key for key in metadata.keys()]
+		for field in metadata_keys:
+			try:
+				if getConfig(field, False, "Tags").lower() == "n":
+					del metadata[field]
+			except AttributeError:
+				pass
 		if getConfig('extendedMetadata', True, 'Tags').lower() == "y" and formatId != "5":
 			performers = dict()
 			for performerItem in track["performers"].split(" - "):
