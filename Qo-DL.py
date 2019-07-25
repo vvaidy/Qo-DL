@@ -227,6 +227,9 @@ and you may want to report this on the GitHub with the album URL.")
 	coverobj.start()
 	for track in tracks:
 		track_number = str(tracks.index(track) + 1).zfill(2)
+		if not track["streamable"]:
+			print(f"Track {track_number} is restricted by right holders. Can't download.")
+			continue
 		metadata = {
 			"ARTIST": getMetadata(track, "Artist", "performer", "name"),
 			"COMPOSER": getMetadata(track, "Composer", "composer", "name"),
@@ -288,9 +291,11 @@ and you may want to report this on the GitHub with the album URL.")
 			if "restrictions" in tr:
 				if "TrackRestrictedByRightHolders" in tr['restrictions']:
 					isRes = True 
+			if 'sample' in tr and tr['sample']:
+				isRes = True
 		if isRes:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
-			return
+			continue
 		temporary_filename = album_download_dir / f"{track_number}{fext}"
 		songobj = pySmartDL.SmartDL(finalurltr, str(temporary_filename))
 		songobj.headers = download_headers
@@ -298,7 +303,7 @@ and you may want to report this on the GitHub with the album URL.")
 			albumFormat = "320kbps MP3"
 		else:
 			try:
-				albumFormat = f"{track['maximum_bit_depth']} bits / {track['maximum_sampling_rate']} kHz - {track['maximum_channel_count']} channels"
+				albumFormat = f"{tr['bit_depth']} bits / {tr['sampling_rate']} kHz - {track['maximum_channel_count']} channels"
 			except KeyError:
 				albumFormat = "Unknown" 
 		print(f"Downloading track {track_number} of {len(tracks)}: {track['title']} - {albumFormat}")
