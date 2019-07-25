@@ -103,6 +103,7 @@ def getAppIdAndSecret():
 		return (id_secret_match.group("app_id"), id_secret_match.group("secret"))
 
 def add_mp3_tags(filename, metadata):
+	metadata = metadata.copy()
 	try: 
 		audio = id3.ID3(filename)
 	except ID3NoHeaderError:
@@ -116,11 +117,11 @@ def add_mp3_tags(filename, metadata):
 		"COMMENT": id3.COMM,
 		"COMPOSER": id3.TCOM,
 		"COPYRIGHT": id3.TCOP,
-		"DATE": id3.TDAT,
 		"GENRE": id3.TCON,
 		"ORGANIZATION": id3.TPUB,
 		"TITLE": id3.TIT2,
-		"ISRC": id3.TSRC
+		"ISRC": id3.TSRC,
+		"YEAR": id3.TYER
 	}
 	for tag, value in metadata.items():
 		if value:
@@ -153,7 +154,7 @@ def add_flac_cover(filename, albumart):
 		audio.add_picture(image)
 		audio.save()
 
-def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, naming_scheme, keep_cover):
+def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate):
 	if formatId == "5":
 		fext = ".mp3"
 	else:
@@ -190,25 +191,51 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 		"referer": album_url
 	}
 	base_download_dir = Path(downloadDir)
-	album_download_dir = base_download_dir / sanitizeFilename(albumMetadata["artist"]["name"] + " - " + albumMetadata["title"])
+	parsedAlbumMetadata = {
+		"ALBUM": getMetadata(albumMetadata, "Album", "title"),
+		"ALBUMARTIST": getMetadata(albumMetadata, "Album Artist", "artist", "name"),
+		"COMMENT": comment,
+		"GENRE": getMetadata(albumMetadata, "Genre", "genre", "name"),
+		"ORGANIZATION": getMetadata(albumMetadata, "Record Label", "label", "name"),
+		"TRACKTOTAL": str(len(tracks)).zfill(2)
+	}
+	if "(" in parsedAlbumMetadata['ALBUM'] and ")" in parsedAlbumMetadata['ALBUM']:
+		changeYearBrackets = getConfig('changeYearBrackets', False, 'Main')
+		if changeYearBrackets and changeYearBrackets.lower() == "y":
+			folderTemplate = re.sub(r"([^)]*{YEAR}[^(]*)", 
+			lambda matchobj: matchobj.group(0).replace("(","[").replace(")", "]"), 
+			folderTemplate)
+	if not comment:
+		parsedAlbumMetadata.pop('COMMENT')
+	elif comment.lower() == "url":
+		parsedAlbumMetadata["COMMENT"] = albumMetadata['url']
+	date_fields = ["release_date_original", "release_date_stream", "release_date_download"]
+	date_field = 0
+	while not parsedAlbumMetadata.get("YEAR"):
+		try:
+			parsedAlbumMetadata["YEAR"] = albumMetadata[date_fields[date_field]].split("-")[0]
+		except KeyError:
+			pass
+		date_field += 1
+		if date_field == 3:
+			print("The API didn't return a year. Tag will be left empty, \
+and you may want to report this on the GitHub with the album URL.")
+			parsedAlbumMetadata["YEAR"] = ""
+			break
+	album_download_dir = base_download_dir / sanitizeFilename(folderTemplate.format(**parsedAlbumMetadata))
 	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
 	coverobj.start()
 	for track in tracks:
-		track_number = tracks.index(track) + 1
+		track_number = str(tracks.index(track) + 1).zfill(2)
 		metadata = {
-			"ALBUM": getMetadata(albumMetadata, "Album", "title"),
-			"ALBUMARTIST": getMetadata(albumMetadata, "Album Artist", "artist", "name"),
 			"ARTIST": getMetadata(track, "Artist", "performer", "name"),
-			"COMMENT": comment,
 			"COMPOSER": getMetadata(track, "Composer", "composer", "name"),
 			"COPYRIGHT": getMetadata(track, "Copyright", "copyright"),
-			"GENRE": getMetadata(albumMetadata, "Genre", "genre", "name"),
-			"ORGANIZATION": getMetadata(albumMetadata, "Record Label", "label", "name"),
 			"TITLE": getMetadata(track, "Title", "title"),
 			"TRACKNUMBER": str(track_number),
-			"TRACKTOTAL": str(len(tracks)),
 			"ISRC": getMetadata(track, "ISRC", "isrc")		
 			}
+		metadata.update(parsedAlbumMetadata)
 		if isTrack:
 			ver = tracks[0].get("version", str())
 		else:
@@ -217,23 +244,6 @@ def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, nami
 		   and ver \
 		   and ver not in metadata["TITLE"]:
 			metadata['TITLE'] = f"{metadata['TITLE']} ({ver})"
-		if not comment:
-			metadata.pop('COMMENT')
-		elif comment.lower() == "url":
-			metadata["COMMENT"] = albumMetadata['url']
-		date_fields = ["release_date_original", "release_date_stream", "release_date_download"]
-		date_field = 0
-		while not metadata.get("DATE"):
-			try:
-				metadata["DATE"] = albumMetadata[date_fields[date_field]].split("-")[0]
-			except KeyError:
-				pass
-			date_field += 1
-			if date_field == 3:
-				print("The API didn't return a date field. Tag will be left empty, \
-and you may want to report this on the GitHub with the album URL.")
-				metadata["DATE"] = ""
-				break
 		metadata_keys = [key for key in metadata.keys()]
 		for field in metadata_keys:
 			try:
@@ -305,7 +315,7 @@ and you may want to report this on the GitHub with the album URL.")
 			add_flac_tags(temporary_filename, metadata)
 			if alcovs != "-1":
 				add_flac_cover(temporary_filename, album_download_dir / 'cover.jpg')
-		filename = album_download_dir / sanitizeFilename(f"{str(track_number).zfill(2)}{naming_scheme}{metadata['TITLE']}{fext}")
+		filename = album_download_dir / sanitizeFilename(filenameTemplate.format(**metadata) + fext)
 		if filename.exists():
 			os.remove(filename)
 		try:
@@ -420,7 +430,7 @@ def init():
 	cwd = os.getcwd()
 	currentVer = "r5c"
 	ssl._create_default_https_context = ssl._create_unverified_context
-	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "namingScheme", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates"]
+	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates", "folderTemplate", "filenameTemplate"]
 	try:
 		if sys.argv[1]:
 			cline = True
@@ -491,14 +501,6 @@ def init():
 				downloadDir = getConfig('downloadDir', False, 'Main')
 			if args.list:
 				txtFilename = args.list
-			if args.s:
-				naming_scheme = args.s
-			else:
-				naming_scheme = getConfig('namingScheme', True, 'Main')
-			if naming_scheme == "1":
-				fp = ". "
-			elif naming_scheme == "2":
-				fp = " - "
 			if args.k:
 				keepCover = args.k
 			else:
@@ -517,13 +519,8 @@ def init():
 		formatId = getConfig('formatId', True, 'Main')
 		cover_size = getConfig('coverSize', True, 'Main')
 		downloadDir = getConfig('downloadDir', False, 'Main')	
-		naming_scheme = getConfig('namingScheme', True, 'Main')
 		keepCover = getConfig('keepCover', True, 'Main')
-		comment = getConfig('comment', False, 'Tags')			
-		if naming_scheme == "1":
-			fp = ". "
-		elif naming_scheme == "2":
-			fp = " - "
+		comment = getConfig('comment', False, 'Tags')
 		if formatId == "5":
 			fext = ".mp3"
 		else:
@@ -544,6 +541,8 @@ def init():
 	skipPwHashCheck = getConfig('skipPwHashCheck', True, 'Main')
 	proxy = getConfig('proxy', False, 'Main')
 	checkForUpdates = getConfig('checkForUpdates', True, 'Main')
+	filenameTemplate = getConfig('filenameTemplate', True, 'Main')
+	folderTemplate = getConfig('folderTemplate', True, 'Main')
 	if checkForUpdates.lower() == "y":
 		update(currentVer)
 	if msList2:
@@ -700,7 +699,7 @@ def init():
 			session.proxies.update({
 				"https":str(proxy)
 			})
-		rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, fp, keepCover)
+		rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
 		if listStatus == "ND":
 			print("Moving onto next item in list...")
 			time.sleep(1)
