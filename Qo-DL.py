@@ -130,7 +130,7 @@ def add_mp3_tags(filename, metadata):
 	audio.save(filename, 'v2_version=3')
 	
 def getAlbumId(link):
-	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track|artist)/|[a-z]{2}-[a-z]{2}/album/\w+(?:-\w+)*/)(\w+)", link).group(1)
+	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track|artist)/|[a-z]{2}-[a-z]{2}/album/-?\w+(?:-\w+)*-?/)(\w+)", link).group(1)
 
 def add_mp3_cover(filename, albumart):
 	audio = id3.ID3(filename)
