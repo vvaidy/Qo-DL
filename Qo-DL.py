@@ -130,7 +130,7 @@ def add_mp3_tags(filename, metadata):
 	audio.save(filename, 'v2_version=3')
 	
 def getAlbumId(link):
-	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track)/|[a-z]{2}-[a-z]{2}/album/\w+(?:-\w+)*/)(\w+)", link).group(1)
+	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track|artist)/|[a-z]{2}-[a-z]{2}/album/\w+(?:-\w+)*/)(\w+)", link).group(1)
 
 def add_mp3_cover(filename, albumart):
 	audio = id3.ID3(filename)
@@ -154,7 +154,21 @@ def add_flac_cover(filename, albumart):
 		audio.add_picture(image)
 		audio.save()
 
-def rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate):
+def artistGetReq(appId, album_id):
+	response = session.post("http://www.qobuz.com/api.json/0.2/artist/get?",
+		params={
+			"app_id": appId,
+			"artist_id": album_id,
+			"extra": "albums"
+			},
+		)
+	if response.status_code == 200:
+		return response.json()
+	else:
+		print(f"Failed to fetch artist metadata. Response from API: {response.text}")
+		osCommands('pause')
+
+def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate):
 	if formatId == "5":
 		fext = ".mp3"
 	else:
@@ -225,7 +239,15 @@ and you may want to report this on the GitHub with the album URL.")
 	album_download_dir = base_download_dir / sanitizeFilename(folderTemplate.format(**parsedAlbumMetadata))
 	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
 	coverobj.start()
+	if isDiscog:
+		print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}\n')		
 	for track in tracks:
+		if isTrack:
+			ver = tracks[0].get("version", str())
+			if not isDiscog:
+				print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")} ({ver})\n')
+		else:
+			ver = track.get("version", str())
 		track_number = str(tracks.index(track) + 1).zfill(2)
 		if not track["streamable"]:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
@@ -239,10 +261,6 @@ and you may want to report this on the GitHub with the album URL.")
 			"ISRC": getMetadata(track, "ISRC", "isrc")		
 			}
 		metadata.update(parsedAlbumMetadata)
-		if isTrack:
-			ver = tracks[0].get("version", str())
-		else:
-			ver = track.get("version", str())
 		if getConfig("versionInTitle", True, "Tags").lower() == "y" \
 		   and ver \
 		   and ver not in metadata["TITLE"]:
@@ -670,6 +688,7 @@ def init():
 								except AttributeError:
 									print(f"Invalid URL {album_url}, skipping...")
 								isTrack = "/track/" in album_url # could be better, but does it really matter?
+								isDiscog = "/artist/" in album_url
 							listStatus = "D"						
 					else:
 						print(f"Specified text file {txtFilename} doesn't exist. Exiting...")
@@ -700,11 +719,22 @@ def init():
 					osCommands('clear')
 					continue
 				isTrack = "/track/" in album_url
+				isDiscog = "/artist/" in album_url
 		if useProxy == "y":
 			session.proxies.update({
 				"https":str(proxy)
 			})
-		rip(album_id, isTrack, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
+		if isDiscog:
+			artistGetReqJ = artistGetReq(appId, album_id)
+			print(f"{artistGetReqJ['name']} discography - {artistGetReqJ['albums_count']} albums")
+			ids = [x['id'] for x in artistGetReqJ['albums']['items']]
+			for album_id in ids:
+				try:
+					rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
+				except KeyboardInterrupt:
+					print("Album skipped.\n")
+		else:
+			rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
 		if listStatus == "ND":
 			print("Moving onto next item in list...")
 			time.sleep(1)
