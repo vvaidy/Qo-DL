@@ -168,7 +168,7 @@ def artistGetReq(appId, album_id):
 		print(f"Failed to fetch artist metadata. Response from API: {response.text}")
 		osCommands('pause')
 
-def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate):
+def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate, i, albumTotal):
 	if formatId == "5":
 		fext = ".mp3"
 	else:
@@ -240,12 +240,14 @@ and you may want to report this on the GitHub with the album URL.")
 	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
 	coverobj.start()
 	if isDiscog:
-		print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}\n')		
+		print(f'\nAlbum {i} of {albumTotal}: {getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}:')
+	elif not isTrack:
+		print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}:')
 	for track in tracks:
 		if isTrack:
 			ver = tracks[0].get("version", str())
 			if not isDiscog:
-				print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")} ({ver})\n')
+				print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")} ({ver}):')
 		else:
 			ver = track.get("version", str())
 		track_number = str(tracks.index(track) + 1).zfill(2)
@@ -323,8 +325,16 @@ and you may want to report this on the GitHub with the album URL.")
 			try:
 				albumFormat = f"{tr['bit_depth']} bits / {tr['sampling_rate']} kHz - {track['maximum_channel_count']} channels"
 			except KeyError:
-				albumFormat = "Unknown" 
-		print(f"Downloading track {track_number} of {len(tracks)}: {track['title']} - {albumFormat}")
+				albumFormat = "Unknown"
+		if len(tracks) > 10:
+			trTot = len(tracks)
+		else:
+			trTot = f"0{len(tracks)}"
+		if ver:
+			print(f"Downloading track {track_number} of {trTot}: {track['title']} ({ver}) - {albumFormat}")
+		else:
+			print(f"Downloading track {track_number} of {trTot}: {track['title']} - {albumFormat}")
+
 		songobj.start()
 		if alcovs != "-1":
 			albumArt = (album_download_dir / "cover.jpg").open(mode='rb').read()
@@ -351,7 +361,6 @@ and you may want to report this on the GitHub with the album URL.")
 				os.remove(album_download_dir / "cover.jpg")
 		else:
 			os.rename(album_download_dir / "cover.jpg", album_download_dir / "folder.jpg")
-
 	if "goodies" in albumMetadata:
 		if albumMetadata["goodies"][0]["file_format_id"] == 21:
 			print("Booklet available, downloading...")
@@ -728,13 +737,12 @@ def init():
 			artistGetReqJ = artistGetReq(appId, album_id)
 			print(f"{artistGetReqJ['name']} discography - {artistGetReqJ['albums_count']} albums")
 			ids = [x['id'] for x in artistGetReqJ['albums']['items']]
+			i = 0
 			for album_id in ids:
-				try:
-					rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
-				except KeyboardInterrupt:
-					print("Album skipped.\n")
+				i += 1
+				rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, i, artistGetReqJ['albums_count'])
 		else:
-			rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
+			rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, "", "")
 		if listStatus == "ND":
 			print("Moving onto next item in list...")
 			time.sleep(1)
