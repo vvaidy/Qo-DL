@@ -121,7 +121,7 @@ def add_mp3_tags(filename, metadata):
 		"ORGANIZATION": id3.TPUB,
 		"TITLE": id3.TIT2,
 		"ISRC": id3.TSRC,
-		"YEAR": id3.TYER
+		"DATE": id3.TYER
 	}
 	for tag, value in metadata.items():
 		if value:
@@ -263,6 +263,7 @@ and you may want to report this on the GitHub with the album URL.")
 			"ISRC": getMetadata(track, "ISRC", "isrc")		
 			}
 		metadata.update(parsedAlbumMetadata)
+		metadata["DATE"] = metadata.pop("YEAR")
 		if getConfig("versionInTitle", True, "Tags").lower() == "y" \
 		   and ver \
 		   and ver not in metadata["TITLE"]:
