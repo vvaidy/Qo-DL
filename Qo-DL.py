@@ -141,7 +141,8 @@ def add_flac_tags(filename, metadata):
 	audio = FLAC(filename)
 	for tag, value in metadata.items():
 		if value:
-			audio[tag] = value
+			# removing control characters; qobuz likes to put carriage returns in their extended metadata
+			audio[tag] = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', value)
 	audio.save()
 
 def add_flac_cover(filename, albumart):
@@ -168,7 +169,7 @@ def artistGetReq(appId, album_id):
 		print(f"Failed to fetch artist metadata. Response from API: {response.text}")
 		osCommands('pause')
 
-def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate, i, albumTotal):
+def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate, albumNumber, albumTotal):
 	if formatId == "5":
 		fext = ".mp3"
 	else:
@@ -240,7 +241,7 @@ and you may want to report this on the GitHub with the album URL.")
 	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
 	coverobj.start()
 	if isDiscog:
-		print(f'\nAlbum {i} of {albumTotal}: {getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}:')
+		print(f'\nAlbum {albumNumber} of {albumTotal}: {getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}:')
 	elif not isTrack:
 		print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}:')
 	for track in tracks:
