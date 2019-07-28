@@ -317,8 +317,7 @@ and you may want to report this on the GitHub with the album URL.")
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
 			continue
 		temporary_filename = album_download_dir / f"{track_number}{fext}"
-		songobj = pySmartDL.SmartDL(finalurltr, str(temporary_filename))
-		songobj.headers = download_headers
+		songobj = pySmartDL.SmartDL(finalurltr, str(temporary_filename), request_args={"headers": download_headers})
 		if formatId == "5":
 			albumFormat = "320kbps MP3"
 		else:
