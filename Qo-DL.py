@@ -286,7 +286,7 @@ and you may want to report this on the GitHub with the album URL.")
 		if not isPlist:
 			track_number = str(tracks.index(track) + 1).zfill(2)
 		else:
-			track_number = str(i).zfill(2)
+			track_number = str(albumNumber).zfill(2)
 		if not track["streamable"]:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
 			continue
