@@ -175,7 +175,7 @@ def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloa
 	else:
 		fext = ".flac"
 	if isTrack:
-		response = session.post("https://www.qobuz.com/api.json/0.2/track/get?",
+		response = session.get("https://www.qobuz.com/api.json/0.2/track/get?",
 			params={
 				"track_id": album_id,
 			},
@@ -184,14 +184,24 @@ def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloa
 		album_url = "https://play.qobuz.com/album/" + albumMetadata["id"]
 		tracks = [response.json()]
 	else:
-		response = session.post("https://www.qobuz.com/api.json/0.2/album/get?",
+		response = session.get("https://www.qobuz.com/api.json/0.2/album/get?",
 			params={
 				"album_id": album_id,
 			},
 		)
 		album_url = "https://play.qobuz.com/album/" + album_id
 		albumMetadata = response.json()
-		tracks = [track for track in albumMetadata["tracks"]["items"]]
+		if albumMetadata.get("code") == 404 or not albumMetadata["streamable"]:
+			print("Album does not appear to be streamable, and so we cannot download it. Try searching the album name on the web player \
+and if it's available, use the link there. Otherwise, you may be able to use a proxy or VPN to another region.")
+			time.sleep(5)
+			return
+		try:
+			tracks = [track for track in albumMetadata["tracks"]["items"]]
+		except KeyError:
+			print("Could not fetch track information. This usually means that the album (or track if you put in one) is unavailable for your region. Please use a proxy or a VPN in another region \
+or search the album name on the web player and use the link there.")
+		return
 	if alcovs == "3":
 		album_cover_url = albumMetadata["image"]["large"][:-7] + "max.jpg"
 	elif alcovs == "-1":
@@ -457,8 +467,6 @@ def init():
 	global msList
 	global msList2
 	global msList3
-	lin = int(0)
-	lin2 = int(-1)
 	listStatus = ""
 	cwd = os.getcwd()
 	currentVer = "r5c"
@@ -554,10 +562,6 @@ def init():
 		downloadDir = getConfig('downloadDir', False, 'Main')	
 		keepCover = getConfig('keepCover', True, 'Main')
 		comment = getConfig('comment', False, 'Tags')
-		if formatId == "5":
-			fext = ".mp3"
-		else:
-			fext = ".flac"		
 		if cover_size == "0":
 			alcovs = "thumbnail"
 		elif cover_size == "1":
@@ -618,7 +622,6 @@ def init():
 			print("You have useProxy enabled, but didn't provide a proxy. Exiting...")
 			time.sleep(3)
 			sys.exit(1)
-	timeunx = int(time.time())
 	global session
 	session = requests.Session()
 	session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"})
@@ -721,6 +724,7 @@ def init():
 					isTrack = "/track/" in album_url
 			except NameError:
 				album_url = input("Input Qobuz Player or Qobuz store URL:")
+				session.headers.update({"Referer": album_url})
 				try:
 					album_id = getAlbumId(album_url)
 				except IndexError:
@@ -754,8 +758,6 @@ def init():
 			time.sleep(1)
 			sys.exit()
 		print("Returning to URL input screen...")
-		lin = int(0)
-		lin2 = int(-1)
 		listStatus = ""
 		time.sleep(1)
 		osCommands('clear')
