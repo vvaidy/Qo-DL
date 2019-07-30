@@ -201,7 +201,8 @@ and if it's available, use the link there. Otherwise, you may be able to use a p
 		except KeyError:
 			print("Could not fetch track information. This usually means that the album (or track if you put in one) is unavailable for your region. Please use a proxy or a VPN in another region \
 or search the album name on the web player and use the link there.")
-		return
+			time.sleep(5)
+			return
 	if alcovs == "3":
 		album_cover_url = albumMetadata["image"]["large"][:-7] + "max.jpg"
 	elif alcovs == "-1":
@@ -337,10 +338,7 @@ and you may want to report this on the GitHub with the album URL.")
 				albumFormat = f"{tr['bit_depth']} bits / {tr['sampling_rate']} kHz - {track['maximum_channel_count']} channels"
 			except KeyError:
 				albumFormat = "Unknown"
-		if len(tracks) > 10:
-			trTot = len(tracks)
-		else:
-			trTot = f"0{len(tracks)}"
+		trTot = str(len(tracks)).zfill(2)
 		if ver:
 			print(f"Downloading track {track_number} of {trTot}: {track['title']} ({ver}) - {albumFormat}")
 		else:
@@ -467,7 +465,6 @@ def init():
 	global msList
 	global msList2
 	global msList3
-	listStatus = ""
 	cwd = os.getcwd()
 	currentVer = "r5c"
 	ssl._create_default_https_context = ssl._create_unverified_context
@@ -625,6 +622,10 @@ def init():
 	global session
 	session = requests.Session()
 	session.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0"})
+	if useProxy == "y":
+		session.proxies.update({
+			"https":str(proxy)
+		})
 	responset0 = session.post("https://www.qobuz.com/api.json/0.2/user/login?",
 		params={
 			"email": email,
@@ -691,10 +692,10 @@ def init():
 				if txtFilename:
 					if not os.path.isfile('config.ini'):
 						os.chdir(cwd)
-					if os.path.isfile(txtFilename):
+					try:
 						with open(txtFilename) as fin:
-							for line in fin:
-								listStatus = "ND"
+							lines = [line for line in fin]
+							for line in lines:
 								album_url = line.strip()
 								try:
 									album_id = getAlbumId(album_url)
@@ -702,42 +703,43 @@ def init():
 									print(f"Invalid URL {album_url}, skipping...")
 								isTrack = "/track/" in album_url # could be better, but does it really matter?
 								isDiscog = "/artist/" in album_url
-							listStatus = "D"						
-					else:
+								rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, "", "")
+								if not lines.index(line) == len(lines) - 1: # don't want to say we're moving on at the end	
+									print("Moving onto next item in list...")
+									time.sleep(1)
+									osCommands('clear')
+							print("Finished list. Exiting...")
+							time.sleep(1)
+							sys.exit()
+					except FileNotFoundError:
 						print(f"Specified text file {txtFilename} doesn't exist. Exiting...")
 						time.sleep(2)
 						sys.exit(1)
 			except NameError:
 				pass
-		if not listStatus or listStatus == "ND":
-			try:
-				if args.url:
-					album_url = args.url
-					listStatus = "D"
-					try:
-						album_id = getAlbumId(album_url)
-					except:
-						print("Invalid URL. Exiting...")
-						time.sleep(1)
-						osCommands('clear')
-						sys.exit(1)
-					isTrack = "/track/" in album_url
-			except NameError:
-				album_url = input("Input Qobuz Player or Qobuz store URL:")
-				session.headers.update({"Referer": album_url})
+		try:
+			if args.url:
+				album_url = args.url
 				try:
 					album_id = getAlbumId(album_url)
-				except IndexError:
-					print("Invalid URL. Returning to URL input screen...")
+				except:
+					print("Invalid URL. Exiting...")
 					time.sleep(1)
 					osCommands('clear')
-					continue
+					sys.exit(1)
 				isTrack = "/track/" in album_url
-				isDiscog = "/artist/" in album_url
-		if useProxy == "y":
-			session.proxies.update({
-				"https":str(proxy)
-			})
+				isDiscog = "/artist" in album_url
+		except NameError:
+			album_url = input("Input Qobuz Player or Qobuz store URL:")
+			try:
+				album_id = getAlbumId(album_url)
+			except IndexError:
+				print("Invalid URL. Returning to URL input screen...")
+				time.sleep(1)
+				osCommands('clear')
+				continue
+			isTrack = "/track/" in album_url
+			isDiscog = "/artist/" in album_url
 		if isDiscog:
 			artistGetReqJ = artistGetReq(appId, album_id)
 			print(f"{artistGetReqJ['name']} discography - {artistGetReqJ['albums_count']} albums")
@@ -748,17 +750,7 @@ def init():
 				rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, i, artistGetReqJ['albums_count'])
 		else:
 			rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, "", "")
-		if listStatus == "ND":
-			print("Moving onto next item in list...")
-			time.sleep(1)
-			osCommands('clear')
-			continue
-		elif listStatus == "D":
-			print("Exiting...")
-			time.sleep(1)
-			sys.exit()
 		print("Returning to URL input screen...")
-		listStatus = ""
 		time.sleep(1)
 		osCommands('clear')
 
