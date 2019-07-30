@@ -130,7 +130,7 @@ def add_mp3_tags(filename, metadata):
 	audio.save(filename, 'v2_version=3')
 	
 def getAlbumId(link):
-	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track|artist)/|[a-z]{2}-[a-z]{2}/album/\w+(?:-\w+)*/)(\w+)", link).group(1)
+	return re.match(r"https?://(?:w{0,3}|play|open)\.qobuz\.com/(?:(?:album|track|artist|playlist)/|[a-z]{2}-[a-z]{2}/album/\w+(?:-\w+)*/)(\w+)", link).group(1)
 
 def add_mp3_cover(filename, albumart):
 	audio = id3.ID3(filename)
@@ -154,7 +154,7 @@ def add_flac_cover(filename, albumart):
 		audio.add_picture(image)
 		audio.save()
 
-def artistGetReq(appId, album_id):
+def fetchArtistMeta(appId, album_id):
 	response = session.post("http://www.qobuz.com/api.json/0.2/artist/get?",
 		params={
 			"app_id": appId,
@@ -168,7 +168,22 @@ def artistGetReq(appId, album_id):
 		print(f"Failed to fetch artist metadata. Response from API: {response.text}")
 		osCommands('pause')
 
-def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate, i, albumTotal):
+def fetchPlistMeta(appId, id):
+	response = session.post("https://www.qobuz.com/api.json/0.2/playlist/get?",
+		params={
+			"app_id": appId,
+			"extra": "tracks",
+			"playlist_id": id,
+			"limit": "500",
+		}
+	)
+	if response.status_code == 200:
+		return response.json()	
+	else:
+		print(f"Failed to fetch playlist metadata. Response from API: {response.text}")
+		osCommands('pause')
+
+def rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate, i, albumTotal):
 	if formatId == "5":
 		fext = ".mp3"
 	else:
@@ -211,8 +226,11 @@ def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloa
 		"COMMENT": comment,
 		"GENRE": getMetadata(albumMetadata, "Genre", "genre", "name"),
 		"ORGANIZATION": getMetadata(albumMetadata, "Record Label", "label", "name"),
-		"TRACKTOTAL": str(len(tracks)).zfill(2)
 	}
+	if isPlist:			
+		parsedAlbumMetadata['TRACKTOTAL'] = str(albumTotal).zfill(2)
+	else:
+		parsedAlbumMetadata['TRACKTOTAL'] = str(len(tracks)).zfill(2)
 	if "(" in parsedAlbumMetadata['ALBUM'] and ")" in parsedAlbumMetadata['ALBUM']:
 		changeYearBrackets = getConfig('changeYearBrackets', False, 'Main')
 		if changeYearBrackets and changeYearBrackets.lower() == "y":
@@ -236,7 +254,10 @@ def rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloa
 and you may want to report this on the GitHub with the album URL.")
 			parsedAlbumMetadata["YEAR"] = ""
 			break
-	album_download_dir = base_download_dir / sanitizeFilename(folderTemplate.format(**parsedAlbumMetadata))
+	if not isPlist:
+		album_download_dir = base_download_dir / sanitizeFilename(folderTemplate.format(**parsedAlbumMetadata))
+	else:
+		album_download_dir = base_download_dir
 	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
 	coverobj.start()
 	if isDiscog:
@@ -246,11 +267,14 @@ and you may want to report this on the GitHub with the album URL.")
 	for track in tracks:
 		if isTrack:
 			ver = tracks[0].get("version", str())
-			if not isDiscog:
+			if not isDiscog and not isPlist:
 				print(f'\n{getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")} ({ver}):')
 		else:
 			ver = track.get("version", str())
-		track_number = str(tracks.index(track) + 1).zfill(2)
+		if not isPlist:
+			track_number = str(tracks.index(track) + 1).zfill(2)
+		else:
+			track_number = str(i).zfill(2)
 		if not track["streamable"]:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
 			continue
@@ -260,7 +284,7 @@ and you may want to report this on the GitHub with the album URL.")
 			"COPYRIGHT": getMetadata(track, "Copyright", "copyright"),
 			"TITLE": getMetadata(track, "Title", "title"),
 			"TRACKNUMBER": str(track_number),
-			"ISRC": getMetadata(track, "ISRC", "isrc")		
+			"ISRC": getMetadata(track, "ISRC", "isrc")
 			}
 		metadata.update(parsedAlbumMetadata)
 		if getConfig("versionInTitle", True, "Tags").lower() == "y" \
@@ -325,16 +349,18 @@ and you may want to report this on the GitHub with the album URL.")
 			try:
 				albumFormat = f"{tr['bit_depth']} bits / {tr['sampling_rate']} kHz - {track['maximum_channel_count']} channels"
 			except KeyError:
-				albumFormat = "Unknown"
-		if len(tracks) > 10:
-			trTot = len(tracks)
+				albumFormat = "Unknown"		
+		if not isPlist:
+			if len(tracks) > 10:
+				trTot = len(tracks)
+			else:
+				trTot = f"0{len(tracks)}"
 		else:
-			trTot = f"0{len(tracks)}"
+			trTot = albumTotal
 		if ver:
 			print(f"Downloading track {track_number} of {trTot}: {track['title']} ({ver}) - {albumFormat}")
 		else:
 			print(f"Downloading track {track_number} of {trTot}: {track['title']} - {albumFormat}")
-
 		songobj.start()
 		if alcovs != "-1":
 			albumArt = (album_download_dir / "cover.jpg").open(mode='rb').read()
@@ -361,13 +387,14 @@ and you may want to report this on the GitHub with the album URL.")
 				os.remove(album_download_dir / "cover.jpg")
 		else:
 			os.rename(album_download_dir / "cover.jpg", album_download_dir / "folder.jpg")
-	if "goodies" in albumMetadata:
-		if albumMetadata["goodies"][0]["file_format_id"] == 21:
-			print("Booklet available, downloading...")
-			bookletobj = pySmartDL.SmartDL(albumMetadata["goodies"][0]["original_url"], str(album_download_dir / "booklet.pdf"))
-			bookletobj.headers = download_headers
-			bookletobj.start()
-		
+	if not isPlist:
+		if "goodies" in albumMetadata:
+			if albumMetadata["goodies"][0]["file_format_id"] == 21:
+				print("Booklet available, downloading...")
+				bookletobj = pySmartDL.SmartDL(albumMetadata["goodies"][0]["original_url"], str(album_download_dir / "booklet.pdf"))
+				bookletobj.headers = download_headers
+				bookletobj.start()
+
 def getOsType():
 	osPlatform = platform.system()
 	if osPlatform == 'Windows':
@@ -698,6 +725,7 @@ def init():
 									print(f"Invalid URL {album_url}, skipping...")
 								isTrack = "/track/" in album_url # could be better, but does it really matter?
 								isDiscog = "/artist/" in album_url
+								isPlist = "/playlist/" in album_url
 							listStatus = "D"						
 					else:
 						print(f"Specified text file {txtFilename} doesn't exist. Exiting...")
@@ -718,6 +746,8 @@ def init():
 						osCommands('clear')
 						sys.exit(1)
 					isTrack = "/track/" in album_url
+					isDiscog = "/artist/" in album_url
+					isPlist = "/playlist/" in album_url
 			except NameError:
 				album_url = input("Input Qobuz Player or Qobuz store URL:")
 				try:
@@ -729,20 +759,36 @@ def init():
 					continue
 				isTrack = "/track/" in album_url
 				isDiscog = "/artist/" in album_url
+				isPlist = "/playlist/" in album_url
 		if useProxy == "y":
 			session.proxies.update({
 				"https":str(proxy)
 			})
 		if isDiscog:
-			artistGetReqJ = artistGetReq(appId, album_id)
-			print(f"{artistGetReqJ['name']} discography - {artistGetReqJ['albums_count']} albums")
-			ids = [x['id'] for x in artistGetReqJ['albums']['items']]
+			artistMetaJ = fetchArtistMeta(appId, album_id)
+			print(f"{artistMetaJ['name']} discography - {artistMetaJ['albums_count']} albums")
+			ids = [x['id'] for x in artistMetaJ['albums']['items']]
 			i = 0
 			for album_id in ids:
 				i += 1
-				rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, i, artistGetReqJ['albums_count'])
+				rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, i, artistMetaJ['albums_count'])
+		elif isPlist: 
+			plistMetaJ = fetchPlistMeta(appId, album_id)
+			if not plistMetaJ['is_public']:
+				print("Playlist is not public. If you are the owner of it, please make it public.")
+				osCommands('pause')
+			if plistMetaJ['tracks_count'] > 500:
+				print("Support for playlists with more than 500 tracks coming soon.")
+				osCommands('pause')				
+			downloadDir += '/' + sanitizeFilename(f"{plistMetaJ['owner']['name']} - {plistMetaJ['name']}")
+			print(f"{plistMetaJ['owner']['name']} - {plistMetaJ['name']}\n")		
+			ids = [x['id'] for x in plistMetaJ['tracks']['items']]
+			i = 0
+			for album_id in ids:
+				i += 1
+				rip(album_id, True, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, "n", folderTemplate, filenameTemplate, i, plistMetaJ['tracks_count'])
 		else:
-			rip(album_id, isTrack, isDiscog, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, "", "")
+			rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, "", "")
 		if listStatus == "ND":
 			print("Moving onto next item in list...")
 			time.sleep(1)
