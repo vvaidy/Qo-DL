@@ -1,7 +1,7 @@
 # Qo-DL
 Tool written in Python to download MP3s & FLACs from Qobuz.
 
-Please [join our Discord server](https://discord.gg/YhFcgbB). We're experimenting with bots :).
+Please [join our Discord server](https://discord.gg/2WGqT7B). We're experimenting with bots :).
 
 [Pre-compiled binaries.](https://github.com/Sorrow446/Qo-DL/releases)
 
