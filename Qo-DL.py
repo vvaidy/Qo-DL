@@ -720,7 +720,7 @@ def init():
 				sys.exit()
 			try:
 				album_id = getAlbumId(album_url)
-			except IndexError:
+			except AttributeError:
 				print("Invalid URL. Returning to URL input screen...")
 				time.sleep(1)
 				osCommands('clear')
