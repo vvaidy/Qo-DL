@@ -1,6 +1,6 @@
 Sorrow446によって和訳されました。不完全です。
 # Qo-DL
-QobuzからトラックをダウンロードするためにPythonで書かれましたツールです。  
+QobuzからトラックをダウンロードするためにPythonで書かれたツールです。  
 私達の[Discord（ディスコード）のサーバ](https://discord.gg/2WGqT7B)を自由に参加してください。bot（ボット）を実験しています。
 
 [こちら](https://github.com/Sorrow446/Qo-DL/releases)はコンパイルされたバイナリです。
