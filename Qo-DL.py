@@ -15,6 +15,7 @@ import shutil
 import hashlib
 import pathlib
 import argparse
+import traceback
 import datetime
 import platform
 import configparser
@@ -713,7 +714,10 @@ def init():
 				isDiscog = "/artist" in album_url
 				isPlist = "/playlist/" in album_url
 		except NameError:
-			album_url = input("Input Qobuz Player or Qobuz store URL:")
+			try:
+				album_url = input("Input Qobuz Player or Qobuz store URL:")
+			except KeyboardInterrupt:
+				sys.exit()
 			try:
 				album_id = getAlbumId(album_url)
 			except IndexError:
@@ -754,4 +758,9 @@ def init():
 		osCommands('clear')
 
 if __name__ == '__main__':
-	init()
+	try:
+		init()
+	except:
+		traceback.print_exc()
+		input("\nAn exception has occurred. Press enter to exit.")
+		sys.exit()
