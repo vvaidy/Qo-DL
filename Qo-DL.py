@@ -417,56 +417,10 @@ def update(currentVer):
 		latestVer = requests.get("https://thoas.feralhosting.com/sorrow/Qobuz-DL/latestVersion.txt").text.lower()
 	except:
 		print("Failed to check for update.\n")
-	if latestVer != currentVer:
-		q = None
-		while q not in ("y", "n"):
-			q = input(f"New version is available: {latestVer}. You have {currentVer}. Update now? [y/n]").lower()
-			if q != "y" or q != "n":
-				osCommands('clear')
-		if q == "y":
-			filename = sys.argv[0]
-			if "x64" in filename and "OSX" in filename:
-				arch = "OSX_x64"
-			elif "x86" in filename and "OSX" in filename:
-				arch = "OSX_x86"
-			elif "x64" in filename and "Lin" in filename:
-				arch = "Lin_x64"
-			elif "x86" in filename and "Lin" in filename:
-				arch = "Lin_x86"	
-			elif "x86" in filename and "Win" in filename:
-				arch = "Win_x86.exe"
-			elif "x64" in filename and "Win" in filename:
-				arch = "Win_x64.exe"
-			elif ".py" in filename:
-				arch = ".py"
-			else:
-				print("Cannot determine version: did you rename Qo-DL? If so, please rename it back or download the latest version from the Releases tab on GitHub.")
-				time.sleep(5)
-				sys.exit()
-			if os.path.isdir(f"Qo-DL_{arch}_{latestVer}"):
-				shutil.rmtree(f"Qo-DL_{arch}_{latestVer}")
-			os.mkdir(f"Qo-DL_{arch}_{latestVer}")
-			os.chdir(f"Qo-DL_{arch}_{latestVer}")
-			latestInfo = requests.get("http://sorrow.thoas.feralhosting.com/Qobuz-DL/versionLinks.json").json()
-			latestBuildURL = latestInfo[arch]
-			latestConfigURL = latestInfo["config"]
-			print(f"Downloading Qo-DL_{arch}...")
-			latestBuild = pySmartDL.SmartDL(latestBuildURL, f"./Qo-DL_{arch}")
-			latestBuild.start()
-			print("Downloading config file...")
-			latestConfig = pySmartDL.SmartDL(latestConfigURL, f"./config.ini")
-			latestConfig.start()
-			if arch == ".py":
-				print("Downloading requirements.txt...")
-				latestRequirementsURL = latestInfo["requirements"]
-				latestRequirements = pySmartDL.SmartDL(latestRequirementsURL, f"./requirements.txt")
-				latestRequirements.start()
-			os.chdir('..')
-			print(f"Done. Updated build can be found in the 'Qo-DL_{arch}_{latestVer}' folder. Make sure to re-fill config.ini \nExiting...")
-			time.sleep(3)
-			sys.exit()
-		else:
-			return
+	if latestVer != currentVer.lower():
+		print("There is a new version of Qo-DL available. Please download the new binary and config file from https://github.com/Sorrow446/Qo-DL/releases .")
+	else:
+		return
 
 def osCommands(a):
 	if a == "pause":
