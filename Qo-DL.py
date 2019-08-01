@@ -401,8 +401,7 @@ and you may want to report this on the GitHub with the album URL.")
 		if "goodies" in albumMetadata:
 			if albumMetadata["goodies"][0]["file_format_id"] == 21:
 				print("Booklet available, downloading...")
-				bookletobj = pySmartDL.SmartDL(albumMetadata["goodies"][0]["original_url"], str(album_download_dir / "booklet.pdf"))
-				bookletobj.headers = download_headers
+				bookletobj = pySmartDL.SmartDL(albumMetadata["goodies"][0]["original_url"], str(album_download_dir / "booklet.pdf"), request_args={"headers": download_headers})
 				bookletobj.start()
 
 def getOsType():
