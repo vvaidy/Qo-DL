@@ -246,9 +246,6 @@ or search the album name on the web player and use the link there.")
 			parsedAlbumMetadata['TRACKTOTAL'] = str(albumTotal).zfill(2)
 	else:
 		parsedAlbumMetadata['TRACKTOTAL'] = str(len(tracks)).zfill(2)
-		
-		
-	
 	if "(" in parsedAlbumMetadata['ALBUM'] and ")" in parsedAlbumMetadata['ALBUM']:
 		changeYearBrackets = getConfig('changeYearBrackets', False, 'Main')
 		if changeYearBrackets and changeYearBrackets.lower() == "y":
@@ -323,12 +320,15 @@ and you may want to report this on the GitHub with the album URL.")
 					del metadata[field]
 			except AttributeError:
 				pass
-		if getConfig('extendedMetadata', True, 'Tags').lower() == "y" and formatId != "5":
+		if getConfig('extendedMetadata', True, 'Tags').lower() == "y" and formatId != "5" and "performers" in track:
 			performers = dict()
 			# removing control characters; qobuz likes to put carriage returns in their extended metadata
 			qobuzPerformers = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', track["performers"])
 			for performerItem in qobuzPerformers.split(" - "):
-				person, role = performerItem.split(", ")[:2]
+				if len(performerItem.split(", ")[:2]) >= 2:
+					person, role = performerItem.split(", ")[:2]
+				else:
+					continue
 				role = role.upper()
 				if role != "UNKNOWN":
 					if performers.get(role, False):
