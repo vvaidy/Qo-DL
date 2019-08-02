@@ -1,14 +1,13 @@
+Sorrow446によって和訳されました。不完全です。
 # Qo-DL
-Tool written in Python to download MP3s & FLACs from Qobuz.
+QobuzからトラックをダウンロードするためにPythonで書かれたツールです。  
+私達の[Discord（ディスコード）のサーバ](https://discord.gg/2WGqT7B)を自由に参加してください。bot（ボット）を実験しています。
 
-Please [join our Discord server](https://discord.gg/2WGqT7B). We're experimenting with bots :).
+[こちら](https://github.com/Sorrow446/Qo-DL/releases)はコンパイルされたバイナリです。
 
-[Pre-compiled binaries.](https://github.com/Sorrow446/Qo-DL/releases)
+**バージョン５ｃに更新をする場合は、新しい設定ファイルのテンプレートが必要です。**
 
-**New config file template required if updating to 5c**     
-**You'll need [this config template](https://thoas.feralhosting.com/sorrow/Qobuz-DL/config.ini) instead to use playlist.**   
-
-Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/).
+[こちら](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/)は旧バージョンをホストされています。
 
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/GUI3.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/GUI1.jpg)
@@ -16,34 +15,34 @@ Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b1.jpg)
 ![](https://thoas.feralhosting.com/sorrow/Qobuz-DL/b2.jpg)
 
+# セットアップ
+## 必要 ##
+設定ファイルには、次を入力する必要があります。   
+- メールアドレス   
+- MD５ハッシュされたパスワード。バージョン５付けで、プレーンテキストで入力してよろしいです。   
+- フォーマットID（ダウンロード品質）。５は320kbps MP3で、６は１６ビット=< 96kHz FLACで、 ７は２４ビット=< 96kHz FLACで、 ２７は２４ビット>96 kHz=< 192 kHz FLAC（利用可能な最高）です。
 
-# Setup
-## Mandatory ##
-The following need to be inputted into the config file:
-- Email address
-- Format id - download quality (5 = 320 kbps MP3, 6 = 16-bit FLAC, 7 = 24-bit / =< 96kHz FLAC, 27 = best avail - 24-bit / >96 kHz =< 192 kHz FLAC).
-- MD5 hashed password - as of release 5, you may input it in plain text instead.
- 
-**You can't download ANY tracks with a free account.**
-## Optional ##
+**無料のアカウントでトラックをダウンロードできません。**
 
-- Tags: change value to "n" to omit any tag from the download.  
-Everything else is documented in config.ini.
+## 任意 ##
+- タッグ。ダウンロードからどれかタッグを省くには、値を「n」に変更してください。  
+設定ファイルには、他の全てを文書化されています。
 
-# Usage
-Fill in your config file first.
+# 使い方
+最初に、設定ファイルを書き込む
 ### Windows ###
-Run the exe.
-### Linux & macOS ###
-CD to wherever the exe is.
+「Qo-DL_x86.exe」を起動する
+### LinuxとmacOS ###
+プログラムの位置にCDをする
 ```
 cd Desktop
 ```
-Make it executable.
+実行可能にする
+
 ```
 chmod +x Qo-DL_Lin_x64
 ```
-Launch it.
+起動する
 ```
 ./Qo-DL_Lin_x64
 ```
@@ -101,10 +100,6 @@ optional arguments:
                     album URL to the field. Make sure you wrap this up in
                     double quotes.
   -embed EMBED          Write album covers to tracks. "Y" or "N".
-```
-Qobuz-DL Playlist can also be used via command line, but only supports one option for now.
-```
-Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
 ```
 # Update Log
 ## Qo-DL ##
@@ -260,8 +255,8 @@ TypeError: string indices must be integers
 ```
 ### 11th Feb 19 - Release 1 ###
 
-# Misc Info
-Written around Python v3.6.7.  
+# 雑情報
+Python 3.6.7を中心に書かれました。    
 The user can choose which tags are to be written to.
 
 Misc:
@@ -274,9 +269,9 @@ Misc:
 - ID3v2.4 tag format is used for mp3 tags.
 - **If the following files exist in the current working dir, they'll be deleted: (1-1000).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. Filename clashes are also handled inside of album folders.**
 
-For support via Discord if you're too impatient to use GitHub issues or for general questions:
-* DashLt: Dash#0297 (note that in the first case I will match your impatience)
-* Sorrow446: Sorrow#5631
+助ける必要があれば、Discord（ディスコード)でいつでも自由に連絡してください。  
+- Dash#0297（日本語ができません）
+- Sorrow#5631（日本語ができますが、ペラペラではありません）
 
 # Known Issues
 - Albums with more than one disks will be treated as single-disk albums.
@@ -322,7 +317,7 @@ option ';1' in section 'Config' already exists.
 ```
 You can simply delete line 13 if you don't want to get the new config file and fill it in again. You should fill it in with line 13 from the new config file though.
 
-# Disclaimer
+# 免責
 I will not be responsible for how you use Qo-DL or Qo-DL Playlist.   
 Neither Qo-DL nor Qo-DL Playlist contain code to bypass Qobuz's region restrictions for track downloading or app IDs / secrets .     
 Qo-DL & Qo-DL Playlist use the Qobuz API but are not endorsed, certified or otherwise approved in any way by Qobuz. 
