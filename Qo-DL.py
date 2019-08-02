@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# r5c
+# r5d
 # It needs a lot of TLC, not fully refactored.
 
 # standard:
@@ -432,7 +432,7 @@ def getOsType():
 # Untested. Only for compiled builds.
 def update(currentVer):
 	try:
-		latestVer = requests.get("https://thoas.feralhosting.com/sorrow/Qobuz-DL/latestVersion.txt").text.lower()
+		latestVer = requests.get("https://thoas.feralhosting.com/sorrow/Qobuz-DL/latest_version.txt").text.lower()
 	except:
 		print("Failed to check for update.\n")
 	if latestVer != currentVer.lower():
@@ -453,9 +453,9 @@ def osCommands(a):
 			os.system('clear')
 	else:
 		if getOsType():
-			os.system('title Qo-DL R5c (by Sorrow446 ^& DashLt)')
+			os.system('title Qo-DL R5d (by Sorrow446 ^& DashLt)')
 		else:
-			sys.stdout.write("\x1b]2;Qo-DL R5c (by Sorrow446 ^& DashLt)\x07")
+			sys.stdout.write("\x1b]2;Qo-DL R5d (by Sorrow446 ^& DashLt)\x07")
 
 def preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate):
 	if isDiscog:
@@ -492,7 +492,7 @@ def init():
 	global msList2
 	global msList3
 	cwd = os.getcwd()
-	currentVer = "r5c"
+	currentVer = "r5d"
 	ssl._create_default_https_context = ssl._create_unverified_context
 	msList, msList2, msList3 = [], [], ["appId", "appSecret", "email", "formatId", "password", "coverSize",  "downloadDir", "keepCover", "useProxy", "proxy", "skipPwHashCheck", "checkForUpdates", "folderTemplate", "filenameTemplate"]
 	try:

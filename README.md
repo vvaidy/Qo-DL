@@ -108,7 +108,30 @@ Qobuz-DL_Playlist_x64.exe https://play.qobuz.com/playlist/1285066
 ```
 # Update Log
 ## Qo-DL ##
-### 19th July 199 - Release 5c ###
+### 2nd August 19 - Release 5d ###
+Bugfixes (special thanks to jonestly; he was a massive help in identifying most of these and getting them fixed):  
+- Fixed date/year tags
+- Added track version back in
+- Fix MP3 tagging
+- Program no longer crashes and now notifies you on missing metadata
+- Fixed tag disabling
+- Fixed restriction checking for both tracks and albums
+- When downloading, the quality of the song is now specific to the song, not just the album
+- Track version is optionally merged with title but is always printed when downloading
+- Updated to latest pySmartDL
+- Fixed extended metadata when Qobuz inserted invalid characters into it or left roles empty
+- Tracks with leading and/or trailing hyphens are no longer treated as invalid
+- Better error handling (no longer immediately exits, it now says whether albums are restricted or not)
+- Fixed loading links from text files
+- Fixed crashing when keepCover was enabled and the user redownloaded the album
+
+New features:
+- User-configurable templates for filenames and folder names
+- Support for downloading full artist discographies
+- Playlist downloading is now supported in the main program
+- Internal refactoring (rip function is now used exclusively for albums and tracks)
+- Neutered autoupdate to just become a check for a new version
+### 19th July 19 - Release 5c ###
 - Lots of internal refactoring
 - Changed downloader to pySmartDL: uses multi-segmented downloads, should be much faster
 - Added extended metadata support: adds instrument players, conductors, etc. Please see config.ini for more info
