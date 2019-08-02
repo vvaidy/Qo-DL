@@ -411,7 +411,10 @@ and you may want to report this on the GitHub with the album URL.")
 			if (album_download_dir / "cover.jpg").exists():
 				os.remove(album_download_dir / "cover.jpg")
 		else:
-			os.rename(album_download_dir / "cover.jpg", album_download_dir / "folder.jpg")
+			if not (album_download_dir / "folder.jpg").exists():
+				os.rename(album_download_dir / "cover.jpg", album_download_dir / "folder.jpg")
+			else:
+				os.remove(album_download_dir / "cover.jpg")
 	if not isPlist:
 		if "goodies" in albumMetadata:
 			if albumMetadata["goodies"][0]["file_format_id"] == 21:
