@@ -142,8 +142,7 @@ def add_flac_tags(filename, metadata):
 	audio = FLAC(filename)
 	for tag, value in metadata.items():
 		if value:
-			# removing control characters; qobuz likes to put carriage returns in their extended metadata
-			audio[tag] = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', value)
+			audio[tag] = value
 	audio.save()
 
 def add_flac_cover(filename, albumart):
@@ -314,7 +313,9 @@ and you may want to report this on the GitHub with the album URL.")
 				pass
 		if getConfig('extendedMetadata', True, 'Tags').lower() == "y" and formatId != "5":
 			performers = dict()
-			for performerItem in track["performers"].split(" - "):
+			# removing control characters; qobuz likes to put carriage returns in their extended metadata
+			qobuzPerformers = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', track["performers"])
+			for performerItem in qobuzPerformers.split(" - "):
 				person, role = performerItem.split(", ")[:2]
 				role = role.upper()
 				if role != "UNKNOWN":
@@ -759,6 +760,8 @@ def init():
 if __name__ == '__main__':
 	try:
 		init()
+	except (KeyboardInterrupt, SystemExit):
+		sys.exit()
 	except:
 		traceback.print_exc()
 		input("\nAn exception has occurred. Press enter to exit.")
