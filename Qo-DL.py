@@ -755,6 +755,10 @@ def init():
 				isTrack = "/track/" in album_url
 				isDiscog = "/artist" in album_url
 				isPlist = "/playlist/" in album_url
+				preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
+				print("Finished. Exiting...")
+				time.sleep(1)
+				sys.exit()
 		except NameError:
 			try:
 				album_url = input("Input Qobuz Player or Qobuz store URL:\n")
