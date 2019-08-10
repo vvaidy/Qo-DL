@@ -5,8 +5,8 @@ Please [join our Discord server](https://discord.gg/2WGqT7B). We're experimentin
 
 [Pre-compiled binaries.](https://github.com/Sorrow446/Qo-DL/releases)
 
-**New config file template required if updating to 5c**     
-**You'll need [this config template](https://thoas.feralhosting.com/sorrow/Qobuz-DL/config.ini) instead to use playlist.**   
+**New config file template is usually required on each new release**     
+**Here is an [image tutorial](https://imgur.com/a/bUQJU8q) on how to get the right config file.**   
 
 Old builds are hosted [here](https://thoas.feralhosting.com/sorrow/Qobuz-DL/Old%20Builds/).
 
