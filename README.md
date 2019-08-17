@@ -289,13 +289,14 @@ The user can choose which tags are to be written to.
 
 Misc:
 - If a digital booklet is available, it will be downloaded and put in its respective album folder.
-- Video goodies must be purchased. Qo-DL can't get them for you (API returns "None" when requesting).
-- Downloaded tracks are put in the "Qo-DL Downloads" folder. Ex. (Qo-DL Dir)\\Qo-DL Downloads\\(albumartist) - (albumtitle)\\(tracks)
-- Any specials characters that Windows doesn't support in filenames are replaced with "-".  
-- If an album folder needs to be made, but already exists, it and its contents will be deleted.  
+- Video goodies must be purchased. Qo-DL can't get them for you.
+- Any special characters that your OS doesn't support in filenames are replaced with "-".  
+- If an album folder needs to be made, but already exists, neither it nor its contents will be deleted. 
+- If the following files exist in the current working album folder, they'll be deleted: cover.jpg, folder,jpg, booklet.pdf. Files with pre & post filenames will also be deleted (after downloading: 01.flac, after renaming: 01. <title>). This is to avoid any filename clashes.
 - If a track is unavailable for streaming because of right owner restrictions, it will be skipped (some record labels disallow streaming of their music).
+ 
 - ID3v2.4 tag format is used for mp3 tags.
-- **If the following files exist in the current working dir, they'll be deleted: (1-1000).flac/.mp3, cover.jpg, booklet.pdf. This is to avoid any filename clashes. Filename clashes are also handled inside of album folders.**
+
 
 For support via Discord if you're too impatient to use GitHub issues or for general questions:
 * DashLt: Dash#0297 (note that in the first case I will match your impatience)
