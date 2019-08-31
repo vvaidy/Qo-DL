@@ -26,7 +26,7 @@ from urllib.error import HTTPError
 
 # third party:
 import requests
-import pySmartDL
+import multithread
 from mutagen import File
 import mutagen.id3 as id3
 from mutagen.flac import FLAC, Picture
@@ -273,7 +273,7 @@ and you may want to report this on the GitHub with the album URL.")
 		album_download_dir = base_download_dir / sanitizeFilename(folderTemplate.format(**parsedAlbumMetadata))
 	else:
 		album_download_dir = base_download_dir
-	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
+	coverobj = multithread.Downloader(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
 	coverobj.start()
 	if isDiscog:
 		print(f'Album {albumNumber} of {albumTotal}: {getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}:')
@@ -370,7 +370,7 @@ and you may want to report this on the GitHub with the album URL.")
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
 			continue
 		temporary_filename = album_download_dir / f"{track_number}{fext}"
-		songobj = pySmartDL.SmartDL(finalurltr, str(temporary_filename), request_args={"headers": download_headers})
+		songobj = multithread.Downloader(finalurltr, str(temporary_filename), aiohttp_args={"headers": download_headers})
 		if formatId == "5":
 			albumFormat = "320kbps MP3"
 		else:
@@ -419,7 +419,7 @@ and you may want to report this on the GitHub with the album URL.")
 		if "goodies" in albumMetadata:
 			if albumMetadata["goodies"][0]["file_format_id"] == 21:
 				print("Booklet available, downloading...")
-				bookletobj = pySmartDL.SmartDL(albumMetadata["goodies"][0]["original_url"], str(album_download_dir / "booklet.pdf"), request_args={"headers": download_headers})
+				bookletobj = multithread.Downloader(albumMetadata["goodies"][0]["original_url"], str(album_download_dir / "booklet.pdf"), aiohttp_args={"headers": download_headers})
 				bookletobj.start()
 
 def getOsType():
