@@ -273,8 +273,9 @@ and you may want to report this on the GitHub with the album URL.")
 		album_download_dir = base_download_dir / sanitizeFilename(folderTemplate.format(**parsedAlbumMetadata))
 	else:
 		album_download_dir = base_download_dir
-	coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
-	coverobj.start()
+	if alcovs != "-1":
+		coverobj = pySmartDL.SmartDL(album_cover_url, str(album_download_dir / "cover.jpg"), progress_bar=False, threads=1)
+		coverobj.start()
 	if isDiscog:
 		print(f'Album {albumNumber} of {albumTotal}: {getMetadata(albumMetadata, "Album Artist", "artist", "name")} - {getMetadata(albumMetadata, "Album", "title")}:')
 	elif not isTrack:
