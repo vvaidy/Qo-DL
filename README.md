@@ -1,3 +1,5 @@
+# Neither Sorrow nor Dash are currently working on Qo-DL. Pull requests are always welcome, but issues will likely go unsolved. Sorry.
+
 # Qo-DL
 Tool written in Python to download MP3s & FLACs from Qobuz.
 
