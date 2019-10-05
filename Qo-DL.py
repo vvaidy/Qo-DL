@@ -8,6 +8,7 @@ import os
 import re
 import ssl
 import sys
+import json
 import time
 import gzip
 import codecs
@@ -184,7 +185,7 @@ def fetchPlistMeta(appId, id):
 		print(f"Failed to fetch playlist metadata. Response from API: {response.text}")
 		osCommands('pause')
 
-def rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate, albumNumber, albumTotal):
+def rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keep_cover, folderTemplate, filenameTemplate, albumNumber, albumTotal, appSecret):
 	if formatId == "5":
 		fext = ".mp3"
 	else:
@@ -342,7 +343,14 @@ and you may want to report this on the GitHub with the album URL.")
 				elif len(people) > 1:
 					metadata[role + "s"] = ", ".join(people)
 		current_time = time.time()
-		reqsigt = f"trackgetFileUrlformat_id{formatId}intentstreamtrack_id{track['id']}{current_time}0e47db7842364064b7019225eb19f5d2"
+		magic_strings = [
+			"e28e9f3d71d274a605693111477d4fe2", # h.initialSeed("ZTI4ZTlmM2Q3MWQyNzRhNjA1NjkzMT", window.utimezone.berlin)
+			"29dc1e01d6c8ad9eee63b249bc6412d9", # h.initialSeed("MjlkYzFlMDFkNmM4YWQ5ZWVlNjNiMj", window.utimezone.dublin) 
+			"37ff1b4edefab5dfd5a03df9bafcd47d", # h.initialSeed("ZTI4ZTlmM2Q3MWQyNzRhNjA1NjkzMT", window.utimezone.london)
+			appSecret
+		]
+		magic_string = magic_strings[0] # TODO: iterate over each string and check if it works or not
+		reqsigt = f"trackgetFileUrlformat_id{formatId}intentstreamtrack_id{track['id']}{current_time}{magic_string}"
 		reqsighst = hashlib.md5(reqsigt.encode('utf-8')).hexdigest()
 		responset = session.get("https://www.qobuz.com/api.json/0.2/track/getFileUrl?",
 				params={
@@ -458,7 +466,7 @@ def osCommands(a):
 		else:
 			sys.stdout.write("\x1b]2;Qo-DL R5d (by Sorrow446 ^& DashLt)\x07")
 
-def preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate):
+def preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, appSecret):
 	if isDiscog:
 		artistMetaJ = fetchArtistMeta(appId, album_id)
 		print(f"{artistMetaJ['name']} discography - {artistMetaJ['albums_count']} albums")
@@ -466,7 +474,7 @@ def preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, format
 		i = 0
 		for album_id in ids:
 			i += 1
-			rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, i, artistMetaJ['albums_count'])
+			rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, i, artistMetaJ['albums_count'], appSecret)
 	elif isPlist:
 		plistMetaJ = fetchPlistMeta(appId, album_id)
 		if not plistMetaJ['is_public']:
@@ -481,9 +489,9 @@ def preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, format
 		i = 0
 		for album_id in ids:
 			i += 1
-			rip(album_id, True, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, "n", folderTemplate, filenameTemplate, i, plistMetaJ['tracks_count'])
+			rip(album_id, True, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, "n", folderTemplate, filenameTemplate, i, plistMetaJ['tracks_count'], appSecret)
 	else:
-		rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, "", "")
+		rip(album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, "", "", appSecret)
 
 def init():
 	if not os.path.exists('config.ini'):
@@ -660,8 +668,14 @@ def init():
 			"app_id": appId,
 		}
 	)
-	ssc0 = responset0.json()
 	rc = responset0.status_code
+	try:
+		ssc0 = responset0.json()
+	except json.decoder.JSONDecodeError:
+		if rc == 503 or rc == 500:
+			print("Qobuz appears to currently be down. Try again later. Exiting...")
+			time.sleep(3)
+			sys.exit()
 	if ssc0.get("message") == "Invalid or missing app_id parameter":
 		print("appId in config missing on not working; getting new one...")
 		try:
@@ -731,7 +745,7 @@ def init():
 								isTrack = "/track/" in album_url # could be better, but does it really matter?
 								isDiscog = "/artist/" in album_url
 								isPlist = "/playlist/" in album_url
-								preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
+								preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, appSecret)
 								if not lines.index(line) == len(lines) - 1: # don't want to say we're moving on at the end	
 									print("Moving onto next item in list...\n")
 							print("Finished list. Exiting...")
@@ -756,7 +770,7 @@ def init():
 				isTrack = "/track/" in album_url
 				isDiscog = "/artist" in album_url
 				isPlist = "/playlist/" in album_url
-				preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
+				preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, appSecret)
 				print("Finished. Exiting...")
 				time.sleep(1)
 				sys.exit()
@@ -775,7 +789,7 @@ def init():
 			isTrack = "/track/" in album_url
 			isDiscog = "/artist/" in album_url
 			isPlist = "/playlist/" in album_url
-		preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate)
+		preRip(appId, album_id, isTrack, isDiscog, isPlist, session, comment, formatId, alcovs, downloadDir, keepCover, folderTemplate, filenameTemplate, appSecret)
 		print("Returning to URL input screen...")
 		time.sleep(1)
 		osCommands('clear')
