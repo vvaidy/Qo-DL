@@ -147,7 +147,7 @@ def add_flac_tags(filename, metadata):
 	audio.save()
 
 def add_flac_cover(filename, albumart):
-	audio = File(filename)
+	audio = File(str(filename))
 	image = Picture()
 	image.type = 3
 	image.mime = "image/jpeg"
