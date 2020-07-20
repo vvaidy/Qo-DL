@@ -229,7 +229,7 @@ or search the album name on the web player and use the link there.")
 		]
 	download_headers = {
 		"range": "bytes=0-",
-		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0",
+		"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
 		"referer": album_url
 	}
 	base_download_dir = Path(downloadDir)
@@ -298,6 +298,7 @@ and you may want to report this on the GitHub with the album URL.")
 				track_number = str(track['track_number']).zfill(2)
 			else:
 				track_number = str(albumNumber).zfill(2)
+
 		if not track["streamable"]:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
 			continue
@@ -344,14 +345,17 @@ and you may want to report this on the GitHub with the album URL.")
 					metadata[role + "s"] = ", ".join(people)
 		current_time = time.time()
 		magic_strings = [
-			"e28e9f3d71d274a605693111477d4fe2", # h.initialSeed("ZTI4ZTlmM2Q3MWQyNzRhNjA1NjkzMT", window.utimezone.berlin)
-			"29dc1e01d6c8ad9eee63b249bc6412d9", # h.initialSeed("MjlkYzFlMDFkNmM4YWQ5ZWVlNjNiMj", window.utimezone.dublin) 
-			"37ff1b4edefab5dfd5a03df9bafcd47d", # h.initialSeed("ZTI4ZTlmM2Q3MWQyNzRhNjA1NjkzMT", window.utimezone.london)
+			"979549437fcc4a3faad4867b5cd25dcb", # h.initialSeed("OTc5NTQ5NDM3ZmNjNGEzZmFhZDQ4Nj", window.utimezone.berlin)
+			"75bad70145953840a998ddadc9bb1c03", # h.initialSeed("NzViYWQ3MDE0NTk1Mzg0MGE5OThkZG", window.utimezone.dublin)
+			"10b251c286cfbf64d6b7105f253d9a2e", # h.initialSeed("MTBiMjUxYzI4NmNmYmY2NGQ2YjcxMD", window.utimezone.london)
+			"2ab7131d383623cf403cf3d4676c56b6", # h.initialSeed("MmFiNzEzMWQzODM2MjNjZjQwM2NmM2", window.utimezone.algier)
+			"9b6f8d1e34febcd1fef94004026582fe", # h.initialSeed("OWI2ZjhkMWUzNGZlYmNkMWZlZjk0MD", window.utimezone.paris)
 			appSecret
 		]
 		magic_string = magic_strings[0] # TODO: iterate over each string and check if it works or not
 		reqsigt = f"trackgetFileUrlformat_id{formatId}intentstreamtrack_id{track['id']}{current_time}{magic_string}"
 		reqsighst = hashlib.md5(reqsigt.encode('utf-8')).hexdigest()
+
 		responset = session.get("https://www.qobuz.com/api.json/0.2/track/getFileUrl?",
 				params={
 					"request_ts": current_time,
@@ -375,6 +379,7 @@ and you may want to report this on the GitHub with the album URL.")
 					isRes = True 
 			if 'sample' in tr and tr['sample']:
 				isRes = True
+
 		if isRes:
 			print(f"Track {track_number} is restricted by right holders. Can't download.")
 			continue
@@ -437,17 +442,6 @@ def getOsType():
 		return True
 	else:
 		return False
-
-# Untested. Only for compiled builds.
-def update(currentVer):
-	try:
-		latestVer = requests.get("https://thoas.feralhosting.com/sorrow/Qobuz-DL/latest_version.txt").text.lower()
-	except:
-		print("Failed to check for update.\n")
-	if latestVer != currentVer.lower():
-		print("There is a new version of Qo-DL available. Please download the new binary and config file from https://github.com/Sorrow446/Qo-DL/releases .")
-	else:
-		return
 
 def osCommands(a):
 	if a == "pause":
@@ -612,8 +606,6 @@ def init():
 	checkForUpdates = getConfig('checkForUpdates', True, 'Main')
 	filenameTemplate = getConfig('filenameTemplate', True, 'Main')
 	folderTemplate = getConfig('folderTemplate', True, 'Main')
-	if checkForUpdates.lower() == "y":
-		update(currentVer)
 	if msList2:
 		msList2j = ', '.join(msList2)
 		print(f"The following required fields in your config file are missing: {msList2j}.")
